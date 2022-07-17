@@ -27,7 +27,7 @@ public class BannerDao {
         String getUsersQuery = "select * from banner"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
         return this.jdbcTemplate.query(getUsersQuery,
                 (rs, rowNum) -> new GetBannerRes(
-                        rs.getInt("bannerId"),
+//                        rs.getInt("bannerId"),
                         rs.getString("bannerImgUrl"),
                         rs.getString("bannerName")
                 ) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기

@@ -9,7 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GetBannerRes {
 
-    private int bannerId;
     private String bannerImgUrl;
     private String bannerName;
 
