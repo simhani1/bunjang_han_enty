@@ -8,5 +8,19 @@
       <jdbc-url>jdbc:mysql://localhost:3306/bunjang</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="carrotmarket@db-instance-carrotmarket.czlvjpec3sns.ap-northeast-2.rds.amazonaws.com" uuid="738593da-3712-4fb2-8bc3-b866bed07670">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://db-instance-carrotmarket.czlvjpec3sns.ap-northeast-2.rds.amazonaws.com:3306/carrotmarket</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="bunjang@db-instance-carrotmarket.czlvjpec3sns.ap-northeast-2.rds.amazonaws.com" uuid="2b78114b-b39e-4b56-aba1-de20b0948733">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://db-instance-carrotmarket.czlvjpec3sns.ap-northeast-2.rds.amazonaws.com:3306/bunjang</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
