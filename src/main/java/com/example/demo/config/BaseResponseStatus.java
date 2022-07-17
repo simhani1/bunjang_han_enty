@@ -13,7 +13,7 @@ public enum BaseResponseStatus {
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
 
     // [GET] /banner
-    GET_BANNER_SUCCESS(true, 1000, "배너 조회에 성공하였습니다."),
+    GET_BANNER_SUCCESS(true, 1048, "배너 조회에 성공하였습니다."),
 
     /**
      * 2000 : Request 오류
