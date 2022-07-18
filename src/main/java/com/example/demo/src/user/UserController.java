@@ -63,13 +63,13 @@ public class UserController {
         //  @RequestBody란, 클라이언트가 전송하는 HTTP Request Body(우리는 JSON으로 통신하니, 이 경우 body는 JSON)를 자바 객체로 매핑시켜주는 어노테이션
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
         // email에 값이 존재하는지, 빈 값으로 요청하지는 않았는지 검사합니다. 빈값으로 요청했다면 에러 메시지를 보냅니다.
-        if (postUserReq.getEmail() == null) {
-            return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
-        }
+//        if (postUserReq.getEmail() == null) {
+//            return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
+//        }
         //이메일 정규표현: 입력받은 이메일이 email@domain.xxx와 같은 형식인지 검사합니다. 형식이 올바르지 않다면 에러 메시지를 보냅니다.
-        if (!isRegexEmail(postUserReq.getEmail())) {
-            return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
-        }
+//        if (!isRegexEmail(postUserReq.getEmail())) {
+//            return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+//        }
         try {
             PostUserRes postUserRes = userService.createUser(postUserReq);
             return new BaseResponse<>(postUserRes);
@@ -137,14 +137,14 @@ public class UserController {
      */
     // Path-variable
     @ResponseBody
-    @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
-    public BaseResponse<GetUserRes> getUser(@PathVariable("userIdx") int userIdx) {
+    @GetMapping("/{userId}") // (GET) 127.0.0.1:9000/app/users/:userIdx
+    public BaseResponse<GetUserRes> getUser(@PathVariable("userId") int userId) {
         // @PathVariable RESTful(URL)에서 명시된 파라미터({})를 받는 어노테이션, 이 경우 userId값을 받아옴.
         //  null값 or 공백값이 들어가는 경우는 적용하지 말 것
         //  .(dot)이 포함된 경우, .을 포함한 그 뒤가 잘려서 들어감
         // Get Users
         try {
-            GetUserRes getUserRes = userProvider.getUser(userIdx);
+            GetUserRes getUserRes = userProvider.getUser(userId);
             return new BaseResponse<>(getUserRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -157,8 +157,8 @@ public class UserController {
      * [PATCH] /users/:userIdx
      */
     @ResponseBody
-    @PatchMapping("/{userIdx}")
-    public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user) {
+    @PatchMapping("/{userId}")
+    public BaseResponse<String> modifyUserName(@PathVariable("userId") int userId, @RequestBody User user) {
         try {
 /**
   *********** 해당 부분은 7주차 - JWT 수업 후 주석해체 해주세요!  ****************
@@ -171,7 +171,15 @@ public class UserController {
             //같다면 유저네임 변경
   **************************************************************************
  */
-            PatchUserReq patchUserReq = new PatchUserReq(userIdx, user.getNickname());
+
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userId != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //같다면 유저네임 변경
+            PatchUserReq patchUserReq = new PatchUserReq(userId, user.getNickname());
             userService.modifyUserName(patchUserReq);
 
             String result = "회원정보가 수정되었습니다.";
