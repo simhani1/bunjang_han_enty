@@ -12,6 +12,13 @@ public class ValidationRegex {
         return matcher.find();
     }
 
+    // 전화 번호 형식 체크(자릿수 비교로 간단하게)
+    public static boolean isRegexTelephoneNum(String target){
+        if(target.length() == 11)
+            return true;
+        else
+            return false;
+    }
     // 날짜 형식, 전화 번호 형식 등 여러 Regex 인터넷에 검색하면 나옴.
 }
 

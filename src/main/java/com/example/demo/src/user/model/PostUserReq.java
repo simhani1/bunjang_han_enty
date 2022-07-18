@@ -13,4 +13,8 @@ public class PostUserReq {
     private String profileImgUrl;
     private String location;
     private String phoneNum;
+
+    public void setPassword(String encryptPwd) {
+        this.pwd = encryptPwd;
+    }
 }
