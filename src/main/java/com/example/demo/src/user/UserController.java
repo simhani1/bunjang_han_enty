@@ -80,7 +80,7 @@ public class UserController {
         }
         try {
             PostUserRes postUserRes = userService.createUser(postUserReq);
-            return new BaseResponse<>(postUserRes);
+            return new BaseResponse<>(SIGN_UP_SUCCESS, postUserRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }

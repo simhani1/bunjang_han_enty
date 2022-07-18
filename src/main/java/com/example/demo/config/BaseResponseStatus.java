@@ -11,6 +11,7 @@ public enum BaseResponseStatus {
      * 1000 : 요청 성공
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
+    SIGN_UP_SUCCESS(true, 1001, "회원가입에 성공하였습니다."),
 
     // [GET] /banner
     GET_BANNER_SUCCESS(true, 1048, "배너 조회에 성공하였습니다."),
@@ -32,9 +33,6 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_PHONENUMBER(false, 2014, "전화번호를 확인해주세요."),
     POST_INVALID_PHONENUMBER(false, 2015, "전화번호 형식을 확인해주세요."),
 
-    // [POST] /users
-    POST_USERS_EMPTY_EMAIL(false, 2015, "이메일을 입력해주세요."),
-    POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
 
     /**
      * 3000 : Response 오류
@@ -42,14 +40,14 @@ public enum BaseResponseStatus {
     // Common
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
 
-    // [POST] /users
-    DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
-    FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
-
     // 회원가입(3010 ~ 3020)
     POST_EXISTS_ID(false,3010,"이미 사용중인 아이디입니다."),
     POST_EXISTS_NICKNAME(false,3011,"이미 사용중인 닉네임입니다."),
     POST_EXISTS_PHONENUM(false,3012,"이미 사용중인 전화번호임입니다."),
+
+    FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
+
+
 
 
 
