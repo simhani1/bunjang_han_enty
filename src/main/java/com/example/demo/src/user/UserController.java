@@ -25,10 +25,6 @@ import static com.example.demo.utils.ValidationRegex.isRegexTelephoneNum;
 // method가 어떤 HTTP 요청을 처리할 것인가를 작성한다.
 // 요청에 대해 어떤 Controller, 어떤 메소드가 처리할지를 맵핑하기 위한 어노테이션
 // URL(/app/users)을 컨트롤러의 메서드와 매핑할 때 사용
-/**
- * Controller란?
- * 사용자의 Request를 전달받아 요청의 처리를 담당하는 Service, Prodiver 를 호출
- */
 public class UserController {
     // *********************** 동작에 있어 필요한 요소들을 불러옵니다. *************************
 
