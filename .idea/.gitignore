@@ -6,6 +6,6 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-/src/main/java/com/example/demo/config/secret/
+/src/main/java/com/example/demo/config/secret/*
 /src/main/resources/application.yml
 /.gradle
