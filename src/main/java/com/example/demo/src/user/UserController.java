@@ -30,62 +30,62 @@ import static com.example.demo.utils.ValidationRegex.isRegexTelephoneNum;
  * 사용자의 Request를 전달받아 요청의 처리를 담당하는 Service, Prodiver 를 호출
  */
 public class UserController {
-//    // *********************** 동작에 있어 필요한 요소들을 불러옵니다. *************************
-//
-//    final Logger logger = LoggerFactory.getLogger(this.getClass()); // Log를 남기기: 일단은 모르고 넘어가셔도 무방합니다.
-//
-//    @Autowired  // 객체 생성을 스프링에서 자동으로 생성해주는 역할. 주입하려 하는 객체의 타입이 일치하는 객체를 자동으로 주입한다.
-//    // IoC(Inversion of Control, 제어의 역전) / DI(Dependency Injection, 의존관계 주입)에 대한 공부하시면, 더 깊이 있게 Spring에 대한 공부를 하실 수 있을 겁니다!(일단은 모르고 넘어가셔도 무방합니다.)
-//    // IoC 간단설명,  메소드나 객체의 호출작업을 개발자가 결정하는 것이 아니라, 외부에서 결정되는 것을 의미
-//    // DI 간단설명, 객체를 직접 생성하는 게 아니라 외부에서 생성한 후 주입 시켜주는 방식
-//    private final UserProvider userProvider;
-//    @Autowired
-//    private final UserService userService;
-//    @Autowired
-//    private final JwtService jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
-//
-//
-//    public UserController(UserProvider userProvider, UserService userService, JwtService jwtService) {
-//        this.userProvider = userProvider;
-//        this.userService = userService;
-//        this.jwtService = jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
-//    }
-//
-//    // ******************************************************************************
-//
-//    // 회원 가입
-//    @ResponseBody
-//    @PostMapping("/sign-up")    // POST 방식의 요청을 매핑하기 위한 어노테이션
-//    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
-//        //  @RequestBody란, 클라이언트가 전송하는 HTTP Request Body(우리는 JSON으로 통신하니, 이 경우 body는 JSON)를 자바 객체로 매핑시켜주는 어노테이션
-//        // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
-//        if(postUserReq.getId().equals("")) {
-//            return new BaseResponse<>(POST_EMPTY_ID);
-//        }
-//        if(postUserReq.getPwd().equals((""))){
-//            return new BaseResponse<>(POST_EMPTY_PWD);
-//        }
-//        if(postUserReq.getNickname().equals("")){
-//            return new BaseResponse<>(POST_EMPTY_NICKNAME);
-//        }
-//        if(postUserReq.getLocation().equals("")){
-//            return new BaseResponse<>(POST_EMPTY_LOCATION);
-//        }
-//        if (postUserReq.getPhoneNum().equals("")) {
-//            return new BaseResponse<>(POST_USERS_EMPTY_PHONENUMBER);
-//        }
-//        // 폰번호 자릿수 체크
-//        if (!isRegexTelephoneNum(postUserReq.getPhoneNum())) {
-//            return new BaseResponse<>(POST_INVALID_PHONENUMBER);
-//        }
-//        try {
-//            PostUserRes postUserRes = userService.createUser(postUserReq);
-//            return new BaseResponse<>(postUserRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
-//
+    // *********************** 동작에 있어 필요한 요소들을 불러옵니다. *************************
+
+    final Logger logger = LoggerFactory.getLogger(this.getClass()); // Log를 남기기: 일단은 모르고 넘어가셔도 무방합니다.
+
+    @Autowired  // 객체 생성을 스프링에서 자동으로 생성해주는 역할. 주입하려 하는 객체의 타입이 일치하는 객체를 자동으로 주입한다.
+    // IoC(Inversion of Control, 제어의 역전) / DI(Dependency Injection, 의존관계 주입)에 대한 공부하시면, 더 깊이 있게 Spring에 대한 공부를 하실 수 있을 겁니다!(일단은 모르고 넘어가셔도 무방합니다.)
+    // IoC 간단설명,  메소드나 객체의 호출작업을 개발자가 결정하는 것이 아니라, 외부에서 결정되는 것을 의미
+    // DI 간단설명, 객체를 직접 생성하는 게 아니라 외부에서 생성한 후 주입 시켜주는 방식
+    private final UserProvider userProvider;
+    @Autowired
+    private final UserService userService;
+    @Autowired
+    private final JwtService jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
+
+
+    public UserController(UserProvider userProvider, UserService userService, JwtService jwtService) {
+        this.userProvider = userProvider;
+        this.userService = userService;
+        this.jwtService = jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
+    }
+
+    // ******************************************************************************
+
+    // 회원 가입
+    @ResponseBody
+    @PostMapping("/sign-up")    // POST 방식의 요청을 매핑하기 위한 어노테이션
+    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
+        //  @RequestBody란, 클라이언트가 전송하는 HTTP Request Body(우리는 JSON으로 통신하니, 이 경우 body는 JSON)를 자바 객체로 매핑시켜주는 어노테이션
+        // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
+        if(postUserReq.getId().equals("")) {
+            return new BaseResponse<>(POST_EMPTY_ID);
+        }
+        if(postUserReq.getPwd().equals((""))){
+            return new BaseResponse<>(POST_EMPTY_PWD);
+        }
+        if(postUserReq.getNickname().equals("")){
+            return new BaseResponse<>(POST_EMPTY_NICKNAME);
+        }
+        if(postUserReq.getLocation().equals("")){
+            return new BaseResponse<>(POST_EMPTY_LOCATION);
+        }
+        if (postUserReq.getPhoneNum().equals("")) {
+            return new BaseResponse<>(POST_USERS_EMPTY_PHONENUMBER);
+        }
+        // 폰번호 자릿수 체크
+        if (!isRegexTelephoneNum(postUserReq.getPhoneNum())) {
+            return new BaseResponse<>(POST_INVALID_PHONENUMBER);
+        }
+        try {
+            PostUserRes postUserRes = userService.createUser(postUserReq);
+            return new BaseResponse<>(postUserRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 //    /**
 //     * 로그인 API
 //     * [POST] /users/logIn
@@ -102,8 +102,8 @@ public class UserController {
 //            return new BaseResponse<>(exception.getStatus());
 //        }
 //    }
-//
-//
+
+
 //    /**
 //     * 모든 회원들의  조회 API
 //     * [GET] /users
@@ -134,11 +134,10 @@ public class UserController {
 //            return new BaseResponse<>((exception.getStatus()));
 //        }
 //    }
-//    /**
-//
-//
-//
-//
+
+
+
+
 //    /**
 //     * 회원 1명 조회 API
 //     * [GET] /users/:userIdx
@@ -159,7 +158,7 @@ public class UserController {
 //        }
 //
 //    }
-//
+
 //    /**
 //     * 유저정보변경 API
 //     * [PATCH] /users/:userIdx

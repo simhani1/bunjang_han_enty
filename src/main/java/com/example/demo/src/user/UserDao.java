@@ -18,34 +18,25 @@ import java.util.List;
  */
 public class UserDao {
 
-//    // *********************** 동작에 있어 필요한 요소들을 불러옵니다. *************************
-//
-//    private JdbcTemplate jdbcTemplate;
-//
-//    @Autowired //readme 참고
-//    public void setDataSource(DataSource dataSource) {
-//        this.jdbcTemplate = new JdbcTemplate(dataSource);
-//    }
-//    // ******************************************************************************
-//
-//    // 회원가입
-//    public int createUser(PostUserReq postUserReq) {
-//        String createUserQuery = "insert into user (id, pwd, nickname, profileImgUrl, location, phoneNum) VALUES (?,?,?,?,?,?)";
-//        Object[] createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getProfileImgUrl(), postUserReq.getLocation(), postUserReq.getPhoneNum()};
-//        this.jdbcTemplate.update(createUserQuery, createUserParams);
-//        String lastInsertIdQuery = "select count(*) from user";
-//        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userIdx번호를 반환한다.
-//    }
-//
-//    // 이메일 확인
-//    public int checkEmail(String email) {
-//        String checkEmailQuery = "select exists(select email from User where email = ?)"; // User Table에 해당 email 값을 갖는 유저 정보가 존재하는가?
-//        String checkEmailParams = email; // 해당(확인할) 이메일 값
-//        return this.jdbcTemplate.queryForObject(checkEmailQuery,
-//                int.class,
-//                checkEmailParams); // checkEmailQuery, checkEmailParams를 통해 가져온 값(intgud)을 반환한다. -> 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
-//    }
-//
+    // *********************** 동작에 있어 필요한 요소들을 불러옵니다. *************************
+
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired //readme 참고
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+    // ******************************************************************************
+
+    // 회원가입
+    public int createUser(PostUserReq postUserReq) {
+        String createUserQuery = "insert into user (id, pwd, nickname, profileImgUrl, location, phoneNum) VALUES (?,?,?,?,?,?)";
+        Object[] createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getProfileImgUrl(), postUserReq.getLocation(), postUserReq.getPhoneNum()};
+        this.jdbcTemplate.update(createUserQuery, createUserParams);
+        String lastInsertIdQuery = "select count(*) from user";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userId를 반환한다.
+    }
+
 //    // 회원정보 변경
 //    public int modifyUserName(PatchUserReq patchUserReq) {
 //        String modifyUserNameQuery = "update user set nickname = ? where userId = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
@@ -108,4 +99,33 @@ public class UserDao {
 //                        rs.getString("password")), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
 //                getUserParams); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
 //    }
+
+    //////////////////////////////////////////////// VALIDATION ///////////////////////////////////////////////////
+
+    // 해당 아이디 중복성 체크
+    public int checkId(String id) {
+        String checkIdQuery = "select exists(select id from user where id = ?)";
+        String checkIdParams = id;
+        return this.jdbcTemplate.queryForObject(checkIdQuery,
+                int.class,
+                checkIdParams);  // 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
+    }
+
+    // 해당 닉네임 중복성 체크
+    public int checkNickname(String nickname) {
+        String checkNicknameQuery = "select exists(select nickname from user where nickname = ?)";
+        String checkNicknameParams = nickname;
+        return this.jdbcTemplate.queryForObject(checkNicknameQuery,
+                int.class,
+                checkNicknameParams);  // 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
+    }
+
+    // 해당 전화번호 중복성 체크
+    public int checkPhoneNum(String phoneNum) {
+        String checkPhoneNumQuery = "select exists(select phoneNum from user where phoneNum = ?)";
+        String checkPhoneNumParams = phoneNum;
+        return this.jdbcTemplate.queryForObject(checkPhoneNumQuery,
+                int.class,
+                checkPhoneNumParams);  // 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
+    }
 }

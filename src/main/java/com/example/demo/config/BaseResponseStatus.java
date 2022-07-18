@@ -24,15 +24,17 @@ public enum BaseResponseStatus {
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
 
-    // users
-    USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
+    // 회원가입(2010 ~ 2019)
+    POST_EMPTY_ID(false, 2010, "아이디를 확인해주세요."),
+    POST_EMPTY_PWD(false, 2011, "비밀번호를 확인해주세요."),
+    POST_EMPTY_NICKNAME(false, 2012, "닉네임을 확인해주세요."),
+    POST_EMPTY_LOCATION(false, 2013, "주소를 확인해주세요."),
+    POST_USERS_EMPTY_PHONENUMBER(false, 2014, "전화번호를 확인해주세요."),
+    POST_INVALID_PHONENUMBER(false, 2015, "전화번호 형식을 확인해주세요."),
 
     // [POST] /users
     POST_USERS_EMPTY_EMAIL(false, 2015, "이메일을 입력해주세요."),
     POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
-    POST_USERS_EXISTS_EMAIL(false,2017,"중복된 이메일입니다."),
-
-
 
     /**
      * 3000 : Response 오류
@@ -43,6 +45,11 @@ public enum BaseResponseStatus {
     // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
+
+    // 회원가입(3010 ~ 3020)
+    POST_EXISTS_ID(false,3010,"이미 사용중인 아이디입니다."),
+    POST_EXISTS_NICKNAME(false,3011,"이미 사용중인 닉네임입니다."),
+    POST_EXISTS_PHONENUM(false,3012,"이미 사용중인 전화번호임입니다."),
 
 
 
