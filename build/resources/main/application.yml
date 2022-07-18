@@ -17,3 +17,10 @@ spring:
 #    url: jdbc:mysql://localhost:3306/bunjang?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 #    username: root
 #    password: Nmjt1915!@
+
+logging:
+  file:
+    path: ./logs/
+  config: classpath:logback-spring.xml
+  level:
+    org.springframework.security: DEBUG
