@@ -43,7 +43,7 @@ public enum BaseResponseStatus {
     // 회원가입(3010 ~ 3020)
     POST_EXISTS_ID(false,3010,"이미 사용중인 아이디입니다."),
     POST_EXISTS_NICKNAME(false,3011,"이미 사용중인 닉네임입니다."),
-    POST_EXISTS_PHONENUM(false,3012,"이미 사용중인 전화번호임입니다."),
+    POST_EXISTS_PHONENUM(false,3012,"이미 사용중인 전화번호 입니다."),
 
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
