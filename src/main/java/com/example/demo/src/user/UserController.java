@@ -58,6 +58,8 @@ public class UserController {
         if(postUserReq.getId().equals("")) {
             return new BaseResponse<>(POST_EMPTY_ID);
         }
+
+        // pwd 입력 확인
         if(postUserReq.getPwd().equals((""))){
             return new BaseResponse<>(POST_EMPTY_PWD);
         }
