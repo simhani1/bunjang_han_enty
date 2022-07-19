@@ -96,7 +96,7 @@ public class UserController {
                 return new BaseResponse<>(POST_EMPTY_PWD);
             }
             PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);
-            return new BaseResponse<>(postLoginRes);
+            return new BaseResponse<>(LOG_IN_SUCCESS, postLoginRes);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }
