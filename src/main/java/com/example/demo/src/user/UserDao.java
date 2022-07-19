@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository //  [Persistence Layer에서 DAO를 명시하기 위해 사용]
@@ -28,6 +29,7 @@ public class UserDao {
     }
     // ******************************************************************************
 
+    @Transactional
     // 회원가입
     public int createUser(PostUserReq postUserReq) {
         String createUserQuery;
@@ -44,6 +46,11 @@ public class UserDao {
         }
         this.jdbcTemplate.update(createUserQuery, createUserParams);
         String lastInsertIdQuery = "select count(*) from user";
+        String createShopQuery = "insert\n" +
+                "    into shop (userId)\n" +
+                "    values (?)";
+        String createShopParams = lastInsertIdQuery;
+        this.jdbcTemplate.update(createShopQuery, jdbcTemplate.queryForObject(createShopParams, int.class));
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userId를 반환한다.
     }
 
