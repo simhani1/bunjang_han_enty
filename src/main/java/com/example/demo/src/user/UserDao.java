@@ -54,14 +54,6 @@ public class UserDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userId를 반환한다.
     }
 
-//    // 회원정보 변경
-//    public int modifyUserName(PatchUserReq patchUserReq) {
-//        String modifyUserNameQuery = "update user set nickname = ? where userId = ? "; // 해당 userIdx를 만족하는 User를 해당 nickname으로 변경한다.
-//        Object[] modifyUserNameParams = new Object[]{patchUserReq.getNickname(), patchUserReq.getUserId()}; // 주입될 값들(nickname, userIdx) 순
-//
-//        return this.jdbcTemplate.update(modifyUserNameQuery, modifyUserNameParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
-//    }
-
     // 로그인 - 비밀번호 체크
     public User getPwd(PostLoginReq postLoginReq) {
         String getPwdQuery = "select userId, pwd from user where id = ?";
@@ -74,6 +66,25 @@ public class UserDao {
                 ),
                 getPwdParams
         );
+    }
+
+    // 사용자 정보 수정(폰번호/성별/생일)
+    public int modifyInfo(PatchUserReq patchUserReq) {
+        String modifyInfoQuery = "";
+        Object [] modifyInfoParams = new Object[]{};
+        if(patchUserReq.getKey().equals("phoneNum")){
+            modifyInfoQuery = "update user set phoneNum = ? where userId = ? ";
+            modifyInfoParams = new Object[]{patchUserReq.getPhoneNum(), patchUserReq.getUserId()};
+        }
+        else if(patchUserReq.getKey().equals("gender")){
+            modifyInfoQuery = "update user set gender = ? where userId = ? ";
+            modifyInfoParams = new Object[]{patchUserReq.getGender(), patchUserReq.getUserId()};
+        }
+        else if(patchUserReq.getKey().equals("birth")){
+            modifyInfoQuery = "update user set birth = ? where userId = ? ";
+            modifyInfoParams = new Object[]{patchUserReq.getBirth(), patchUserReq.getUserId()};
+        }
+        return this.jdbcTemplate.update(modifyInfoQuery, modifyInfoParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
     }
 
 //    // User 테이블에 존재하는 전체 유저들의 정보 조회
