@@ -16,5 +16,4 @@ public class LastCategory {
     private FirstCategory firstCategory;
     private String lastCategory;
 
-
 }
