@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class FirstCategoryProvider {
@@ -22,10 +22,19 @@ public class FirstCategoryProvider {
     public List<GetFirstCategoryRes> getCategories() throws BaseException {
         try{
             List<GetFirstCategoryRes> getFirstCategoryRes = firstCategoryDao.getCategories();
+            System.out.println(this.getCategoryCount());
+
+            if(this.getCategoryCount() == 0){
+                throw new BaseException(NO_EXISTED_CATEGORY_LIST);
+            }
             return getFirstCategoryRes;
 
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+
+    public int getCategoryCount(){
+        return firstCategoryDao.getCategoryCount();
     }
 }

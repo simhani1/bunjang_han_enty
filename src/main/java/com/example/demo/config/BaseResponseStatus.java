@@ -18,7 +18,7 @@ public enum BaseResponseStatus {
 
     // [GET] /category
     GET_CATEGORY_SUCCESS(true, 1059, "카테고리 조회에 성공하였습니다."),
-    GET_LAST_CATEGORY_SUCCESS(true, 1500, "하위 카테고리 조회에 성공하였습니다."),
+    GET_LAST_CATEGORY_SUCCESS(true, 1060, "하위 카테고리 조회에 성공하였습니다."),
     /**
      * 2000 : Request 오류
      */
@@ -54,6 +54,8 @@ public enum BaseResponseStatus {
 
     NO_EXISTED_CATEGORY_LIST(false, 3590, "등록된 카테고리가 없습니다."),
 
+    // 하위 카테고리 조회(3600 ~ 3610)
+    NO_EXISTED_FIRST_CATEGORY(false, 3600, "상위 카테고리가 존재하지 않습니다."),
 
 
     /**

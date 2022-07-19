@@ -40,4 +40,9 @@ public class FirstCategoryDao {
 
     }
 
+    public int getCategoryCount(){
+        String getCategoryCountQuery = "select count(firstCategoryId) from firstCategory";
+        return this.jdbcTemplate.queryForObject(getCategoryCountQuery, Integer.class);
+    }
+
 }

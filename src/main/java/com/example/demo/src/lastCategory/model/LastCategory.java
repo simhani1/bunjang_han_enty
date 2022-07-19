@@ -13,7 +13,7 @@ import lombok.Setter;
 public class LastCategory {
 
     private int lastCategoryId;
-    private FirstCategory firstCategory;
+    private int firstCategoryId;
     private String lastCategory;
 
 }
