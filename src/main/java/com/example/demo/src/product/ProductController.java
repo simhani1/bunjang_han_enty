@@ -38,14 +38,13 @@ public class ProductController {
     public BaseResponse<PostProductRes> createProduct(@PathVariable("userId") int userId, @RequestBody PostProductReq postProductReq){
         try{
 
-            System.out.println("userId : " + userId);
+
+            System.out.println("price : " + postProductReq.getPrice());
             int userIdByJwt = jwtService.getUserId();
             //userIdx와 접근한 유저가 같은지 확인
             if(userId != userIdByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-
-
 
             PostProductRes postProductRes = productService.createProduct(userIdByJwt, postProductReq);
             return new BaseResponse<>(POST_PRODUCT_SUCCESS,postProductRes);

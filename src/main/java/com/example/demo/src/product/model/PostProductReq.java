@@ -10,16 +10,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PostProductReq {
 
-//    private int userId;
     private String title;
     private int firstCategoryId;
     private int lastCategoryId;
     private int price;
     private String contents;
-//    private int amount;
-//    private String isUsed;
-//    private String changeable;
-//    private String pay;
-//    private String shippingFee;
+    private int amount;
+    private String isUsed;
+    private String changeable;
+    private String pay;
+    private String shippingFee;
 
 }
