@@ -25,7 +25,7 @@ public class ProductDao {
 //
 //        if(postProductReq.getAmount().)
 
-        createProductQuery = "insert into product (userId, title, firstCategory, lastCategory, price, contents, amount, isUsed, changeable, pay, shippingFee) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        createProductQuery = "insert into product (userId, title, firstCategoryId, lastCategoryId, price, contents, amount, isUsed, changeable, pay, shippingFee) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 //        createProductQuery = "insert into product (userId, title, firstCategoryId, lastCategoryId, price, contents) VALUES (?,?,?,?,?,?)";
 
         createProductParams = new Object[]{userId, postProductReq.getTitle(), postProductReq.getFirstCategoryId(), postProductReq.getLastCategoryId(), postProductReq.getPrice(), postProductReq.getContents(), postProductReq.getAmount(), postProductReq.getIsUsed(), postProductReq.getChangeable(), postProductReq.getPay(), postProductReq.getShippingFee()};
