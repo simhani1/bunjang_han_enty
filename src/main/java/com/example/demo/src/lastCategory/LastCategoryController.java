@@ -40,7 +40,7 @@ public class LastCategoryController {
             List<GetLastCategoryRes> getLastCategoryRes = lastCategoryProvider.getLastCategories(firstCategoryId);
             return new BaseResponse<>(GET_LAST_CATEGORY_SUCCESS, getLastCategoryRes);
         } catch (BaseException exception){
-            return new BaseResponse<>(exception.getStatus());
+            return new BaseResponse<>((exception.getStatus()));
         }
     }
 }

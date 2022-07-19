@@ -14,6 +14,7 @@ public enum BaseResponseStatus {
     SIGN_UP_SUCCESS(true, 1001, "회원가입에 성공하였습니다."),
     LOG_IN_SUCCESS(true, 1002,"로그인에 성공하였습니다." ),
 
+    POST_PRODUCT_SUCCESS(true, 1020, "등록이 완료되었습니다."),
     // [GET] /banner
     GET_BANNER_SUCCESS(true, 1048, "배너 조회에 성공하였습니다."),
 
