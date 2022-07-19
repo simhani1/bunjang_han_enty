@@ -16,6 +16,8 @@ public enum BaseResponseStatus {
     // [GET] /banner
     GET_BANNER_SUCCESS(true, 1048, "배너 조회에 성공하였습니다."),
 
+    // [GET] /lastCategory
+    GET_LAST_CATEGORY_SUCCESS(true, 1500, "하위 카테고리 조회에 성공하였습니다."),
     /**
      * 2000 : Request 오류
      */
@@ -33,6 +35,7 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_PHONENUMBER(false, 2014, "전화번호를 확인해주세요."),
     POST_INVALID_PHONENUMBER(false, 2015, "전화번호 형식을 확인해주세요."),
 
+    // 로그인(2020 ~ 2029)
 
     /**
      * 3000 : Response 오류
