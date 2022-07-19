@@ -1,6 +1,7 @@
 package com.example.demo.src.user.model;
 
 import lombok.*;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -13,16 +14,23 @@ import java.util.Date;
 public class PatchUserReq {
     private int userId;
     private String phoneNum;
-    private Date birth;
-    private String gender;
+    private String birth;
+    private boolean gender;  // true: 남자 false: 여자
+    private boolean status;  // true: 활동중 false: 탈퇴
     private String key;
-    // 정보 수정
-    public PatchUserReq(int userId, String key, String value) {
-        this.userId = userId;
-        this.key = key;
+
+    public PatchUserReq(String key, String phoneNum) {
         if(key.equals("phoneNum"))
-            this.phoneNum = value;
-        else if(key.equals("gender"))
-            this.gender = value;
+            this.phoneNum = phoneNum;
+        else if(key.equals("birth"))
+            this.birth = birth;
+    }
+
+    public PatchUserReq(String key, boolean value) {
+        this.key = key;
+        if(key.equals("gender"))
+            this.setGender(value);
+        else if(key.equals("status"))
+            this.setStatus(value);
     }
 }

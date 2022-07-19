@@ -13,6 +13,10 @@ public enum BaseResponseStatus {
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
     SIGN_UP_SUCCESS(true, 1001, "회원가입에 성공하였습니다."),
     LOG_IN_SUCCESS(true, 1002,"로그인에 성공하였습니다." ),
+    MODIFY_STATUS_SUCCESS(true, 1003, "탈퇴처리 되었습니다."),
+    MODIFY_PHONENUMBER_SUCCESS(true, 1004, "전화번호가 수정되었습니다."),
+    MODIFY_GENDER_SUCCESS(true, 1005, "성별이 수정되었습니다."),
+
 
     // [GET] /banner
     GET_BANNER_SUCCESS(true, 1048, "배너 조회에 성공하였습니다."),

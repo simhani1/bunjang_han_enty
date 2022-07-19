@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
+import java.time.LocalDate;
+import java.util.Date;
+
 import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service    // [Business Layer에서 Service를 명시하기 위해서 사용] 비즈니스 로직이나 respository layer 호출하는 함수에 사용된다.
@@ -66,10 +69,33 @@ public class UserService {
         }
     }
 
-    // 사용자 정보 수정(폰번호/성별/생일)
-    public void modifyInfo(PatchUserReq patchUserReq) throws BaseException {
+    // 폰번호 수정
+    public void modifyPhoneNum(int userId, String phoneNum) throws BaseException {
         try {
-            int result = userDao.modifyInfo(patchUserReq); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            int result = userDao.modifyPhoneNum(userId, phoneNum); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
+                throw new BaseException(MODIFY_FAIL_INFO);
+            }
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 성별 수정
+    public void modifyGender(int userId, boolean gender) throws BaseException {
+        try {
+            int result = userDao.modifyGender(userId, gender); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
+                throw new BaseException(MODIFY_FAIL_INFO);
+            }
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+    // 성별 수정
+    public void modifyBirth(int userId, String birth) throws BaseException {
+        try {
+            int result = userDao.modifyBirth(userId, birth); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
             if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
                 throw new BaseException(MODIFY_FAIL_INFO);
             }

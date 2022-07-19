@@ -8,7 +8,11 @@ import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -102,8 +106,8 @@ public class UserController {
     }
 
     // 폰번호 수정
-    @PatchMapping("/phoneNum/{userId}/")
-    public BaseResponse<String> modifyPhoneNum(@PathVariable("userId") int userId, @RequestBody User user) {
+    @PatchMapping("/phoneNum/{userId}")
+    public BaseResponse<String> modifyPhoneNum(@PathVariable("userId") int userId, @RequestBody PatchUserPhoneNum patchUserPhoneNum) {
         try {
             //////////////////////////////////////  JWT
             //jwt에서 idx 추출
@@ -114,11 +118,13 @@ public class UserController {
             }
             //////////////////////////////////////  JWT
             // 폰번호 자릿수 체크
-            if (!isRegexTelephoneNum(user.getPhoneNum())) {
+            if (!isRegexTelephoneNum(patchUserPhoneNum.getPhoneNum())) {
                 return new BaseResponse<>(INVALID_PHONENUMBER);
             }
-            PatchUserReq patchUserReq = new PatchUserReq(userId, "phoneNum", user.getPhoneNum());  // userId, key, value
-            userService.modifyInfo(patchUserReq);
+            if(userProvider.checkPhoneNum(patchUserPhoneNum.getPhoneNum()) == 1){
+                return new BaseResponse<>(EXISTS_PHONENUM);
+            }
+            userService.modifyPhoneNum(userId, patchUserPhoneNum.getPhoneNum());
             String result = "전화번호가 수정되었습니다.";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
@@ -127,8 +133,8 @@ public class UserController {
     }
 
     // 성별 수정
-    @PatchMapping("/gender/{userId}/")
-    public BaseResponse<String> modifyGender(@PathVariable("userId") int userId, @RequestBody User user) {
+    @PatchMapping("/gender/{userId}")
+    public BaseResponse<String> modifyGender(@PathVariable("userId") int userId, @RequestBody PatchUserReq patchUserReq) {
         try {
             //////////////////////////////////////  JWT
             //jwt에서 idx 추출
@@ -138,12 +144,7 @@ public class UserController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
             //////////////////////////////////////  JWT
-            // 형식 확인
-            if(!user.getGender().equals("male") || !user.getGender().equals("female")){
-                throw new BaseException(INVALID_GENDER);
-            }
-            PatchUserReq patchUserReq = new PatchUserReq(userId, "gender", user.getGender());  // userId, key, value
-            userService.modifyInfo(patchUserReq);
+            userService.modifyGender(userId, patchUserReq.isGender());
             String result = "성별이 수정되었습니다.";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
@@ -152,8 +153,8 @@ public class UserController {
     }
 
     // 생일 수정
-    @PatchMapping("/birth/{userId}/")
-    public BaseResponse<String> modifyBirth(@PathVariable("userId") int userId, @RequestBody User user) {
+    @PatchMapping("/birth/{userId}")
+    public BaseResponse<String> modifyBirth(@PathVariable("userId") int userId, @RequestBody PatchUserBirth patchUserBirth) {
         try {
             //////////////////////////////////////  JWT
             //jwt에서 idx 추출
@@ -164,11 +165,10 @@ public class UserController {
             }
             //////////////////////////////////////  JWT
             // 날짜 포맷 확인
-            if(!dateFormatCheck(user.getBirth().toString())){
+            if(!validationDate(patchUserBirth.getBirth())){
                 throw new BaseException(INVALID_DATE);
             }
-            PatchUserReq patchUserReq = new PatchUserReq(userId, "birth", user.getGender());  // userId, key, value
-            userService.modifyInfo(patchUserReq);
+            userService.modifyBirth(userId, patchUserBirth.getBirth());
             String result = "생일이 수정되었습니다.";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {

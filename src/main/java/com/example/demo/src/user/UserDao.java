@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @Repository //  [Persistence Layer에서 DAO를 명시하기 위해 사용]
@@ -69,23 +70,44 @@ public class UserDao {
     }
 
     // 사용자 정보 수정(폰번호/성별/생일)
-    public int modifyInfo(PatchUserReq patchUserReq) {
-        String modifyInfoQuery = "";
-        Object [] modifyInfoParams = new Object[]{};
-        if(patchUserReq.getKey().equals("phoneNum")){
-            modifyInfoQuery = "update user set phoneNum = ? where userId = ? ";
-            modifyInfoParams = new Object[]{patchUserReq.getPhoneNum(), patchUserReq.getUserId()};
-        }
-        else if(patchUserReq.getKey().equals("gender")){
-            modifyInfoQuery = "update user set gender = ? where userId = ? ";
-            modifyInfoParams = new Object[]{patchUserReq.getGender(), patchUserReq.getUserId()};
-        }
-        else if(patchUserReq.getKey().equals("birth")){
-            modifyInfoQuery = "update user set birth = ? where userId = ? ";
-            modifyInfoParams = new Object[]{patchUserReq.getBirth(), patchUserReq.getUserId()};
-        }
-        return this.jdbcTemplate.update(modifyInfoQuery, modifyInfoParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+//    public int modifyInfo(PatchUserReq patchUserReq) {
+//        String modifyInfoQuery = "";
+//        Object [] modifyInfoParams = new Object[]{};
+//        if(patchUserReq.getKey().equals("phoneNum")){
+//            modifyInfoQuery = "update user set phoneNum = ? where userId = ? ";
+//            modifyInfoParams = new Object[]{patchUserReq.getPhoneNum(), patchUserReq.getUserId()};
+//        }
+//        else if(patchUserReq.getKey().equals("gender")){
+//            modifyInfoQuery = "update user set gender = ? where userId = ? ";
+//            modifyInfoParams = new Object[]{patchUserReq.isGender(), patchUserReq.getUserId()};
+//        }
+//        else if(patchUserReq.getKey().equals("birth")){
+//            modifyInfoQuery = "update user set birth = ? where userId = ? ";
+//            modifyInfoParams = new Object[]{patchUserReq.getBirth(), patchUserReq.getUserId()};
+//        }
+//        return this.jdbcTemplate.update(modifyInfoQuery, modifyInfoParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+//    }
+    // 폰번호 수정
+    public int modifyPhoneNum(int userId, String phoneNum) {
+        String modifyPhoneNumQuery = "update user set phoneNum = ? where userId = ? ";
+        Object [] modifyPhoneNumParams = new Object[]{phoneNum, userId};
+        return this.jdbcTemplate.update(modifyPhoneNumQuery, modifyPhoneNumParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
     }
+
+    // 성별 수정
+    public int modifyGender(int userId, boolean gender) {
+        String modifyGenderQuery = "update user set gender = ? where userId = ? ";
+        Object [] modifyGenderParams = new Object[]{gender, userId};
+        return this.jdbcTemplate.update(modifyGenderQuery, modifyGenderParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
+
+    // 생일 수정
+    public int modifyBirth(int userId, String birth) {
+        String modifyGenderQuery = "update user set birth = ? where userId = ? ";
+        Object [] modifyGenderParams = new Object[]{birth, userId};
+        return this.jdbcTemplate.update(modifyGenderQuery, modifyGenderParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
+
 
 //    // User 테이블에 존재하는 전체 유저들의 정보 조회
 //    public List<GetUserRes> getUsers() {
