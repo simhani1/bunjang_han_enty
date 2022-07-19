@@ -20,7 +20,6 @@ public class ProductService {
     public PostProductRes createProduct(int userId, PostProductReq postProductReq) throws BaseException {
         try{
             int productId = productDao.createProduct(userId, postProductReq);
-//            PostProductRes postProductRes = productDao.createProduct(userId, postProductReq);
             return new PostProductRes(productId);
 
         } catch (Exception exception){

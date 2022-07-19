@@ -26,9 +26,11 @@ public class ProductDao {
 //        if(postProductReq.getAmount() )
 
 //        String createProductQuery = "insert into product (userId, title, firstCategory, lastCategory, price, contents, amount, isUsed, changeable, pay, shippingFee) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-        String createProductQuery = "insert into product (userId, title, firstCategory, lastCategory, price, contents) VALUES (?,?,?,?,?,?)";
+        String createProductQuery = "insert into product (userId, title, firstCategoryId, lastCategoryId, price, contents) VALUES (?,?,?,?,?,?)";
 
-        Object[] createProductParams = new Object[]{userId, postProductReq.getTitle(), postProductReq.getFirstCategoryId(), postProductReq.getLastCategoryId(), postProductReq.getPrice(), postProductReq.getContents(), postProductReq.getAmount(), postProductReq.getIsUsed(), postProductReq.getChangeable(), postProductReq.getProductId(), postProductReq.getShippingFee()};
+//        Object[] createProductParams = new Object[]{userId, postProductReq.getTitle(), postProductReq.getFirstCategoryId(), postProductReq.getLastCategoryId(), postProductReq.getPrice(), postProductReq.getContents(), postProductReq.getAmount(), postProductReq.getIsUsed(), postProductReq.getChangeable(), postProductReq.getPay(), postProductReq.getShippingFee()};
+        Object[] createProductParams = new Object[]{userId, postProductReq.getTitle(), postProductReq.getFirstCategoryId(), postProductReq.getLastCategoryId(), postProductReq.getPrice(), postProductReq.getContents()};
+
         this.jdbcTemplate.update(createProductQuery, createProductParams);
 
         String lastInsertIdQuery = "select count(*) from product";
