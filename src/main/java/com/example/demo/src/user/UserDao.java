@@ -61,24 +61,21 @@ public class UserDao {
 //
 //        return this.jdbcTemplate.update(modifyUserNameQuery, modifyUserNameParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
 //    }
-//
-//
-//    // 로그인: 해당 email에 해당되는 user의 암호화된 비밀번호 값을 가져온다.
-//    public User getPwd(PostLoginReq postLoginReq) {
-//        String getPwdQuery = "select userId, password,email,nickname from User where email = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
-//        String getPwdParams = postLoginReq.getEmail(); // 주입될 email값을 클라이언트의 요청에서 주어진 정보를 통해 가져온다.
-//
-//        return this.jdbcTemplate.queryForObject(getPwdQuery,
-//                (rs, rowNum) -> new User(
-//                        rs.getInt("userId"),
-//                        rs.getString("email"),
-//                        rs.getString("password"),
-//                        rs.getString("nickname")
-//                ), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
-//                getPwdParams
-//        ); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
-//    }
-//
+
+    // 로그인 - 비밀번호 체크
+    public User getPwd(PostLoginReq postLoginReq) {
+        String getPwdQuery = "select userId, pwd from user where id = ?";
+        String getPwdParams = postLoginReq.getId(); // 주입될 email값을 클라이언트의 요청에서 주어진 정보를 통해 가져온다.
+
+        return this.jdbcTemplate.queryForObject(getPwdQuery,
+                (rs, rowNum) -> new User(
+                        rs.getInt("userId"),
+                        rs.getString("pwd")
+                ),
+                getPwdParams
+        );
+    }
+
 //    // User 테이블에 존재하는 전체 유저들의 정보 조회
 //    public List<GetUserRes> getUsers() {
 //        String getUsersQuery = "select * from User"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
@@ -144,5 +141,14 @@ public class UserDao {
         return this.jdbcTemplate.queryForObject(checkPhoneNumQuery,
                 int.class,
                 checkPhoneNumParams);  // 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
+    }
+
+    // 탈퇴한 유저인지 체크
+    public String checkStatus(String id) {
+        String checkStatusQuery = "select status from user where id = ?";
+        String checkStatusParams = id;
+        return this.jdbcTemplate.queryForObject(checkStatusQuery,
+                String.class,
+                checkStatusParams);  // 쿼리문의 결과(활동중: active, 비활성: inactive)를 문자열로 반환
     }
 }
