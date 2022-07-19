@@ -31,7 +31,7 @@ public class FirstCategoryController {
             List<GetFirstCategoryRes> getFirstCategoryRes = firstCategoryProvider.getCategories();
             return new BaseResponse<>(GET_CATEGORY_SUCCESS, getFirstCategoryRes);
         } catch (BaseException exception){
-            return new BaseResponse<>(exception.getStatus());
+            return new BaseResponse<>((exception.getStatus()));
         }
     }
 }
