@@ -23,6 +23,7 @@ public class FirstCategoryProvider {
         try{
             List<GetFirstCategoryRes> getFirstCategoryRes = firstCategoryDao.getCategories();
             return getFirstCategoryRes;
+
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
