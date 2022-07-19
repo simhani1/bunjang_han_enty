@@ -49,8 +49,10 @@ public enum BaseResponseStatus {
     POST_EXISTS_NICKNAME(false,3011,"이미 사용중인 닉네임입니다."),
     POST_EXISTS_PHONENUM(false,3012,"이미 사용중인 전화번호 입니다."),
 
-    FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
-
+    // 로그인(3020 ~ 3030)
+    NO_EXISTED_ID(false, 3020, "존재하지 않는 아이디입니다."),
+    NOT_ACTIVE_USER(false, 3021, "비활성 유저입니다."),
+    FAILED_TO_LOGIN(false,3022,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
     NO_EXISTED_CATEGORY_LIST(false, 3590, "등록된 카테고리가 없습니다."),
 

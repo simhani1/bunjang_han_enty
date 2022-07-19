@@ -23,8 +23,11 @@ public class User {
     private LocalDate birth;
     private String phoneNum;
     private String gender;
-    // 탈퇴여부 (active / inactive)
-    private String status;
+    private String status; // 탈퇴여부 (active / inactive)
     private LocalDateTime createdAt;
 
+    public User(int userId, String pwd) {
+        this.userId = userId;
+        this.pwd = pwd;
+    }
 }
