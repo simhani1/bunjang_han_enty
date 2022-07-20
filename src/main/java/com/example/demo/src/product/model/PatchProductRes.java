@@ -19,13 +19,13 @@ public class PatchProductRes {
     private int price;
     private String contents;
     private String condition;
-    private String isDeleted;
+    private Boolean isDeleted;
     private int amount;
-    private String isUsed;
-    private String changeable;
-    private String pay;
+    private Boolean isUsed;
+    private Boolean changeable;
+    private Boolean pay;
     private int buyerId;
-    private String shippingFee;
+    private Boolean shippingFee;
 
 
 }

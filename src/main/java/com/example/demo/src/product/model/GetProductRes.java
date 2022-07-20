@@ -19,12 +19,11 @@ public class GetProductRes {
     private int price;
     private String contents;
     private String condition;
-    private String isDeleted;
-    private int amount;
-    private String isUsed;
-    private String changeable;
-    private String pay;
+    private Boolean isDeleted;
+    private Boolean amount;
+    private Boolean isUsed;
+    private Boolean changeable;
+    private Boolean pay;
     private int buyerId;
-    private String shippingFee;
-
+    private Boolean shippingFee;
 }

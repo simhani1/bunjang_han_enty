@@ -20,20 +20,19 @@ public class ProductDao {
 
     public int createProduct(int userId, PostProductReq postProductReq){
 
-        String createProductQuery;
-        Object[] createProductParams;
-//
-//        if(postProductReq.getAmount().)
+        String createProductQuery = "insert into product (userId, title, firstCategoryId, lastCategoryId, price, contents, amount, isUsed, changeable, pay, shippingFee) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        String insertProductImgQuery = "insert into productImg (productId, productImgUrl) values (?,?)";
 
-        createProductQuery = "insert into product (userId, title, firstCategory, lastCategory, price, contents, amount, isUsed, changeable, pay, shippingFee) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-//        createProductQuery = "insert into product (userId, title, firstCategoryId, lastCategoryId, price, contents) VALUES (?,?,?,?,?,?)";
-
-        createProductParams = new Object[]{userId, postProductReq.getTitle(), postProductReq.getFirstCategoryId(), postProductReq.getLastCategoryId(), postProductReq.getPrice(), postProductReq.getContents(), postProductReq.getAmount(), postProductReq.getIsUsed(), postProductReq.getChangeable(), postProductReq.getPay(), postProductReq.getShippingFee()};
-//        createProductParams = new Object[]{userId, postProductReq.getTitle(), postProductReq.getFirstCategoryId(), postProductReq.getLastCategoryId(), postProductReq.getPrice(), postProductReq.getContents()};
+        Object[] createProductParams = new Object[]{userId, postProductReq.getTitle(), postProductReq.getFirstCategoryId(), postProductReq.getLastCategoryId(), postProductReq.getPrice(), postProductReq.getContents(), postProductReq.getAmount(), postProductReq.getIsUsed(), postProductReq.getChangeable(), postProductReq.getPay(), postProductReq.getShippingFee()};
 
         this.jdbcTemplate.update(createProductQuery, createProductParams);
 
         String lastInsertIdQuery = "select count(*) from product";
+
+        Object[] insertProductImgParams = new Object[]{lastInsertIdQuery, postProductReq.getProductImgs().get(0)};
+
+        this.jdbcTemplate.update(insertProductImgQuery, insertProductImgParams);
+
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
 }
