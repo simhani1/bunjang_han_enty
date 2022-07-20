@@ -4,8 +4,8 @@ com/example/demo/src/banner/model/Banner.java
  com.example.demo.src.banner.model.Banner
 com/example/demo/config/Constant.java
  com.example.demo.config.Constant
-com/example/demo/src/product/ProductService.java
- com.example.demo.src.product.ProductService
+com/example/demo/src/user/UserProvider.java
+ com.example.demo.src.user.UserProvider
 com/example/demo/src/productImg/model/PostProductImgRes.java
  com.example.demo.src.productImg.model.PostProductImgRes
 com/example/demo/src/banner/BannerProvider.java
@@ -14,22 +14,24 @@ com/example/demo/src/banner/BannerController.java
  com.example.demo.src.banner.BannerController
 com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
-com/example/demo/src/firstCategory/FirstCategoryProvider.java
- com.example.demo.src.firstCategory.FirstCategoryProvider
+com/example/demo/src/user/model/GetUserRes.java
+ com.example.demo.src.user.model.GetUserRes
 com/example/demo/src/user/model/PatchUserPhoneNum.java
  com.example.demo.src.user.model.PatchUserPhoneNum
-com/example/demo/src/lastCategory/LastCategoryController.java
- com.example.demo.src.lastCategory.LastCategoryController
-com/example/demo/src/lastCategory/LastCategoryDao.java
- com.example.demo.src.lastCategory.LastCategoryDao
+com/example/demo/src/productImg/ProductImgProvider.java
+ com.example.demo.src.productImg.ProductImgProvider
+com/example/demo/src/lastCategory/model/GetLastCategoryRes.java
+ com.example.demo.src.lastCategory.model.GetLastCategoryRes
 com/example/demo/config/BaseResponseStatus.java
  com.example.demo.config.BaseResponseStatus
+com/example/demo/src/kakao/model/KakaoUser.java
+ com.example.demo.src.kakao.model.KakaoUser
 com/example/demo/src/test/BooleanTest.java
  com.example.demo.src.test.BooleanTest
-com/example/demo/src/product/ProductDao.java
- com.example.demo.src.product.ProductDao
-com/example/demo/src/firstCategory/model/GetFirstCategoryRes.java
- com.example.demo.src.firstCategory.model.GetFirstCategoryRes
+com/example/demo/src/kakao/OAuthController.java
+ com.example.demo.src.kakao.OAuthController
+com/example/demo/src/banner/model/PatchBannerRes.java
+ com.example.demo.src.banner.model.PatchBannerRes
 com/example/demo/src/productImg/model/ProductImg.java
  com.example.demo.src.productImg.model.ProductImg
 com/example/demo/config/secret/Secret.java
@@ -50,8 +52,8 @@ com/example/demo/src/productImg/model/PatchProductImgRes.java
  com.example.demo.src.productImg.model.PatchProductImgRes
 com/example/demo/src/product/model/PostProductRes.java
  com.example.demo.src.product.model.PostProductRes
-com/example/demo/src/product/ProductController.java
- com.example.demo.src.product.ProductController
+com/example/demo/utils/JwtService.java
+ com.example.demo.utils.JwtService
 com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
 com/example/demo/src/banner/BannerService.java
@@ -84,8 +86,8 @@ com/example/demo/src/productImg/ProductImgService.java
  com.example.demo.src.productImg.ProductImgService
 com/example/demo/src/WebSecurityConfig.java
  com.example.demo.src.WebSecurityConfig
-com/example/demo/src/firstCategory/FirstCategoryController.java
- com.example.demo.src.firstCategory.FirstCategoryController
+com/example/demo/src/product/model/PatchProductRes.java
+ com.example.demo.src.product.model.PatchProductRes
 com/example/demo/src/test/TestController.java
  com.example.demo.src.test.TestController
 com/example/demo/src/banner/model/PatchBannerReq.java
@@ -96,8 +98,8 @@ com/example/demo/src/user/model/PatchWithdrawl.java
  com.example.demo.src.user.model.PatchWithdrawl
 com/example/demo/src/productImg/ProductImgController.java
  com.example.demo.src.productImg.ProductImgController
-com/example/demo/src/user/UserProvider.java
- com.example.demo.src.user.UserProvider
+com/example/demo/src/kakao/OAuthService.java
+ com.example.demo.src.kakao.OAuthService
 com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
 com/example/demo/src/firstCategory/FirstCategoryService.java
@@ -110,31 +112,31 @@ com/example/demo/src/product/model/Product.java
  com.example.demo.src.product.model.Product
 com/example/demo/src/user/UserController.java
  com.example.demo.src.user.UserController
-com/example/demo/src/lastCategory/model/GetLastCategoryRes.java
- com.example.demo.src.lastCategory.model.GetLastCategoryRes
-com/example/demo/src/product/model/PostProductReq.java
- com.example.demo.src.product.model.PostProductReq
-com/example/demo/src/user/model/User.java
- com.example.demo.src.user.model.User
+com/example/demo/src/firstCategory/FirstCategoryProvider.java
+ com.example.demo.src.firstCategory.FirstCategoryProvider
 com/example/demo/src/lastCategory/LastCategoryProvider.java
  com.example.demo.src.lastCategory.LastCategoryProvider
+com/example/demo/src/user/model/User.java
+ com.example.demo.src.user.model.User
+com/example/demo/src/firstCategory/FirstCategoryController.java
+ com.example.demo.src.firstCategory.FirstCategoryController
 com/example/demo/src/product/model/GetProductRes.java
  com.example.demo.src.product.model.GetProductRes
-com/example/demo/src/firstCategory/FirstCategoryDao.java
- com.example.demo.src.firstCategory.FirstCategoryDao
-com/example/demo/src/productImg/ProductImgProvider.java
- com.example.demo.src.productImg.ProductImgProvider
-com/example/demo/src/user/model/GetUserRes.java
- com.example.demo.src.user.model.GetUserRes
-com/example/demo/src/product/model/PatchProductRes.java
- com.example.demo.src.product.model.PatchProductRes
 com/example/demo/DemoApplication.java
  com.example.demo.DemoApplication
-com/example/demo/src/banner/model/PatchBannerRes.java
- com.example.demo.src.banner.model.PatchBannerRes
-com/example/demo/utils/JwtService.java
- com.example.demo.utils.JwtService
-com/example/demo/src/kakao/OAuthService.java
- com.example.demo.src.kakao.OAuthService
-com/example/demo/src/kakao/OAuthController.java
- com.example.demo.src.kakao.OAuthController
+com/example/demo/src/lastCategory/LastCategoryDao.java
+ com.example.demo.src.lastCategory.LastCategoryDao
+com/example/demo/src/firstCategory/FirstCategoryDao.java
+ com.example.demo.src.firstCategory.FirstCategoryDao
+com/example/demo/src/lastCategory/LastCategoryController.java
+ com.example.demo.src.lastCategory.LastCategoryController
+com/example/demo/src/firstCategory/model/GetFirstCategoryRes.java
+ com.example.demo.src.firstCategory.model.GetFirstCategoryRes
+com/example/demo/src/product/ProductDao.java
+ com.example.demo.src.product.ProductDao
+com/example/demo/src/product/ProductService.java
+ com.example.demo.src.product.ProductService
+com/example/demo/src/product/ProductController.java
+ com.example.demo.src.product.ProductController
+com/example/demo/src/product/model/PostProductReq.java
+ com.example.demo.src.product.model.PostProductReq
