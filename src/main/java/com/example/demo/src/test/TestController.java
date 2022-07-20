@@ -46,6 +46,13 @@ public class TestController {
     @ResponseBody
     @PostMapping("/array")
     public BaseResponse<Member> getArrayString(@RequestBody Member member){
+
+//        member.getHobby().get(1);
         return new BaseResponse<>(member);
+    }
+
+    @PostMapping("/boolean")
+    public BaseResponse<BooleanTest> getBoolean(@RequestBody BooleanTest booleanTest){
+        return new BaseResponse<>(booleanTest);
     }
 }

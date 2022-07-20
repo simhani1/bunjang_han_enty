@@ -4,12 +4,18 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.product.model.PostProductReq;
 import com.example.demo.src.product.model.PostProductRes;
+import com.example.demo.src.productImg.model.GetProductImgReq;
+import com.example.demo.src.productImg.model.PostProductImgReq;
 import com.example.demo.utils.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.example.demo.config.BaseResponseStatus.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/app/products")
 public class ProductController {
@@ -39,7 +45,10 @@ public class ProductController {
         try{
 
 
-            System.out.println("price : " + postProductReq.getPrice());
+//            System.out.println(productImg);
+
+            PostProductImgReq a = postProductReq.getProductImgs().get(2);
+
             int userIdByJwt = jwtService.getUserId();
             //userIdx와 접근한 유저가 같은지 확인
             if(userId != userIdByJwt){
