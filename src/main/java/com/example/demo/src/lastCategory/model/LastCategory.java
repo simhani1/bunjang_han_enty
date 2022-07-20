@@ -15,5 +15,5 @@ public class LastCategory {
     private int lastCategoryId;
     private int firstCategoryId;
     private String lastCategory;
-
+    private String lastCategoryImgUrl;
 }

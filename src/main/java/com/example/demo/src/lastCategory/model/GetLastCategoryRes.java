@@ -13,7 +13,9 @@ import lombok.Setter;
 public class GetLastCategoryRes {
 
     private int firstCategoryId;
+    private String firstCategory;
+    private String firstCategoryImgUrl;
     private int lastCategoryId;
     private String lastCategory;
-    private String categoryImgUrl;
+    private String lastCategoryImgUrl;
 }

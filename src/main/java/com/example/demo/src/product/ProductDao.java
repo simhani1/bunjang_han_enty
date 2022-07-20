@@ -64,10 +64,9 @@ public class ProductDao {
      * [GET] /app/products/id/:productId
      * @return GetProductRes
      */
-    public GetProductRes getProductById(int productId){
+    public GetProductRes getProductById(int userId, int productId){
 
-        String getProductByIdQuery = "select product.productId, product.condition, product.price, product.pay, product.title, user.location, product.updatedAt, product.isUsed, product.amount, product.shippingFee, product.changeable, product.contents, lastCategory.categoryImgUrl, lastCategory.lastCategory, user.profileImgUrl, user.nickname from product left join user on user.userId = product.userId left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId where product.productId = ?";
-//        String getProductByIdQuery = "select * from product where productId = ?";
+        String getProductByIdQuery = "select product.productId, product.condition, product.price, product.pay, product.title, user.location, product.updatedAt, product.isUsed, product.amount, product.shippingFee, product.changeable, product.contents, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, user.profileImgUrl, user.nickname from product left join user on user.userId = product.userId left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId where product.productId = ?";
         int getProductByIdParams = productId;
 
 
@@ -112,6 +111,39 @@ public class ProductDao {
                         rs.getString("tagContents")),
                 productId);
 
+        // Get viewCnt
+        String getViewCountQuery = "select count(productId) from view where productId =" + productId;
+        int viewCnt = this.jdbcTemplate.queryForObject(getViewCountQuery, int.class);
+
+        // Get heartCnt
+        String getHeartCountQuery = "select count(productId) from heartList where productId="+productId+" and status = 1";
+        int heartCnt = this.jdbcTemplate.queryForObject(getHeartCountQuery, int.class);
+
+        // Get chatCnt
+        String getChatCountQuery = "select count(productId) from chattingRoom where productId="+productId+" and isDeleted=0";
+        int chatCnt = this.jdbcTemplate.queryForObject(getChatCountQuery, int.class);
+
+        // Get star
+        String getStarQuery = "select avg(star) from review where productId="+productId;
+        Double star = this.jdbcTemplate.queryForObject(getStarQuery, Double.class);
+
+        // Get follow
+        String getUserIdQuery = "select userId from product where productId="+productId;
+        int productUserId = this.jdbcTemplate.queryForObject(getUserIdQuery, int.class);
+
+        String getFollowerNumQuery = "select count(userId) from followList where userId="+productUserId+" and status = 1";
+        int follower = this.jdbcTemplate.queryForObject(getFollowerNumQuery, int.class);
+
+        // Get follow status
+        String getFollowStatusQuery = "select status from followList where followUserId="+userId+" and userId="+productUserId;
+        Boolean follow = this.jdbcTemplate.queryForObject(getFollowStatusQuery, Boolean.class);
+
+        // Get CommentCount
+        String getCommentCountQuery = "select count(productId) from comment where productId="+productId+" and isDeleted=0";
+        int commentCount = this.jdbcTemplate.queryForObject(getCommentCountQuery,int.class);
+
+//        String getAccountNumQuery = "select count(accountId) from accountList";
+//        int accountNum = this.jdbcTemplate.queryForObject(getAccountNumQuery,int.class);
 
         return this.jdbcTemplate.queryForObject(getProductByIdQuery,
                 (rs, rowNum) -> new GetProductRes(
@@ -123,16 +155,23 @@ public class ProductDao {
                         rs.getString("title"),
                         rs.getString("location"),
                         rs.getTimestamp("updatedAt").toLocalDateTime(),
+                        viewCnt,
+                        heartCnt,
+                        chatCnt,
                         rs.getBoolean("isUsed"),
                         rs.getInt("amount"),
                         rs.getBoolean("shippingFee"),
                         rs.getBoolean("changeable"),
                         rs.getString("contents"),
-                        rs.getString("categoryImgUrl"),
+                        rs.getString("lastCategoryImgUrl"),
                         rs.getString("lastCategory"),
                         getTag,
                         rs.getString("profileImgUrl"),
-                        rs.getString("nickname")),
+                        rs.getString("nickname"),
+                        star,
+                        follower,
+                        follow,
+                        commentCount),
                 productId);
     }
 }

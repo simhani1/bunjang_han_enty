@@ -26,20 +26,22 @@ public class GetProductRes {
     private String title;
     private String location;
     private LocalDateTime updatedAt;
-//    private int viewCnt;
-//    private int heartCnt;
-//    private int chatCnt;
+    private int viewCnt;
+    private int heartCnt;
+    private int chatCnt;
     private Boolean isUsed;
     private int amount;
     private Boolean shippingFee;
     private Boolean changeable;
     private String contents;
-//    private GetBrandRes brand;
-    private String categoryImgUrl;
+    private String lastCategoryImgUrl;
     private String lastCategory;
     private List<GetTagRes> tags;
     private String profileImgUrl;
     private String nickname;
-//    private int commentCount;
+    private Double star;
+    private int follower;
+    private Boolean follow;
+    private int commentCount;
 
 }

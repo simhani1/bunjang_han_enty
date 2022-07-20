@@ -13,6 +13,6 @@ public class FirstCategory {
 
     private int firstCategoryId;
     private String firstCategory;
-    private String categoryImgUrl;
+    private String firstCategoryImgUrl;
 
 }

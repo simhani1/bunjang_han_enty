@@ -59,11 +59,12 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/id/{productId}")
-    public BaseResponse<GetProductRes> getProductById(@PathVariable("productId") int productId){
+    @GetMapping("/{userId}/{productId}")
+    public BaseResponse<GetProductRes> getProductById(@PathVariable("userId") int userId,
+                                                      @PathVariable("productId") int productId){
 
         try{
-            GetProductRes getProductRes = productProvider.getProductById(productId);
+            GetProductRes getProductRes = productProvider.getProductById(userId,productId);
             return new BaseResponse<>(GET_PRODUCT_SUCCESS, getProductRes);
         } catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

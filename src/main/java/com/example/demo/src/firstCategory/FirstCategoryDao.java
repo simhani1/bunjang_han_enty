@@ -36,7 +36,7 @@ public class FirstCategoryDao {
                 (rs, rowNum) -> new GetFirstCategoryRes(
                         rs.getInt("firstCategoryId"),
                         rs.getString("firstCategory"),
-                        rs.getString("categoryImgUrl"))
+                        rs.getString("firstCategoryImgUrl"))
                 );
 
     }
