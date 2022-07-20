@@ -1,9 +1,13 @@
+com/example/demo/src/productImg/model/PatchProductImgReq.java
+ com.example.demo.src.productImg.model.PatchProductImgReq
 com/example/demo/src/banner/model/Banner.java
  com.example.demo.src.banner.model.Banner
 com/example/demo/config/Constant.java
  com.example.demo.config.Constant
 com/example/demo/src/product/ProductService.java
  com.example.demo.src.product.ProductService
+com/example/demo/src/productImg/model/PostProductImgRes.java
+ com.example.demo.src.productImg.model.PostProductImgRes
 com/example/demo/src/banner/BannerProvider.java
  com.example.demo.src.banner.BannerProvider
 com/example/demo/src/banner/BannerController.java
@@ -20,10 +24,14 @@ com/example/demo/src/lastCategory/LastCategoryDao.java
  com.example.demo.src.lastCategory.LastCategoryDao
 com/example/demo/config/BaseResponseStatus.java
  com.example.demo.config.BaseResponseStatus
+com/example/demo/src/test/BooleanTest.java
+ com.example.demo.src.test.BooleanTest
 com/example/demo/src/product/ProductDao.java
  com.example.demo.src.product.ProductDao
 com/example/demo/src/firstCategory/model/GetFirstCategoryRes.java
  com.example.demo.src.firstCategory.model.GetFirstCategoryRes
+com/example/demo/src/productImg/model/ProductImg.java
+ com.example.demo.src.productImg.model.ProductImg
 com/example/demo/config/secret/Secret.java
  com.example.demo.config.secret.Secret
 com/example/demo/src/banner/model/GetBannerRes.java
@@ -34,8 +42,12 @@ com/example/demo/src/user/model/PostUserRes.java
  com.example.demo.src.user.model.PostUserRes
 com/example/demo/config/BaseResponse.java
  com.example.demo.config.BaseResponse
+com/example/demo/src/productImg/model/GetProductImgReq.java
+ com.example.demo.src.productImg.model.GetProductImgReq
 com/example/demo/src/user/UserService.java
  com.example.demo.src.user.UserService
+com/example/demo/src/productImg/model/PatchProductImgRes.java
+ com.example.demo.src.productImg.model.PatchProductImgRes
 com/example/demo/src/product/model/PostProductRes.java
  com.example.demo.src.product.model.PostProductRes
 com/example/demo/src/product/ProductController.java
@@ -48,6 +60,8 @@ com/example/demo/src/test/SecondMember.java
  com.example.demo.src.test.SecondMember
 com/example/demo/src/product/ProductProvider.java
  com.example.demo.src.product.ProductProvider
+com/example/demo/src/productImg/ProductImgDao.java
+ com.example.demo.src.productImg.ProductImgDao
 com/example/demo/src/user/model/PatchUserBirth.java
  com.example.demo.src.user.model.PatchUserBirth
 com/example/demo/src/user/model/PostUserReq.java
@@ -66,6 +80,8 @@ com/example/demo/utils/AES128.java
  com.example.demo.utils.AES128
 com/example/demo/src/user/model/PatchUserReq.java
  com.example.demo.src.user.model.PatchUserReq
+com/example/demo/src/productImg/ProductImgService.java
+ com.example.demo.src.productImg.ProductImgService
 com/example/demo/src/WebSecurityConfig.java
  com.example.demo.src.WebSecurityConfig
 com/example/demo/src/firstCategory/FirstCategoryController.java
@@ -74,8 +90,14 @@ com/example/demo/src/test/TestController.java
  com.example.demo.src.test.TestController
 com/example/demo/src/banner/model/PatchBannerReq.java
  com.example.demo.src.banner.model.PatchBannerReq
+com/example/demo/src/productImg/model/PostProductImgReq.java
+ com.example.demo.src.productImg.model.PostProductImgReq
 com/example/demo/src/user/model/PatchWithdrawl.java
  com.example.demo.src.user.model.PatchWithdrawl
+com/example/demo/src/productImg/ProductImgController.java
+ com.example.demo.src.productImg.ProductImgController
+com/example/demo/src/user/UserProvider.java
+ com.example.demo.src.user.UserProvider
 com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
 com/example/demo/src/firstCategory/FirstCategoryService.java
@@ -100,6 +122,8 @@ com/example/demo/src/product/model/GetProductRes.java
  com.example.demo.src.product.model.GetProductRes
 com/example/demo/src/firstCategory/FirstCategoryDao.java
  com.example.demo.src.firstCategory.FirstCategoryDao
+com/example/demo/src/productImg/ProductImgProvider.java
+ com.example.demo.src.productImg.ProductImgProvider
 com/example/demo/src/user/model/GetUserRes.java
  com.example.demo.src.user.model.GetUserRes
 com/example/demo/src/product/model/PatchProductRes.java
@@ -110,5 +134,7 @@ com/example/demo/src/banner/model/PatchBannerRes.java
  com.example.demo.src.banner.model.PatchBannerRes
 com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
-com/example/demo/src/user/UserProvider.java
- com.example.demo.src.user.UserProvider
+com/example/demo/src/kakao/OAuthService.java
+ com.example.demo.src.kakao.OAuthService
+com/example/demo/src/kakao/OAuthController.java
+ com.example.demo.src.kakao.OAuthController
