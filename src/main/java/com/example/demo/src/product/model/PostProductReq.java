@@ -11,15 +11,17 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class PostProductReq {
 
-    private List<PostProductImgReq> productImgs;
+    private List<String> productImgs;
     private String title;
     private int firstCategoryId;
     private int lastCategoryId;
+    private List<String> tags;
     private int price;
     private String contents;
-    private Boolean amount;
+    private int amount;
     private Boolean isUsed;
     private Boolean changeable;
     private Boolean pay;

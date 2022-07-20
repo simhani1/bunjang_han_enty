@@ -2,6 +2,7 @@ package com.example.demo.src.product;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
+import com.example.demo.src.product.model.GetProductRes;
 import com.example.demo.src.product.model.PostProductReq;
 import com.example.demo.src.product.model.PostProductRes;
 import com.example.demo.src.productImg.model.GetProductImgReq;
@@ -47,7 +48,7 @@ public class ProductController {
 
 //            System.out.println(productImg);
 
-            PostProductImgReq a = postProductReq.getProductImgs().get(2);
+//            PostProductImgReq a = postProductReq.getProductImgs().get(2);
 
             int userIdByJwt = jwtService.getUserId();
             //userIdx와 접근한 유저가 같은지 확인

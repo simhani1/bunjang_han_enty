@@ -24,6 +24,8 @@ public class LastCategoryDao {
 
         return this.jdbcTemplate.query(getLastCategoryQuery,
                 (rs, rowNum) -> new GetLastCategoryRes(
+                        rs.getInt("firstCategoryId"),
+                        rs.getInt("lastCategoryId"),
                         rs.getString("lastCategory")),
                 getCategoryParams);
     }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/test")
 public class TestController {
@@ -43,11 +42,9 @@ public class TestController {
         return "Success Test";
     }
 
-    @ResponseBody
-    @PostMapping("/array")
-    public BaseResponse<Member> getArrayString(@RequestBody Member member){
 
-//        member.getHobby().get(1);
+    @PostMapping("/first")
+    public BaseResponse<Member> getMember(@RequestBody Member member){
         return new BaseResponse<>(member);
     }
 

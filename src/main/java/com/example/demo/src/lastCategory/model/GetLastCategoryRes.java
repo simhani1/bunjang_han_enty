@@ -12,6 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetLastCategoryRes {
 
+    private int firstCategoryId;
+    private int lastCategoryId;
     private String lastCategory;
 
 }

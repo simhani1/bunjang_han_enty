@@ -10,5 +10,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class SecondMember {
+    private String hobby;
     private List<Integer> likes;
+
 }

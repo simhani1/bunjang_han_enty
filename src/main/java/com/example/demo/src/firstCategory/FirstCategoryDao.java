@@ -34,6 +34,7 @@ public class FirstCategoryDao {
 
         return this.jdbcTemplate.query(getCategoryQuery,
                 (rs, rowNum) -> new GetFirstCategoryRes(
+                        rs.getInt("firstCategoryId"),
                         rs.getString("firstCategory"),
                         rs.getString("categoryImgUrl"))
                 );

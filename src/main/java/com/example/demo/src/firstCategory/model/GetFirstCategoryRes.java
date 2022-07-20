@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetFirstCategoryRes {
 
+    private int firstCategoryId;
     private String firstCategory;
     private String categoryImgUrl;
 }
