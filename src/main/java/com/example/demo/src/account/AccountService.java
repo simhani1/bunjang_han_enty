@@ -3,6 +3,7 @@ package com.example.demo.src.account;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.config.secret.Secret;
+import com.example.demo.src.account.model.DeleteAccountRes;
 import com.example.demo.src.account.model.PostAccountReq;
 import com.example.demo.src.account.model.PostAccountRes;
 import com.example.demo.src.user.UserDao;
@@ -67,18 +68,31 @@ public class AccountService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-//
-//    // 폰번호 수정
-//    public void modifyPhoneNum(int userId, String phoneNum) throws BaseException {
-//        try {
-//            int result = userDao.modifyPhoneNum(userId, phoneNum); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
-//            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
-//                throw new BaseException(MODIFY_FAIL_INFO);
-//            }
-//        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+
+    // 계좌 삭제
+    public DeleteAccountRes deleteAccount(int userId, int accountId) throws BaseException {
+        // 계좌가 2개인 경우
+        if(accountProvider.checkAccountCnt(userId) == 2){
+            accountDao.changeStandard(userId, accountId);
+        }
+        else if(accountProvider.checkAccountCnt(userId) == 0){
+            throw new BaseException(EMPTY_ACCOUNT);
+        }
+        // 주어진 계좌가 등록된 계좌인지 체크
+        if(accountProvider.checkAccountExist(userId, accountId) == 0){
+            throw new BaseException(INVALID_ACCOUNTID);
+        }
+        try {
+            int result = accountDao.deleteAccount(userId, accountId); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            if(result == 1)
+                return new DeleteAccountRes("계좌가 삭제되었습니다.");
+            else
+                return new DeleteAccountRes("계좌삭제에 실패하였습니다.");
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+
+    }
 //
 //    // 성별 수정
 //    public void modifyGender(int userId, boolean gender) throws BaseException {

@@ -97,10 +97,19 @@ public class AccountProvider {
         }
     }
 
-    // 해당 전화번호 중복성 체크
+    // 해당 계좌번호 중복성 체크
     public int checkAccountNum(String accountNum) throws BaseException {
         try {
             return accountDao.checkAccountNum(accountNum);  // 이미 있으면 1을 반환
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 해당 계좌가 존재하는지 & 본인의 계좌가 맞는지 체크
+    public int checkAccountExist(int userId, int accountId) throws BaseException {
+        try {
+            return accountDao.checkAccountExist(userId, accountId);  // 본인의 계좌가 맞고 존재한다면 1반환
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

@@ -2,10 +2,7 @@ package com.example.demo.src.account;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
-import com.example.demo.src.account.model.Account;
-import com.example.demo.src.account.model.GetAccountRes;
-import com.example.demo.src.account.model.PostAccountReq;
-import com.example.demo.src.account.model.PostAccountRes;
+import com.example.demo.src.account.model.*;
 import com.example.demo.src.user.UserProvider;
 import com.example.demo.src.user.UserService;
 import com.example.demo.src.user.model.*;
@@ -109,26 +106,24 @@ public class AccountController {
 
     }
 
-//    // 계좌 삭제하기
-//    @ResponseBody
-//    @GetMapping("/{userId}")
-//    public BaseResponse<List<GetAccountRes>> getAllAccount(@PathVariable("userId") int userId) {
-//        try {
-//            //////////////////////////////////////  JWT
-//            //jwt에서 idx 추출
-//            int userIdByJwt = jwtService.getUserId();
-//            //userId와 접근한 유저가 같은지 확인
-//            if(userId != userIdByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //////////////////////////////////////  JWT
-//            List<GetAccountRes> getAllAccountRes = accountProvider.getAllAccount(userId);
-//            return new BaseResponse<>(getAllAccountRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//
-//    }
+    // 계좌 삭제하기
+    @DeleteMapping("/{userId}/{accountId}")
+    public BaseResponse<String> deleteAccount (@PathVariable("userId") int userId, @PathVariable("accountId") int accountId) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            DeleteAccountRes deleteAccountRes = accountService.deleteAccount(userId, accountId);
+            return new BaseResponse<>(deleteAccountRes.getResult());
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 //
 //    // 로그인
 //    @ResponseBody

@@ -30,11 +30,14 @@ public class AccountDao {
     @Transactional
     // 계좌 추가
     public int createAccount(int userId, PostAccountReq postAccountReq) {
-        String createAccountQuery = "insert into accountList (userid, name, bankId, accountNum, standard) VALUES (?,?,?,?,?)";
-        Object[] createAccountParams = new Object[]{userId, postAccountReq.getName(), postAccountReq.getBankId(), postAccountReq.getAccountNum(), postAccountReq.isStandard()};
-        this.jdbcTemplate.update(createAccountQuery, createAccountParams);
         String lastInsertIdQuery = "select count(*) from accountList";
-        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class); // accountId 반환
+        int lastInsertId = this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class) + 1;
+        String createAccountQuery = "insert into accountList (accountId, userid, name, bankId, accountNum, standard) VALUES (?,?,?,?,?,?)";
+        Object[] createAccountParams = new Object[]{lastInsertId, userId, postAccountReq.getName(), postAccountReq.getBankId(), postAccountReq.getAccountNum(), postAccountReq.isStandard()};
+        this.jdbcTemplate.update(createAccountQuery, createAccountParams);
+        return lastInsertId; // accountId 반환
+
+
     }
 
     // 계좌 조회하기
@@ -57,6 +60,13 @@ public class AccountDao {
                         rs.getString("accountNum"),
                         rs.getString("name")),
                 getAllAccountParams);
+    }
+
+    // 계좌 삭제
+    public int deleteAccount(int userId, int accountId) {
+        String deleteAccountQuery = "delete from accountList where accountId = ? and userId = ?";
+        Object [] deleteAccountParams = new Object[]{accountId, userId};
+        return this.jdbcTemplate.update(deleteAccountQuery, deleteAccountParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
     }
 //    // 로그인 - 비밀번호 체크
 //    public User getPwd(PostLoginReq postLoginReq) {
@@ -104,12 +114,6 @@ public class AccountDao {
 //        return this.jdbcTemplate.update(modifyGenderQuery, modifyGenderParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
 //    }
 //
-//    // 생일 수정
-//    public int modifyBirth(int userId, String birth) {
-//        String modifyGenderQuery = "update user set birth = ? where userId = ? ";
-//        Object [] modifyGenderParams = new Object[]{birth, userId};
-//        return this.jdbcTemplate.update(modifyGenderQuery, modifyGenderParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
-//    }
 //
 //    // 회원탈
 //    public int withdrawl(int userId, boolean status) {
@@ -208,6 +212,20 @@ public class AccountDao {
         String changeStandardQuery = "update accountList set standard = false where userId = ? and standard = true";
         int changeStandardParams = userId;
         this.jdbcTemplate.update(changeStandardQuery, changeStandardParams);
+    }
+
+    // 삭제하고 남는 계좌를 기본계좌로 설정하기
+    public void changeStandard(int userId, int accountId) {
+        String changeStandardQuery = "update accountList set standard = true where userId = ? and accountId != ?";
+        Object[] changeStandardParams = new Object[]{userId, accountId};
+        this.jdbcTemplate.update(changeStandardQuery, changeStandardParams);
+    }
+
+    // 해당 계좌가 존재하는지 & 본인의 계좌가 맞는지 체크
+    public int checkAccountExist(int userId, int accountId) {
+        String changeStandardQuery = "select exists(select accountId from accountList where userId = ? and accountId = ?)";
+        Object[] changeStandardParams = new Object[]{userId, accountId};
+        return this.jdbcTemplate.queryForObject(changeStandardQuery, int.class, changeStandardParams);
     }
 //
 //    // 탈퇴한 유저인지 체크

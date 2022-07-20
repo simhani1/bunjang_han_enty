@@ -46,6 +46,8 @@ public enum BaseResponseStatus {
     INVALID_ACCOUNT(false, 2022, "올바른 계좌번호를 입력하세요."),
     EMPTY_NAME(false, 2023, "예금주 명을를 확인해주세요."),
     EMPTY_ACCOUNTNUM(false, 2024, "계좌번호를 확인해주세요."),
+    INVALID_ACCOUNTID(false, 2025, "없는 계좌이거나 본인의 계좌가 아닙니다."),
+
 
 
     // 로그인(2020 ~ 2029)
@@ -67,9 +69,14 @@ public enum BaseResponseStatus {
     FAILED_TO_LOGIN(false,3022,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
     // 계좌 추가 (3490 ~ 3500)
-    EXISTS_ACCOUNT(false,3490,"이미 사용중인 계좌번호 입니다."),
-    INVALID_BANKID(false,3491,"지원되지 않는 은행입니다."),
-    MAX_ACCOUNT_CNT(false,3492,"더이상 계좌 등록이 불가능합니다."),
+    EXISTS_ACCOUNT(false,3030,"이미 사용중인 계좌번호 입니다."),
+    INVALID_BANKID(false,3031,"지원되지 않는 은행입니다."),
+    MAX_ACCOUNT_CNT(false,3032,"더이상 계좌 등록이 불가능합니다."),
+    DELETE_ACCOUNT_FAIL(false,3033,"계좌 삭제에 실패했습니다."),
+    EMPTY_ACCOUNT(false,3034,"계좌 목록이 비어있습니다."),
+
+
+
     NO_EXISTED_CATEGORY_LIST(false, 3590, "등록된 카테고리가 없습니다."),
 
     // 하위 카테고리 조회(3600 ~ 3610)
