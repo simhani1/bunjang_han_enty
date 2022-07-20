@@ -16,6 +16,7 @@ public enum BaseResponseStatus {
     MODIFY_STATUS_SUCCESS(true, 1003, "탈퇴처리 되었습니다."),
     MODIFY_PHONENUMBER_SUCCESS(true, 1004, "전화번호가 수정되었습니다."),
     MODIFY_GENDER_SUCCESS(true, 1005, "성별이 수정되었습니다."),
+    ADD_ACCOUNT_SUCCESS(true, 1006, "계좌가 추가되었습니다."),
 
     POST_PRODUCT_SUCCESS(true, 1020, "등록이 완료되었습니다."),
     // [GET] /banner
@@ -42,6 +43,9 @@ public enum BaseResponseStatus {
     INVALID_PHONENUMBER(false, 2015, "전화번호 형식을 확인해주세요."),
     INVALID_GENDER(false, 2020, "입력값을 확인해주세요."),
     INVALID_DATE(false, 2021, "올바른 날짜를 입력하세요."),
+    INVALID_ACCOUNT(false, 2022, "올바른 계좌번호를 입력하세요."),
+    EMPTY_NAME(false, 2023, "예금주 명을를 확인해주세요."),
+    EMPTY_ACCOUNTNUM(false, 2024, "계좌번호를 확인해주세요."),
 
 
     // 로그인(2020 ~ 2029)
@@ -62,6 +66,10 @@ public enum BaseResponseStatus {
     NOT_ACTIVE_USER(false, 3021, "비활성 유저입니다."),
     FAILED_TO_LOGIN(false,3022,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
+    // 계좌 추가 (3490 ~ 3500)
+    EXISTS_ACCOUNT(false,3490,"이미 사용중인 계좌번호 입니다."),
+    INVALID_BANKID(false,3491,"지원되지 않는 은행입니다."),
+    MAX_ACCOUNT_CNT(false,3492,"더이상 계좌 등록이 불가능합니다."),
     NO_EXISTED_CATEGORY_LIST(false, 3590, "등록된 카테고리가 없습니다."),
 
     // 하위 카테고리 조회(3600 ~ 3610)
