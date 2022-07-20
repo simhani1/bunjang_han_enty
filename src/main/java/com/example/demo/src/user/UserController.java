@@ -9,12 +9,9 @@ import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 import static com.example.demo.config.BaseResponseStatus.*;
-import static com.example.demo.utils.ValidationRegex.isRegexEmail;
-import static com.example.demo.utils.ValidationRegex.isRegexTelephoneNum;
+import static com.example.demo.utils.ValidationRegex.*;
 
 @RestController // Rest API 또는 WebAPI를 개발하기 위한 어노테이션. @Controller + @ResponseBody 를 합친것.
                 // @Controller      [Presentation Layer에서 Contoller를 명시하기 위해 사용]
@@ -56,23 +53,23 @@ public class UserController {
         //  @RequestBody란, 클라이언트가 전송하는 HTTP Request Body(우리는 JSON으로 통신하니, 이 경우 body는 JSON)를 자바 객체로 매핑시켜주는 어노테이션
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
         if(postUserReq.getId().equals("")) {
-            return new BaseResponse<>(POST_EMPTY_ID);
+            return new BaseResponse<>(EMPTY_ID);
         }
         if(postUserReq.getPwd().equals((""))){
-            return new BaseResponse<>(POST_EMPTY_PWD);
+            return new BaseResponse<>(EMPTY_PWD);
         }
         if(postUserReq.getNickname().equals("")){
-            return new BaseResponse<>(POST_EMPTY_NICKNAME);
+            return new BaseResponse<>(EMPTY_NICKNAME);
         }
         if(postUserReq.getLocation().equals("")){
-            return new BaseResponse<>(POST_EMPTY_LOCATION);
+            return new BaseResponse<>(EMPTY_LOCATION);
         }
         if (postUserReq.getPhoneNum().equals("")) {
-            return new BaseResponse<>(POST_USERS_EMPTY_PHONENUMBER);
+            return new BaseResponse<>(USERS_EMPTY_PHONENUMBER);
         }
         // 폰번호 자릿수 체크
-        if (!isRegexTelephoneNum(postUserReq.getPhoneNum())) {
-            return new BaseResponse<>(POST_INVALID_PHONENUMBER);
+        if (isRegexTelephoneNum(postUserReq.getPhoneNum())) {
+            return new BaseResponse<>(INVALID_PHONENUMBER);
         }
         try {
             PostUserRes postUserRes = userService.createUser(postUserReq);
@@ -90,10 +87,10 @@ public class UserController {
             // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
             // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
             if(postLoginReq.getId().equals("")) {
-                return new BaseResponse<>(POST_EMPTY_ID);
+                return new BaseResponse<>(EMPTY_ID);
             }
             if(postLoginReq.getPwd().equals("")) {
-                return new BaseResponse<>(POST_EMPTY_PWD);
+                return new BaseResponse<>(EMPTY_PWD);
             }
             PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);
             return new BaseResponse<>(LOG_IN_SUCCESS, postLoginRes);
@@ -102,6 +99,96 @@ public class UserController {
         }
     }
 
+    // 폰번호 수정
+    @PatchMapping("/phoneNum/{userId}")
+    public BaseResponse<String> modifyPhoneNum(@PathVariable("userId") int userId, @RequestBody PatchUserPhoneNum patchUserPhoneNum) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            // 폰번호 자릿수 체크
+            if (isRegexTelephoneNum(patchUserPhoneNum.getPhoneNum())) {
+                return new BaseResponse<>(INVALID_PHONENUMBER);
+            }
+            if(userProvider.checkPhoneNum(patchUserPhoneNum.getPhoneNum()) == 1){
+                return new BaseResponse<>(EXISTS_PHONENUM);
+            }
+            userService.modifyPhoneNum(userId, patchUserPhoneNum.getPhoneNum());
+            String result = "전화번호가 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    // 성별 수정
+    @PatchMapping("/gender/{userId}")
+    public BaseResponse<String> modifyGender(@PathVariable("userId") int userId, @RequestBody PatchUserReq patchUserReq) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            userService.modifyGender(userId, patchUserReq.isGender());
+            String result = "성별이 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    // 생일 수정
+    @PatchMapping("/birth/{userId}")
+    public BaseResponse<String> modifyBirth(@PathVariable("userId") int userId, @RequestBody PatchUserBirth patchUserBirth) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            // 날짜 포맷 확인
+            if(!validationDate(patchUserBirth.getBirth())){
+                throw new BaseException(INVALID_DATE);
+            }
+            userService.modifyBirth(userId, patchUserBirth.getBirth());
+            String result = "생일이 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    // 회원탈퇴
+    @PatchMapping("/withdrawl/{userId}")
+    public BaseResponse<String> withdrawl(@PathVariable("userId") int userId, @RequestBody PatchWithdrawl patchWithdrawl) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            userService.withdrawl(userId, patchWithdrawl.isStatus());
+            String result = "탈퇴처리 되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 //    /**
 //     * 모든 회원들의  조회 API
@@ -156,42 +243,5 @@ public class UserController {
 //            return new BaseResponse<>((exception.getStatus()));
 //        }
 //
-//    }
-
-//    /**
-//     * 유저정보변경 API
-//     * [PATCH] /users/:userIdx
-//     */
-//    @ResponseBody
-//    @PatchMapping("/{userId}")
-//    public BaseResponse<String> modifyUserName(@PathVariable("userId") int userId, @RequestBody User user) {
-//        try {
-///**
-//  *********** 해당 부분은 7주차 - JWT 수업 후 주석해체 해주세요!  ****************
-//            //jwt에서 idx 추출.
-//            int userIdxByJwt = jwtService.getUserIdx();
-//            //userIdx와 접근한 유저가 같은지 확인
-//            if(userIdx != userIdxByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //같다면 유저네임 변경
-//  **************************************************************************
-// */
-//
-//            //jwt에서 idx 추출.
-//            int userIdxByJwt = jwtService.getUserIdx();
-//            //userIdx와 접근한 유저가 같은지 확인
-//            if(userId != userIdxByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //같다면 유저네임 변경
-//            PatchUserReq patchUserReq = new PatchUserReq(userId, user.getNickname());
-//            userService.modifyUserName(patchUserReq);
-//
-//            String result = "회원정보가 수정되었습니다.";
-//            return new BaseResponse<>(result);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
 //    }
 }

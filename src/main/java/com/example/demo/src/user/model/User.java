@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter // 해당 클래스에 대한 접근자 생성
 @Setter // 해당 클래스에 대한 설정자 생성
@@ -20,14 +21,23 @@ public class User {
     private String nickname;
     private String profileImgUrl;
     private String location;
-    private LocalDate birth;
+    private String birth;
     private String phoneNum;
-    private String gender;
-    private String status; // 탈퇴여부 (active / inactive)
-    private LocalDateTime createdAt;
+    private boolean gender;
+    private boolean status;
+    private Date createdAt;
 
+    // 로그인
     public User(int userId, String pwd) {
         this.userId = userId;
         this.pwd = pwd;
+    }
+    public User(int userId, boolean status) {
+        this.userId = userId;
+        this.status = status;
+    }
+
+    public User(boolean gender) {
+        this.gender = gender;
     }
 }

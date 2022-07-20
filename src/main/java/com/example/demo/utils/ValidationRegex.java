@@ -1,5 +1,7 @@
 package com.example.demo.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,12 +15,22 @@ public class ValidationRegex {
     }
 
     // 전화 번호 형식 체크(자릿수 비교로 간단하게)
-    public static boolean isRegexTelephoneNum(String target){
-        if(target.length() == 11)
-            return true;
-        else
+    public static boolean isRegexTelephoneNum(String target) {
+        if (target.length() == 11)
             return false;
+        else
+            return true;
     }
-    // 날짜 형식, 전화 번호 형식 등 여러 Regex 인터넷에 검색하면 나옴.
-}
 
+    /** 입력 date가 yyyy-MM-dd 형태로 들어옴 */
+    public static boolean validationDate(String checkDate){
+        try{
+            SimpleDateFormat  dateFormat = new  SimpleDateFormat("yyyy-MM-dd");
+            dateFormat.setLenient(false);
+            dateFormat.parse(checkDate);
+            return  true;
+        }catch (ParseException  e){
+            return  false;
+        }
+    }
+}
