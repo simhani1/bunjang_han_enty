@@ -24,8 +24,8 @@ com/example/demo/src/productImg/ProductImgProvider.java
  com.example.demo.src.productImg.ProductImgProvider
 com/example/demo/src/lastCategory/LastCategoryDao.java
  com.example.demo.src.lastCategory.LastCategoryDao
-com/example/demo/src/account/model/GetAccountRes.java
- com.example.demo.src.account.model.GetAccountRes
+com/example/demo/utils/JwtService.java
+ com.example.demo.utils.JwtService
 com/example/demo/src/product/model/PostProductReq.java
  com.example.demo.src.product.model.PostProductReq
 com/example/demo/src/kakao/model/KakaoUser.java
@@ -148,8 +148,8 @@ com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
 com/example/demo/src/account/model/PostAccountReq.java
  com.example.demo.src.account.model.PostAccountReq
-com/example/demo/utils/JwtService.java
- com.example.demo.utils.JwtService
+com/example/demo/src/account/model/GetAccountRes.java
+ com.example.demo.src.account.model.GetAccountRes
 com/example/demo/src/account/AccountService.java
  com.example.demo.src.account.AccountService
 com/example/demo/src/account/AccountDao.java

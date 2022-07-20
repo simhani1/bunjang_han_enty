@@ -1,6 +1,8 @@
 package com.example.demo.src.account;
 
+import com.example.demo.src.account.model.GetAccountRes;
 import com.example.demo.src.account.model.PostAccountReq;
+import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.src.user.model.PostLoginReq;
 import com.example.demo.src.user.model.PostUserReq;
 import com.example.demo.src.user.model.User;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 
@@ -34,6 +37,27 @@ public class AccountDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class); // accountId 반환
     }
 
+    // 계좌 조회하기
+    public List<GetAccountRes> getAllAccount(int userId) {
+        String getAllAccountQuery = "select\n" +
+                "    accountList.standard as 'standard',\n" +
+                "    bank.bankImgUrl as 'bankImgUrl',\n" +
+                "    bank.bankName as 'bankName',\n" +
+                "    accountList.accountNum as 'accountNum',\n" +
+                "    accountList.name as 'name'\n" +
+                "from accountList\n" +
+                "inner join bank on accountList.bankId = bank.bankId\n" +
+                "where accountList.userId = ?";
+        int getAllAccountParams = userId;
+        return this.jdbcTemplate.query(getAllAccountQuery,
+                (rs, rowNum) -> new GetAccountRes(
+                        rs.getBoolean("standard"),
+                        rs.getString("bankImgUrl"),
+                        rs.getString("bankName"),
+                        rs.getString("accountNum"),
+                        rs.getString("name")),
+                getAllAccountParams);
+    }
 //    // 로그인 - 비밀번호 체크
 //    public User getPwd(PostLoginReq postLoginReq) {
 //        String getPwdQuery = "select userId, pwd from user where id = ?";

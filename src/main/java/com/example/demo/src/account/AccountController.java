@@ -3,6 +3,7 @@ package com.example.demo.src.account;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.account.model.Account;
+import com.example.demo.src.account.model.GetAccountRes;
 import com.example.demo.src.account.model.PostAccountReq;
 import com.example.demo.src.account.model.PostAccountRes;
 import com.example.demo.src.user.UserProvider;
@@ -13,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
@@ -84,6 +87,48 @@ public class AccountController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    // 계좌 조회하기
+    @ResponseBody
+    @GetMapping("/{userId}")
+    public BaseResponse<List<GetAccountRes>> getAllAccount(@PathVariable("userId") int userId) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            List<GetAccountRes> getAllAccountRes = accountProvider.getAllAccount(userId);
+            return new BaseResponse<>(getAllAccountRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+//    // 계좌 삭제하기
+//    @ResponseBody
+//    @GetMapping("/{userId}")
+//    public BaseResponse<List<GetAccountRes>> getAllAccount(@PathVariable("userId") int userId) {
+//        try {
+//            //////////////////////////////////////  JWT
+//            //jwt에서 idx 추출
+//            int userIdByJwt = jwtService.getUserId();
+//            //userId와 접근한 유저가 같은지 확인
+//            if(userId != userIdByJwt){
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
+//            //////////////////////////////////////  JWT
+//            List<GetAccountRes> getAllAccountRes = accountProvider.getAllAccount(userId);
+//            return new BaseResponse<>(getAllAccountRes);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//
+//    }
 //
 //    // 로그인
 //    @ResponseBody
@@ -225,29 +270,5 @@ public class AccountController {
 //        } catch (BaseException exception) {
 //            return new BaseResponse<>((exception.getStatus()));
 //        }
-//    }
-
-
-
-
-//    /**
-//     * 회원 1명 조회 API
-//     * [GET] /users/:userIdx
-//     */
-//    // Path-variable
-//    @ResponseBody
-//    @GetMapping("/{userId}") // (GET) 127.0.0.1:9000/app/users/:userIdx
-//    public BaseResponse<GetUserRes> getUser(@PathVariable("userId") int userId) {
-//        // @PathVariable RESTful(URL)에서 명시된 파라미터({})를 받는 어노테이션, 이 경우 userId값을 받아옴.
-//        //  null값 or 공백값이 들어가는 경우는 적용하지 말 것
-//        //  .(dot)이 포함된 경우, .을 포함한 그 뒤가 잘려서 들어감
-//        // Get Users
-//        try {
-//            GetUserRes getUserRes = userProvider.getUser(userId);
-//            return new BaseResponse<>(getUserRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//
 //    }
 }
