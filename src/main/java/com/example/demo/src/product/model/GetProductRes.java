@@ -1,6 +1,8 @@
 package com.example.demo.src.product.model;
 
 import com.example.demo.src.lastCategory.model.GetLastCategoryRes;
+import com.example.demo.src.productImg.model.GetProductImgRes;
+import com.example.demo.src.tag.model.GetTagRes;
 import com.example.demo.src.user.model.GetUserRes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,10 +20,11 @@ public class GetProductRes {
 
     private int productId;
     private String condition;
-    private List<String> productImgs;
+    private List<GetProductImgRes> productImgs;
     private int price;
+    private Boolean pay;
     private String title;
-    private GetUserRes user;
+    private String location;
     private LocalDateTime updatedAt;
 //    private int viewCnt;
 //    private int heartCnt;
@@ -32,14 +35,11 @@ public class GetProductRes {
     private Boolean changeable;
     private String contents;
 //    private GetBrandRes brand;
-    private GetLastCategoryRes category;
-    private List<String> tags;
+    private String categoryImgUrl;
+    private String lastCategory;
+    private List<GetTagRes> tags;
+    private String profileImgUrl;
+    private String nickname;
+//    private int commentCount;
 
-
-    private Boolean isDeleted;
-    private Boolean amount;
-    private Boolean changeable;
-    private Boolean pay;
-    private int buyerId;
-    private Boolean shippingFee;
 }

@@ -26,7 +26,8 @@ public class LastCategoryDao {
                 (rs, rowNum) -> new GetLastCategoryRes(
                         rs.getInt("firstCategoryId"),
                         rs.getInt("lastCategoryId"),
-                        rs.getString("lastCategory")),
+                        rs.getString("lastCategory"),
+                        rs.getString("categoryImg")),
                 getCategoryParams);
     }
 }

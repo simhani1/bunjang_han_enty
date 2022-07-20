@@ -17,7 +17,11 @@ public enum BaseResponseStatus {
     MODIFY_PHONENUMBER_SUCCESS(true, 1004, "전화번호가 수정되었습니다."),
     MODIFY_GENDER_SUCCESS(true, 1005, "성별이 수정되었습니다."),
 
+
     POST_PRODUCT_SUCCESS(true, 1020, "등록이 완료되었습니다."),
+    // [GET] /products
+    GET_PRODUCTS_SUCCESS(true,1021,"전체 상품을 조회하였습니다."),
+    GET_PRODUCT_SUCCESS(true, 1022, "상품 조회에 성공하였습니다."),
     // [GET] /banner
     GET_BANNER_SUCCESS(true, 1048, "배너 조회에 성공하였습니다."),
 

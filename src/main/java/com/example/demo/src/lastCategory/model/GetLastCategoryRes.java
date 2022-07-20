@@ -15,5 +15,5 @@ public class GetLastCategoryRes {
     private int firstCategoryId;
     private int lastCategoryId;
     private String lastCategory;
-
+    private String categoryImgUrl;
 }

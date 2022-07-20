@@ -5,14 +5,10 @@ import com.example.demo.config.BaseResponse;
 import com.example.demo.src.product.model.GetProductRes;
 import com.example.demo.src.product.model.PostProductReq;
 import com.example.demo.src.product.model.PostProductRes;
-import com.example.demo.src.productImg.model.GetProductImgReq;
-import com.example.demo.src.productImg.model.PostProductImgReq;
 import com.example.demo.utils.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -62,4 +58,16 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @GetMapping("/id/{productId}")
+    public BaseResponse<GetProductRes> getProductById(@PathVariable("productId") int productId){
+
+        try{
+            GetProductRes getProductRes = productProvider.getProductById(productId);
+            return new BaseResponse<>(GET_PRODUCT_SUCCESS, getProductRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }
