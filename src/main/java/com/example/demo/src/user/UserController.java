@@ -170,6 +170,26 @@ public class UserController {
         }
     }
 
+    // 회원탈퇴
+    @PatchMapping("/withdrawl/{userId}")
+    public BaseResponse<String> withdrawl(@PathVariable("userId") int userId, @RequestBody PatchWithdrawl patchWithdrawl) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            userService.withdrawl(userId, patchWithdrawl.isStatus());
+            String result = "탈퇴처리 되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 //    /**
 //     * 모든 회원들의  조회 API
 //     * [GET] /users

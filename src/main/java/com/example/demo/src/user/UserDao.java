@@ -108,6 +108,12 @@ public class UserDao {
         return this.jdbcTemplate.update(modifyGenderQuery, modifyGenderParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
     }
 
+    // 회원탈
+    public int withdrawl(int userId, boolean status) {
+        String withdrawlQuery = "update user set status = ? where userId = ? ";
+        Object [] withdrawlParams = new Object[]{status, userId};
+        return this.jdbcTemplate.update(withdrawlQuery, withdrawlParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
 
 //    // User 테이블에 존재하는 전체 유저들의 정보 조회
 //    public List<GetUserRes> getUsers() {

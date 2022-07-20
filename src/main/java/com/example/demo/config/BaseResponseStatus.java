@@ -17,7 +17,6 @@ public enum BaseResponseStatus {
     MODIFY_PHONENUMBER_SUCCESS(true, 1004, "전화번호가 수정되었습니다."),
     MODIFY_GENDER_SUCCESS(true, 1005, "성별이 수정되었습니다."),
 
-
     POST_PRODUCT_SUCCESS(true, 1020, "등록이 완료되었습니다."),
     // [GET] /banner
     GET_BANNER_SUCCESS(true, 1048, "배너 조회에 성공하였습니다."),
@@ -78,8 +77,8 @@ public enum BaseResponseStatus {
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
     // 사용자 정보 수정(폰번호/생년월일/성별)
-    MODIFY_FAIL_INFO(false,4030,"사용자 정보 수정에 실패하였습니다."),;
-
+    MODIFY_FAIL_INFO(false,4030,"사용자 정보 수정에 실패하였습니다."),
+    WITHDRAWL_FAIL(false, 4031, "탈퇴처리에 실파해였습니다.");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
