@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,5 +29,6 @@ public class Product {
     private Boolean pay;
     private Boolean shippingFee;
     private int buyerId;
+    private LocalDateTime updatedAt;
 
 }
