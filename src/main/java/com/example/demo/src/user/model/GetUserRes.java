@@ -22,8 +22,8 @@ public class GetUserRes {
     private int userId;
     private String profileImgUrl;
     private String nickname;
-//    private Double star;
-//    private int follower;
-//    private Boolean follow;
+    private Double star;
+    private int follower;
+    private Boolean follow;
 
 }
