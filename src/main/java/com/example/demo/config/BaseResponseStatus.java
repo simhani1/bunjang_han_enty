@@ -17,7 +17,7 @@ public enum BaseResponseStatus {
     MODIFY_PHONENUMBER_SUCCESS(true, 1004, "전화번호가 수정되었습니다."),
     MODIFY_GENDER_SUCCESS(true, 1005, "성별이 수정되었습니다."),
     ADD_ACCOUNT_SUCCESS(true, 1006, "계좌가 추가되었습니다."),
-
+    ADD_ADDRESS_SUCCESS(true, 1007, "배송지가 추가되었습니다."),
 
     POST_PRODUCT_SUCCESS(true, 1020, "등록이 완료되었습니다."),
     // [GET] /products
@@ -54,6 +54,7 @@ public enum BaseResponseStatus {
 
 
 
+
     // 로그인(2020 ~ 2029)
 
     /**
@@ -79,6 +80,8 @@ public enum BaseResponseStatus {
     DELETE_ACCOUNT_FAIL(false,3033,"계좌 삭제에 실패했습니다."),
     EMPTY_ACCOUNT(false,3034,"계좌 목록이 비어있습니다."),
 
+    MAX_ADDRESS_CNT(false,3040,"더이상 주소 등록이 불가능합니다."),
+    EXISTS_ADDRESS(false,3041,"이미 등록된 배송지입니다."),
 
 
     NO_EXISTED_CATEGORY_LIST(false, 3590, "등록된 카테고리가 없습니다."),
