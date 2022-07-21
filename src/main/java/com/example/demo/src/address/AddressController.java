@@ -7,6 +7,7 @@ import com.example.demo.src.account.AccountProvider;
 import com.example.demo.src.account.AccountService;
 import com.example.demo.src.account.model.*;
 import com.example.demo.src.address.model.Address;
+import com.example.demo.src.address.model.GetAddressRes;
 import com.example.demo.src.address.model.PostAddressReq;
 import com.example.demo.src.address.model.PostAddressRes;
 import com.example.demo.src.user.UserProvider;
@@ -90,27 +91,27 @@ public class AddressController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-//
-//    // 계좌 조회하기
-//    @ResponseBody
-//    @GetMapping("/{userId}")
-//    public BaseResponse<List<GetAccountRes>> getAllAccount(@PathVariable("userId") int userId) {
-//        try {
-//            //////////////////////////////////////  JWT
-//            //jwt에서 idx 추출
-//            int userIdByJwt = jwtService.getUserId();
-//            //userId와 접근한 유저가 같은지 확인
-//            if(userId != userIdByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //////////////////////////////////////  JWT
-//            List<GetAccountRes> getAllAccountRes = accountProvider.getAllAccount(userId);
-//            return new BaseResponse<>(getAllAccountRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//
-//    }
+
+    // 배송지 조회하기
+    @ResponseBody
+    @GetMapping("/{userId}")
+    public BaseResponse<List<GetAddressRes>> getAllAddress(@PathVariable("userId") int userId) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            List<GetAddressRes> getAllAddressRes = addressProvider.getAllAddress(userId);
+            return new BaseResponse<>(getAllAddressRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
 //
 //    // 계좌 삭제하기
 //    @DeleteMapping("/{userId}/{accountId}")

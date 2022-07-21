@@ -3,6 +3,7 @@ package com.example.demo.src.address;
 import com.example.demo.src.account.model.GetAccountRes;
 import com.example.demo.src.account.model.PatchAccountReq;
 import com.example.demo.src.account.model.PostAccountReq;
+import com.example.demo.src.address.model.GetAddressRes;
 import com.example.demo.src.address.model.PostAddressReq;
 import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.src.user.model.PostLoginReq;
@@ -39,27 +40,27 @@ public class AddressDao {
         return lastInsertId; // addressId 반환
     }
 
-//    // 계좌 조회하기
-//    public List<GetAccountRes> getAllAccount(int userId) {
-//        String getAllAccountQuery = "select\n" +
-//                "    accountList.standard as 'standard',\n" +
-//                "    bank.bankImgUrl as 'bankImgUrl',\n" +
-//                "    bank.bankName as 'bankName',\n" +
-//                "    accountList.accountNum as 'accountNum',\n" +
-//                "    accountList.name as 'name'\n" +
-//                "from accountList\n" +
-//                "inner join bank on accountList.bankId = bank.bankId\n" +
-//                "where accountList.userId = ?";
-//        int getAllAccountParams = userId;
-//        return this.jdbcTemplate.query(getAllAccountQuery,
-//                (rs, rowNum) -> new GetAccountRes(
-//                        rs.getBoolean("standard"),
-//                        rs.getString("bankImgUrl"),
-//                        rs.getString("bankName"),
-//                        rs.getString("accountNum"),
-//                        rs.getString("name")),
-//                getAllAccountParams);
-//    }
+    // 배송지 조회
+    public List<GetAddressRes> getAllAddress(int userId) {
+        String getAllAddressQuery = "select\n" +
+                "    standard as 'standard',\n" +
+                "    name as 'name',\n" +
+                "    address as 'address',\n" +
+                "    detailAddress as 'detailAddress',\n" +
+                "    phoneNum as 'phoneNum'\n" +
+                "from address\n" +
+                "where userId = ?\n" +
+                "order by standard DESC";
+        int getAllAddressParams = userId;
+        return this.jdbcTemplate.query(getAllAddressQuery,
+                (rs, rowNum) -> new GetAddressRes(
+                        rs.getBoolean("standard"),
+                        rs.getString("name"),
+                        rs.getString("address"),
+                        rs.getString("detailAddress"),
+                        rs.getString("phoneNum")),
+                getAllAddressParams);
+    }
 //
 //    // 계좌 삭제
 //    public int deleteAccount(int userId, int accountId) {

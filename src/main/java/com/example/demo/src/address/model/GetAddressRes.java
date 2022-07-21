@@ -9,4 +9,9 @@ import lombok.Setter;
 @AllArgsConstructor // 해당 클래스의 모든 멤버 변수(jwt, userIdx)를 받는 생성자를 생성-
 
 public class GetAddressRes {
+    private boolean standard;
+    private String name;
+    private String address;
+    private String detailAddress;
+    private String phoneNum;
 }

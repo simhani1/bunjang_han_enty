@@ -5,6 +5,7 @@ import com.example.demo.config.secret.Secret;
 import com.example.demo.src.account.AccountDao;
 import com.example.demo.src.account.model.GetAccountRes;
 import com.example.demo.src.account.model.PostAccountReq;
+import com.example.demo.src.address.model.GetAddressRes;
 import com.example.demo.src.address.model.PostAddressReq;
 import com.example.demo.src.user.UserDao;
 import com.example.demo.src.user.model.GetUserRes;
@@ -41,25 +42,25 @@ public class AddressProvider {
     }
     // ******************************************************************************
 
-//    // 계좌 조회하기
-//    public List<GetAccountRes> getAllAccount(int userId) throws BaseException {
+    // 배송지 조회
+    public List<GetAddressRes> getAllAddress(int userId) throws BaseException {
+        try {
+            List<GetAddressRes> getAllAddressRes = addressDao.getAllAddress(userId);
+            return getAllAddressRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+//    // 해당 nickname을 갖는 User들의 정보 조회
+//    public List<GetUserRes> getUsersByNickname(String nickname) throws BaseException {
 //        try {
-//            List<GetAccountRes> getAllAccountRes = accountDao.getAllAccount(userId);
-//            return getAllAccountRes;
+//            List<GetUserRes> getUsersRes = userDao.getUsersByNickname(nickname);
+//            return getUsersRes;
 //        } catch (Exception exception) {
 //            throw new BaseException(DATABASE_ERROR);
 //        }
 //    }
-////
-////    // 해당 nickname을 갖는 User들의 정보 조회
-////    public List<GetUserRes> getUsersByNickname(String nickname) throws BaseException {
-////        try {
-////            List<GetUserRes> getUsersRes = userDao.getUsersByNickname(nickname);
-////            return getUsersRes;
-////        } catch (Exception exception) {
-////            throw new BaseException(DATABASE_ERROR);
-////        }
-////    }
 ////
 ////
 ////    // 해당 userIdx를 갖는 User의 정보 조회

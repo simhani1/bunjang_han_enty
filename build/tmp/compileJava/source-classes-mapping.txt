@@ -128,8 +128,8 @@ com/example/demo/src/kakao/OAuthController.java
  com.example.demo.src.kakao.OAuthController
 com/example/demo/src/account/model/PostAccountRes.java
  com.example.demo.src.account.model.PostAccountRes
-com/example/demo/src/address/model/GetAddressRes.java
- com.example.demo.src.address.model.GetAddressRes
+com/example/demo/utils/JwtService.java
+ com.example.demo.utils.JwtService
 com/example/demo/src/address/model/PatchAddressRes.java
  com.example.demo.src.address.model.PatchAddressRes
 com/example/demo/src/address/model/Address.java
@@ -146,8 +146,8 @@ com/example/demo/src/account/AccountService.java
  com.example.demo.src.account.AccountService
 com/example/demo/src/product/ProductService.java
  com.example.demo.src.product.ProductService
-com/example/demo/src/address/AddressProvider.java
- com.example.demo.src.address.AddressProvider
+com/example/demo/src/firstCategory/FirstCategoryController.java
+ com.example.demo.src.firstCategory.FirstCategoryController
 com/example/demo/src/banner/BannerProvider.java
  com.example.demo.src.banner.BannerProvider
 com/example/demo/src/banner/BannerController.java
@@ -164,27 +164,27 @@ com/example/demo/src/account/AccountController.java
  com.example.demo.src.account.AccountController
 com/example/demo/src/lastCategory/LastCategoryProvider.java
  com.example.demo.src.lastCategory.LastCategoryProvider
-com/example/demo/src/address/AddressController.java
- com.example.demo.src.address.AddressController
+com/example/demo/src/account/AccountProvider.java
+ com.example.demo.src.account.AccountProvider
 com/example/demo/src/user/UserService.java
  com.example.demo.src.user.UserService
 com/example/demo/config/BaseResponseStatus.java
  com.example.demo.config.BaseResponseStatus
-com/example/demo/src/address/AddressService.java
- com.example.demo.src.address.AddressService
-com/example/demo/src/product/ProductController.java
- com.example.demo.src.product.ProductController
-com/example/demo/src/address/AddressDao.java
- com.example.demo.src.address.AddressDao
-com/example/demo/config/BaseException.java
- com.example.demo.config.BaseException
-com/example/demo/utils/JwtService.java
- com.example.demo.utils.JwtService
-com/example/demo/src/firstCategory/FirstCategoryController.java
- com.example.demo.src.firstCategory.FirstCategoryController
-com/example/demo/src/test/TestController.java
- com.example.demo.src.test.TestController
 com/example/demo/src/user/UserProvider.java
  com.example.demo.src.user.UserProvider
-com/example/demo/src/account/AccountProvider.java
- com.example.demo.src.account.AccountProvider
+com/example/demo/src/product/ProductController.java
+ com.example.demo.src.product.ProductController
+com/example/demo/src/test/TestController.java
+ com.example.demo.src.test.TestController
+com/example/demo/config/BaseException.java
+ com.example.demo.config.BaseException
+com/example/demo/src/address/AddressController.java
+ com.example.demo.src.address.AddressController
+com/example/demo/src/address/AddressService.java
+ com.example.demo.src.address.AddressService
+com/example/demo/src/address/AddressDao.java
+ com.example.demo.src.address.AddressDao
+com/example/demo/src/address/AddressProvider.java
+ com.example.demo.src.address.AddressProvider
+com/example/demo/src/address/model/GetAddressRes.java
+ com.example.demo.src.address.model.GetAddressRes
