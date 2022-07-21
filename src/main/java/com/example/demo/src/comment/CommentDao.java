@@ -43,7 +43,12 @@ public class CommentDao {
      * @return comments
      */
     public List<GetCommentRes> getComments(int productId){
-        String getCommentsQuery = "select comment.commentId, comment.productId, comment.userId, user.profileImgUrl, user.nickname, comment.contents, comment.createdAt, comment.isDeleted from comment left join user on user.userId = comment.userId where comment.isDeleted = false and comment.productId=?";
+        String getCommentsQuery =
+                "select comment.commentId, comment.productId, comment.userId, user.profileImgUrl, user.nickname, " +
+                "comment.contents, comment.createdAt, comment.isDeleted " +
+                "from comment " +
+                "left join user on user.userId = comment.userId " +
+                "where comment.isDeleted = false and comment.productId=?";
         int getCommentsParams = productId;
 
 

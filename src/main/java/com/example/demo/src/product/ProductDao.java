@@ -34,12 +34,17 @@ public class ProductDao {
         Object[] insertProductImgParams;
         Object[] insertProductTagParams;
 
-        createProductQuery = "insert into product (userId, title, firstCategoryId, lastCategoryId, price, contents, amount, isUsed, changeable, pay, shippingFee) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        createProductQuery =
+                "insert into product " +
+                "(userId, title, firstCategoryId, lastCategoryId, price, contents, amount, isUsed, changeable, pay, shippingFee) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         createProductParams = new Object[]{userId, postProductReq.getTitle(), postProductReq.getFirstCategoryId(), postProductReq.getLastCategoryId(), postProductReq.getPrice(), postProductReq.getContents(), postProductReq.getAmount(), postProductReq.getIsUsed(), postProductReq.getChangeable(), postProductReq.getPay(), postProductReq.getShippingFee()};
 
         this.jdbcTemplate.update(createProductQuery, createProductParams);
 
-        lastInsertIdQuery = "select count(*) from product";
+        lastInsertIdQuery =
+                "select count(*) " +
+                "from product";
         productId = this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
 
         insertProductImgQuery = "insert into productImg (productId, productImgUrl) values (?,?)";
@@ -67,7 +72,15 @@ public class ProductDao {
      */
     public GetProductRes getProductById(int userId, int productId){
 
-        String getProductByIdQuery = "select product.productId, product.condition, product.price, product.pay, product.title, user.location, product.updatedAt, product.isUsed, product.amount, product.shippingFee, product.changeable, product.contents, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, user.profileImgUrl, user.nickname from product left join user on user.userId = product.userId left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId where product.productId = ?";
+        String getProductByIdQuery =
+                "select product.productId, product.condition, product.price, product.pay, product.title, " +
+                        "user.location, product.updatedAt, product.isUsed, product.amount, product.shippingFee, " +
+                        "product.changeable, product.contents, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, " +
+                        "user.profileImgUrl, user.nickname " +
+                "from product " +
+                "left join user on user.userId = product.userId " +
+                "left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId " +
+                "where product.productId = ?";
         int getProductByIdParams = productId;
 
 
