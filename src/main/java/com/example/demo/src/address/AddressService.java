@@ -74,34 +74,30 @@ public class AddressService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-//
-//    // 계좌 삭제
-//    public DeleteAccountRes deleteAccount(int userId, int accountId) throws BaseException {
-//        // 계좌가 2개인 경우
-//        if(accountProvider.checkAccountCnt(userId) == 2){
-//            accountDao.changeStandard(userId, accountId);
-//        }
-//        else if(accountProvider.checkAccountCnt(userId) == 0){
-//            throw new BaseException(EMPTY_ACCOUNT);
-//        }
-//        // 주어진 계좌가 등록된 계좌인지 체크
-//        if(accountProvider.checkAccountExist(userId, accountId) == 0){
-//            throw new BaseException(INVALID_ACCOUNTID);
-//        }
-//        try {
-//            int result = accountDao.deleteAccount(userId, accountId); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
-//            if(result == 1)
-//                return new DeleteAccountRes("계좌가 삭제되었습니다.");
-//            else
-//                return new DeleteAccountRes("계좌삭제에 실패하였습니다.");
-//        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//
-//    }
-//
+
+    // 배송지 삭제
+    public void deleteAddress(int userId, int addressId) throws BaseException {
+        // 삭제할 배송지가 없는 경우
+        if(addressProvider.checkAddressCnt(userId) == 0){
+            throw new BaseException(EMPTY_ADDRESS);
+        }
+        // 주어진 배송지가 존재하는 배송지인지 체크
+        if(addressProvider.checkAddressExist_delete(userId, addressId) == 0){
+            throw new BaseException(INVALID_ADDRESSID);
+        }
+        try {
+            int result = addressDao.deleteAddress(userId, addressId); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            if(result == 0){
+                throw new BaseException(DELETE_FAIL_ADDRESS);
+            }
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+
+    }
+
 //     addressDao.changeStandard_modify(userId, addressId, !patchAddressReq.isStandard());
-    // 계좌 수정
+    // 배송지 수정
     public void modifyAddress(int userId, int addressId, PatchAddressReq patchAddressReq) throws BaseException {
         // 배송지가 2개이상 존재하는 경우
         if(addressProvider.checkAddressCnt(userId) >= 2){

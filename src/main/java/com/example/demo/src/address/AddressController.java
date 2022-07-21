@@ -109,26 +109,27 @@ public class AddressController {
         }
 
     }
-//
-//    // 계좌 삭제하기
-//    @DeleteMapping("/{userId}/{accountId}")
-//    public BaseResponse<String> deleteAccount (@PathVariable("userId") int userId, @PathVariable("accountId") int accountId) {
-//        try {
-//            //////////////////////////////////////  JWT
-//            //jwt에서 idx 추출
-//            int userIdByJwt = jwtService.getUserId();
-//            //userId와 접근한 유저가 같은지 확인
-//            if(userId != userIdByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //////////////////////////////////////  JWT
-//            DeleteAccountRes deleteAccountRes = accountService.deleteAccount(userId, accountId);
-//            return new BaseResponse<>(deleteAccountRes.getResult());
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
-//
+
+    // 배송지 삭제하기
+    @DeleteMapping("/{userId}/{addressId}")
+    public BaseResponse<String> deleteAddress (@PathVariable("userId") int userId, @PathVariable("addressId") int addressId) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            addressService.deleteAddress(userId, addressId);
+            String result = "배송지 정보가 삭제되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
     // 배송지 수정
     @PatchMapping("/{userId}/{addressId}")
     public BaseResponse<String> modifyAddress(@PathVariable("userId") int userId, @PathVariable("addressId") int addressId, @RequestBody Address address) {

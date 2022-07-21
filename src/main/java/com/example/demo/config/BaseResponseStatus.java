@@ -50,7 +50,6 @@ public enum BaseResponseStatus {
     INVALID_ACCOUNT(false, 2022, "올바른 계좌번호를 입력하세요."),
     EMPTY_NAME(false, 2023, "예금주 명을를 확인해주세요."),
     EMPTY_ACCOUNTNUM(false, 2024, "계좌번호를 확인해주세요."),
-    INVALID_ACCOUNTID(false, 2025, "없는 계좌이거나 본인의 계좌가 아닙니다."),
 
 
 
@@ -79,10 +78,12 @@ public enum BaseResponseStatus {
     MAX_ACCOUNT_CNT(false,3032,"더이상 계좌 등록이 불가능합니다."),
     DELETE_ACCOUNT_FAIL(false,3033,"계좌 삭제에 실패했습니다."),
     EMPTY_ACCOUNT(false,3034,"계좌 목록이 비어있습니다."),
+    INVALID_ACCOUNTID(false, 3035, "없는 계좌이거나 본인의 계좌가 아닙니다."),
 
     MAX_ADDRESS_CNT(false,3040,"더이상 주소 등록이 불가능합니다."),
     EXISTS_ADDRESS(false,3041,"이미 등록된 배송지입니다."),
-
+    INVALID_ADDRESSID(false, 3042, "없는 배송지이거나 본인의 배송지가 아닙니다."),
+    EMPTY_ADDRESS(false,3043,"배송지 목록이 비어있습니다."),
 
     NO_EXISTED_CATEGORY_LIST(false, 3590, "등록된 카테고리가 없습니다."),
 
@@ -102,7 +103,9 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_INFO(false,4030,"사용자 정보 수정에 실패하였습니다."),
     WITHDRAWL_FAIL(false, 4031, "탈퇴처리에 실파해였습니다."),
     MODIFY_FAIL_ACCOUNT(false,4032,"계좌정보 수정에 실패하였습니다."),
-    MODIFY_FAIL_ADDRESS(false,4032,"배송지정보 수정에 실패하였습니다.");
+    MODIFY_FAIL_ADDRESS(false,4032,"배송지정보 수정에 실패하였습니다."),
+    DELETE_FAIL_ADDRESS(false,4033,"배송지정보 삭제에 실패하였습니다.");
+
 
 
     // 5000 : 필요시 만들어서 쓰세요

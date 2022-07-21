@@ -94,6 +94,15 @@ public class AddressProvider {
         }
     }
 
+    // 해당 배송지 중복성 체크(배송지 삭제)
+    public int checkAddressExist_delete(int userId, int addressId) throws BaseException {
+        try {
+            return addressDao.checkAddressExist_delete(userId, addressId);  // 이미 등록된 배송지일 경우 1을 반환
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
     // 해당 배송지 중복성 체크(배송지 수정)
     public int checkAddressExist_modify(int userId, PatchAddressReq patchAddressReq) throws BaseException {
         try {

@@ -62,14 +62,14 @@ public class AddressDao {
                         rs.getString("phoneNum")),
                 getAllAddressParams);
     }
-//
-//    // 계좌 삭제
-//    public int deleteAccount(int userId, int accountId) {
-//        String deleteAccountQuery = "delete from accountList where accountId = ? and userId = ?";
-//        Object [] deleteAccountParams = new Object[]{accountId, userId};
-//        return this.jdbcTemplate.update(deleteAccountQuery, deleteAccountParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
-//    }
-//
+
+    // 배송지 삭제
+    public int deleteAddress(int userId, int addressId) {
+        String deleteAddressQuery = "delete from address where addressId = ? and userId = ?";
+        Object [] deleteAddressParams = new Object[]{addressId, userId};
+        return this.jdbcTemplate.update(deleteAddressQuery, deleteAddressParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
+
     // 배송지 정보 수정
     public int modifyAddress(int userId, int addressId, PatchAddressReq patchAddressReq) {
         String modifyAddressQuery = "update address set name = ?, phoneNum = ?, address = ?, detailAddress = ?, standard = ? where addressId = ? and userId = ? ";
@@ -202,6 +202,15 @@ public class AddressDao {
                 "      and address = ?\n" +
                 "      and detailAddress = ?)";
         Object[] checkAddressExistParams = new Object[]{userId, postAddressReq.getName(), postAddressReq.getPhoneNum(), postAddressReq.getAddress(), postAddressReq.getDetailAddress()};
+        return this.jdbcTemplate.queryForObject(checkAddressExistQuery,
+                int.class,
+                checkAddressExistParams);  // 이미 존재하는 주소라면 1을 반환
+    }
+
+    // 해당 배송지가 이미 존재하는지 검사(배송지 삭제)
+    public int checkAddressExist_delete(int userId, int addressId) {
+        String checkAddressExistQuery = "select exists(select addressId from address where userId = ? and addressId = ?)";
+        Object[] checkAddressExistParams = new Object[]{userId, addressId};
         return this.jdbcTemplate.queryForObject(checkAddressExistQuery,
                 int.class,
                 checkAddressExistParams);  // 이미 존재하는 주소라면 1을 반환
