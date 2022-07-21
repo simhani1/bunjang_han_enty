@@ -22,7 +22,6 @@ public class FirstCategoryProvider {
     public List<GetFirstCategoryRes> getCategories() throws BaseException {
         try{
             List<GetFirstCategoryRes> getFirstCategoryRes = firstCategoryDao.getCategories();
-            System.out.println(this.getCategoryCount());
 
             if(this.getCategoryCount() == 0){
                 throw new BaseException(NO_EXISTED_CATEGORY_LIST);

@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.example.demo.config.BaseResponseStatus.*;
 
 @Slf4j
@@ -70,5 +72,16 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @GetMapping("")
+    public BaseResponse<List<GetProductRes>> getProducts(@RequestParam int page){
+        try{
+            List<GetProductRes> getProductRes = productProvider.getProducts(page);
+            return new BaseResponse<>(GET_PRODUCTS_SUCCESS, getProductRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 
 }

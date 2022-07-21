@@ -63,6 +63,7 @@ public class ProductDao {
      * 상품 조회 API
      * [GET] /app/products/id/:productId
      * @return GetProductRes
+     *
      */
     public GetProductRes getProductById(int userId, int productId){
 
@@ -173,5 +174,22 @@ public class ProductDao {
                         follow,
                         commentCount),
                 productId);
+    }
+
+    /**
+     *
+     * 상품 조회 API
+     * [GET] /app/products
+     * @params page
+     * @return List<GetProductRes>
+     *
+     */
+//    public List<GetProductRes> getProducts(int page){
+//        String getProductListQuery = "select *"
+//    }
+
+    public int getLastProductId(){
+        String getLastProductIdQuery = "select count(*) from product";
+        return this.jdbcTemplate.queryForObject(getLastProductIdQuery, int.class);
     }
 }

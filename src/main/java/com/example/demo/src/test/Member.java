@@ -14,4 +14,5 @@ import java.util.List;
 public class Member {
 
     private String name;
+    private SecondMember second;
 }
