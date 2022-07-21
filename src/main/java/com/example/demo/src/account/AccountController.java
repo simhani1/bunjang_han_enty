@@ -124,6 +124,26 @@ public class AccountController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    // 계좌 수정
+    @PatchMapping("/{userId}/{accountId}")
+    public BaseResponse<String> modifyGender(@PathVariable("userId") int userId, @PathVariable("accountId") int accountId, @RequestBody PatchAccountReq patchAccountReq) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            accountService.modifyAccount(userId, accountId, patchAccountReq);
+            String result = "계좌 정보가 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 //
 //    // 로그인
 //    @ResponseBody
@@ -172,25 +192,6 @@ public class AccountController {
 //        }
 //    }
 //
-//    // 성별 수정
-//    @PatchMapping("/gender/{userId}")
-//    public BaseResponse<String> modifyGender(@PathVariable("userId") int userId, @RequestBody PatchUserReq patchUserReq) {
-//        try {
-//            //////////////////////////////////////  JWT
-//            //jwt에서 idx 추출
-//            int userIdByJwt = jwtService.getUserId();
-//            //userId와 접근한 유저가 같은지 확인
-//            if(userId != userIdByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //////////////////////////////////////  JWT
-//            userService.modifyGender(userId, patchUserReq.isGender());
-//            String result = "성별이 수정되었습니다.";
-//            return new BaseResponse<>(result);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
 //
 //    // 생일 수정
 //    @PatchMapping("/birth/{userId}")

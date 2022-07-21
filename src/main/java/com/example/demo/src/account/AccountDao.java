@@ -1,6 +1,7 @@
 package com.example.demo.src.account;
 
 import com.example.demo.src.account.model.GetAccountRes;
+import com.example.demo.src.account.model.PatchAccountReq;
 import com.example.demo.src.account.model.PostAccountReq;
 import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.src.user.model.PostLoginReq;
@@ -68,6 +69,13 @@ public class AccountDao {
         Object [] deleteAccountParams = new Object[]{accountId, userId};
         return this.jdbcTemplate.update(deleteAccountQuery, deleteAccountParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
     }
+
+    // 계좌 정보 수정
+    public int modifyAccount(int userId, int accountId, PatchAccountReq patchAccountReq) {
+        String modifyAccountQuery = "update accountList set name = ?, bankId = ?, accountNum = ?, standard = ? where accountId = ? and userId = ? ";
+        Object [] modifyAccountParams = new Object[]{patchAccountReq.getName(), patchAccountReq.getBankId(), patchAccountReq.getAccountNum(), patchAccountReq.isStandard(), accountId, userId};
+        return this.jdbcTemplate.update(modifyAccountQuery, modifyAccountParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
 //    // 로그인 - 비밀번호 체크
 //    public User getPwd(PostLoginReq postLoginReq) {
 //        String getPwdQuery = "select userId, pwd from user where id = ?";
@@ -107,12 +115,6 @@ public class AccountDao {
 //        return this.jdbcTemplate.update(modifyPhoneNumQuery, modifyPhoneNumParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
 //    }
 //
-//    // 성별 수정
-//    public int modifyGender(int userId, boolean gender) {
-//        String modifyGenderQuery = "update user set gender = ? where userId = ? ";
-//        Object [] modifyGenderParams = new Object[]{gender, userId};
-//        return this.jdbcTemplate.update(modifyGenderQuery, modifyGenderParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
-//    }
 //
 //
 //    // 회원탈
@@ -218,6 +220,13 @@ public class AccountDao {
     public void changeStandard(int userId, int accountId) {
         String changeStandardQuery = "update accountList set standard = true where userId = ? and accountId != ?";
         Object[] changeStandardParams = new Object[]{userId, accountId};
+        this.jdbcTemplate.update(changeStandardQuery, changeStandardParams);
+    }
+
+    // 수정하는 계좌의 기본계좌 설정과 반대로
+    public void changeStandard_modify(int userId, int accountId, boolean standard) {
+        String changeStandardQuery = "update accountList set standard = ? where userId = ? and accountId != ?";
+        Object[] changeStandardParams = new Object[]{standard, userId, accountId};
         this.jdbcTemplate.update(changeStandardQuery, changeStandardParams);
     }
 

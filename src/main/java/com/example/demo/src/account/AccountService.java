@@ -4,6 +4,7 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.config.secret.Secret;
 import com.example.demo.src.account.model.DeleteAccountRes;
+import com.example.demo.src.account.model.PatchAccountReq;
 import com.example.demo.src.account.model.PostAccountReq;
 import com.example.demo.src.account.model.PostAccountRes;
 import com.example.demo.src.user.UserDao;
@@ -93,18 +94,31 @@ public class AccountService {
         }
 
     }
-//
-//    // 성별 수정
-//    public void modifyGender(int userId, boolean gender) throws BaseException {
-//        try {
-//            int result = userDao.modifyGender(userId, gender); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
-//            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
-//                throw new BaseException(MODIFY_FAIL_INFO);
-//            }
-//        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+
+    // 계좌 수정
+    public void modifyAccount(int userId, int accountId, PatchAccountReq patchAccountReq) throws BaseException {
+        // 계좌가 2개인 경우
+        if(accountProvider.checkAccountCnt(userId) == 2){
+            // 두 계좌의 기본계좌 설정을 무조건 반대로 되게끔 설정
+            accountDao.changeStandard_modify(userId, accountId, !patchAccountReq.isStandard());
+        }
+        // 계좌가 1개인 경우 무조건 기본계좌로 설정하게끔 설정
+        else if(accountProvider.checkAccountCnt(userId) == 1){
+            patchAccountReq.setStandard(true);
+        }
+        // 은행 목록에 있는지 체크
+        if(accountProvider.checkBankId(patchAccountReq.getBankId()) == 0) {
+            throw new BaseException(INVALID_BANKID);
+        }
+        try {
+            int result = accountDao.modifyAccount(userId, accountId, patchAccountReq); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
+                throw new BaseException(MODIFY_FAIL_ACCOUNT);
+            }
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 //
 //    // 성별 수정
 //    public void modifyBirth(int userId, String birth) throws BaseException {
