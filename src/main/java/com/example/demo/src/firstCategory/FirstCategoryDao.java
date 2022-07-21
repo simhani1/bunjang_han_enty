@@ -30,7 +30,9 @@ public class FirstCategoryDao {
 //    }
 
     public List<GetFirstCategoryRes> getCategories(){
-        String getCategoryQuery = "select * from firstCategory";
+        String getCategoryQuery =
+                "select * " +
+                "from firstCategory";
 
         return this.jdbcTemplate.query(getCategoryQuery,
                 (rs, rowNum) -> new GetFirstCategoryRes(
@@ -42,7 +44,10 @@ public class FirstCategoryDao {
     }
 
     public int getCategoryCount(){
-        String getCategoryCountQuery = "select count(firstCategoryId) from firstCategory";
+        String getCategoryCountQuery =
+                "select count(firstCategoryId) " +
+                "from firstCategory";
+
         return this.jdbcTemplate.queryForObject(getCategoryCountQuery, Integer.class);
     }
 

@@ -19,7 +19,14 @@ public class LastCategoryDao {
     }
 
     public List<GetLastCategoryRes> getLastCategories(int firstCategoryId){
-        String getLastCategoryQuery = "select firstCategory.firstCategoryId, firstCategory.firstCategory, firstCategory.firstCategoryImgUrl, lastCategory.lastCategoryId, lastCategory.lastCategory, lastCategory.lastCategoryImgUrl from lastCategory left join firstCategory on firstCategory.firstCategoryId = lastCategory.firstCategoryId where firstCategory.firstCategoryId = ?";
+        String getLastCategoryQuery =
+                "select firstCategory.firstCategoryId, firstCategory.firstCategory, " +
+                        "firstCategory.firstCategoryImgUrl, lastCategory.lastCategoryId, " +
+                        "lastCategory.lastCategory, lastCategory.lastCategoryImgUrl " +
+                "from lastCategory " +
+                "left join firstCategory on firstCategory.firstCategoryId = lastCategory.firstCategoryId " +
+                "where firstCategory.firstCategoryId = ?";
+
         int getCategoryParams = firstCategoryId;
 
         return this.jdbcTemplate.query(getLastCategoryQuery,
