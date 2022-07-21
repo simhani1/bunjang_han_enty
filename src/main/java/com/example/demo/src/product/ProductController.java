@@ -39,6 +39,12 @@ public class ProductController {
 //                return new BaseResponse<>(INVALID_USER_JWT);
 //            }
 
+    /**
+     * [POST] /app/product/:userId
+     * @param userId
+     * @param postProductReq
+     * @return PostProductRes
+     */
     @PostMapping("/{userId}")
     public BaseResponse<PostProductRes> createProduct(@PathVariable("userId") int userId, @RequestBody PostProductReq postProductReq){
         try{
@@ -61,6 +67,12 @@ public class ProductController {
         }
     }
 
+    /**
+     * [GET] /app/products/:userId/:productId
+     * @param userId
+     * @param productId
+     * @return GetProductRes
+     */
     @GetMapping("/{userId}/{productId}")
     public BaseResponse<GetProductRes> getProductById(@PathVariable("userId") int userId,
                                                       @PathVariable("productId") int productId){
@@ -73,6 +85,11 @@ public class ProductController {
         }
     }
 
+    /**
+     * [GET] /app/products
+     * @param page
+     * @return List<GetProductRes>
+     */
     @GetMapping("")
     public BaseResponse<List<GetProductRes>> getProducts(@RequestParam int page){
         try{
@@ -83,5 +100,13 @@ public class ProductController {
         }
     }
 
+    /**
+     * [GET] /app/products/category/:firstCategoryId
+     */
+//    @GetMapping("/category/:firstCategoryId")
+//    public BaseResponse<List<GetProductRes>> getProductByFirstCategoryId(@RequestParam int page,
+//                                                                         @RequestParam int ){
+//
+//    }
 
 }

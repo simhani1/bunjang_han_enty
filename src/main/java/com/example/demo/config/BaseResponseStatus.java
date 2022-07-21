@@ -29,6 +29,11 @@ public enum BaseResponseStatus {
     // [GET] /c
     GET_CATEGORY_SUCCESS(true, 1059, "카테고리 조회에 성공하였습니다."),
     GET_LAST_CATEGORY_SUCCESS(true, 1060, "하위 카테고리 조회에 성공하였습니다."),
+
+    POST_COMMENT_SUCCESS(true,1999,"댓글을 등록하였습니다."),
+    GET_COMMENTS_SUCCESS(true,1998, "댓글조회에 성공하였습니다."),
+
+    COMMENT_DELETE_SUCCESS(true,1997,"댓글을 삭제하였습니다."),
     /**
      * 2000 : Request 오류
      */
@@ -86,6 +91,7 @@ public enum BaseResponseStatus {
     // 하위 카테고리 조회(3600 ~ 3610)
     NO_EXISTED_FIRST_CATEGORY(false, 3600, "상위 카테고리가 존재하지 않습니다."),
 
+    INVALID_USER_DELETE_COMMENT(false,3999,"댓글을 삭제할 권한이 없습니다."),
 
     /**
      * 4000 : Database, Server 오류
@@ -98,6 +104,7 @@ public enum BaseResponseStatus {
     // 사용자 정보 수정(폰번호/생년월일/성별)
     MODIFY_FAIL_INFO(false,4030,"사용자 정보 수정에 실패하였습니다."),
     WITHDRAWL_FAIL(false, 4031, "탈퇴처리에 실파해였습니다.");
+
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
