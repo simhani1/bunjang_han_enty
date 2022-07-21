@@ -2,6 +2,7 @@ package com.example.demo.src.product;
 
 import com.example.demo.src.lastCategory.model.GetLastCategoryRes;
 import com.example.demo.src.product.model.GetProductRes;
+import com.example.demo.src.product.model.PatchProductReq;
 import com.example.demo.src.product.model.PostProductReq;
 import com.example.demo.src.productImg.model.GetProductImgRes;
 import com.example.demo.src.tag.model.GetTagRes;
@@ -23,6 +24,12 @@ public class ProductDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    /**
+     * 상품 등록
+     * @param userId
+     * @param postProductReq
+     * @return
+     */
     public int createProduct(int userId, PostProductReq postProductReq){
 
         int productId;
@@ -82,31 +89,6 @@ public class ProductDao {
                 "left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId " +
                 "where product.productId = ?";
         int getProductByIdParams = productId;
-
-
-        // Get User
-//        String getUserByProductIdQuery =
-//                "select user.location, user.profileImgUrl, user.nickname from user left join product on user.userId = product.userId where product.productId = ?";
-//
-//        GetUserRes getUserRes = this.jdbcTemplate.queryForObject(getUserByProductIdQuery,
-//                (rs, rowNum) -> new GetUserRes(
-//                        rs.getInt("userId"),
-//                        rs.getString("profileImgUrl"),
-//                        rs.getString("nickname")),
-//                productId);
-
-
-        // Get Category
-//        String getCategoryInProduct =
-//                "select lastCategory.categoryImgUrl, lastCategory.lastCategory from lastCategory left join product on lastCategory.lastCategoryId = product.lastCategoryId where product.productId = ?";
-//
-//        GetLastCategoryRes getLastCategoryRes = this.jdbcTemplate.queryForObject(getCategoryInProduct,
-//                (rs, rowNum) -> new GetLastCategoryRes(
-//                        rs.getInt("firstCategoryId"),
-//                        rs.getInt("lastCategoryId"),
-//                        rs.getString("lastCategory"),
-//                        rs.getString("categoryImgUrl")),
-//                productId);
 
 
         // Get ProductImg
@@ -189,20 +171,84 @@ public class ProductDao {
                 productId);
     }
 
-    /**
-     *
-     * 상품 조회 API
-     * [GET] /app/products
-     * @params page
-     * @return List<GetProductRes>
-     *
-     */
-//    public List<GetProductRes> getProducts(int page){
-//        String getProductListQuery = "select *"
-//    }
 
+    /**
+     * 상품 마지막 번호 추출
+     * @return
+     */
     public int getLastProductId(){
         String getLastProductIdQuery = "select count(*) from product";
         return this.jdbcTemplate.queryForObject(getLastProductIdQuery, int.class);
+    }
+
+
+    //    private List<String> productImgs;
+    //    private String title;
+    //    private int firstCategoryId;
+    //    private int lastCategoryId;
+    //    private List<String> tags;
+    //    private int price;
+    //    private String contents;
+    //    private int amount;
+    //    private Boolean isUsed;
+    //    private Boolean changeable;
+    //    private Boolean pay;
+    //    private Boolean shippingFee;
+
+    public int modifyProduct(int userId, int productId, PatchProductReq patchProductReq){
+
+        String modifyProductQuery;
+        String selectProductImgIdQuery;
+        String selectTagIdQuery;
+        String deleteProductImgQuery;
+        String modifyProductImgQuery;
+        String deleteTagsQuery;
+        String modifyTagsQuery;
+        Object[] modifyProductParams;
+        Object[] modifyProductImgParams;
+        Object[] modifyProductTagParams;
+        List<Integer> productImgId;
+        List<Integer> tagId;
+
+        // 상품 항목 수정
+        modifyProductQuery = "update product set title=?, firstCategoryId=?, lastCategoryId=?, price=?, contents=?, amount=?, isUsed=?, changeable=?, pay=?, shippingFee=? where productId=? and userId=?";
+        modifyProductParams = new Object[]{patchProductReq.getTitle(), patchProductReq.getFirstCategoryId(), patchProductReq.getLastCategoryId(), patchProductReq.getPrice(), patchProductReq.getContents(), patchProductReq.getAmount(), patchProductReq.getIsUsed(), patchProductReq.getChangeable(), patchProductReq.getPay(), patchProductReq.getShippingFee(), productId, userId};
+
+        // Img, tag Id 추출
+        selectProductImgIdQuery = "select productImgId from productImg where productId="+productId;
+        productImgId = this.jdbcTemplate.queryForList(selectProductImgIdQuery, int.class);
+        selectTagIdQuery = "select productTagId from productTag where productId="+productId;
+        tagId = this.jdbcTemplate.queryForList(selectTagIdQuery,int.class);
+
+        System.out.println(productImgId.get(0));
+        // 삭제 후 다시 삽입
+        deleteProductImgQuery = "delete from productImg where productImgId=?";
+        modifyProductImgQuery = "insert into productImg (productId, productImgUrl) values (?,?)";
+        deleteTagsQuery = "delete from productTag where productTagId=?";
+        modifyTagsQuery = "insert into productTag (productId, tagContents) values (?,?)";
+
+
+        // delete 작업
+        for(int i = 0; i < productImgId.size(); i++){
+            this.jdbcTemplate.update(deleteProductImgQuery,productImgId.get(i));
+        }
+        for(int i = 0; i < tagId.size(); i++){
+            this.jdbcTemplate.update(deleteTagsQuery,tagId.get(i));
+        }
+
+        // 다시 insert 작업
+        for(int i = 0; i < patchProductReq.getProductImgs().size(); i++){
+            modifyProductImgParams = new Object[]{productId, patchProductReq.getProductImgs().get(i)};
+            this.jdbcTemplate.update(modifyProductImgQuery,modifyProductImgParams);
+        }
+        for(int i = 0; i < patchProductReq.getTags().size(); i++){
+            modifyProductTagParams = new Object[]{productId, patchProductReq.getTags().get(i)};
+            this.jdbcTemplate.update(modifyTagsQuery,modifyProductTagParams);
+        }
+
+
+
+        return this.jdbcTemplate.update(modifyProductQuery,modifyProductParams);
+
     }
 }

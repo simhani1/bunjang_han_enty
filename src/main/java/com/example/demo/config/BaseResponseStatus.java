@@ -34,6 +34,8 @@ public enum BaseResponseStatus {
     GET_COMMENTS_SUCCESS(true,1998, "댓글조회에 성공하였습니다."),
 
     COMMENT_DELETE_SUCCESS(true,1997,"댓글을 삭제하였습니다."),
+
+    MODIFY_PRODUCT_SUCCESS(true,1996, "수정이 완료되었습니다."),
     /**
      * 2000 : Request 오류
      */
@@ -91,6 +93,7 @@ public enum BaseResponseStatus {
     // 하위 카테고리 조회(3600 ~ 3610)
     NO_EXISTED_FIRST_CATEGORY(false, 3600, "상위 카테고리가 존재하지 않습니다."),
 
+    MODIFY_PRODUCT_FAILED(false,3998,"상품 수정을 실패했습니다."),
     INVALID_USER_DELETE_COMMENT(false,3999,"댓글을 삭제할 권한이 없습니다."),
 
     /**

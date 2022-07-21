@@ -2,9 +2,7 @@ package com.example.demo.src.product;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
-import com.example.demo.src.product.model.GetProductRes;
-import com.example.demo.src.product.model.PostProductReq;
-import com.example.demo.src.product.model.PostProductRes;
+import com.example.demo.src.product.model.*;
 import com.example.demo.utils.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +38,7 @@ public class ProductController {
 //            }
 
     /**
+     * 상품등록
      * [POST] /app/product/:userId
      * @param userId
      * @param postProductReq
@@ -68,6 +67,7 @@ public class ProductController {
     }
 
     /**
+     * 상품조회
      * [GET] /app/products/:userId/:productId
      * @param userId
      * @param productId
@@ -86,6 +86,7 @@ public class ProductController {
     }
 
     /**
+     * 전체상품조회
      * [GET] /app/products
      * @param page
      * @return List<GetProductRes>
@@ -100,13 +101,32 @@ public class ProductController {
         }
     }
 
+
     /**
-     * [GET] /app/products/category/:firstCategoryId
+     * 상품수정(상품 내용만)
+     * @param userId
+     * @param productId
+     * @param patchProductReq
+     * @return
      */
-//    @GetMapping("/category/:firstCategoryId")
-//    public BaseResponse<List<GetProductRes>> getProductByFirstCategoryId(@RequestParam int page,
-//                                                                         @RequestParam int ){
-//
-//    }
+    @PatchMapping("/{userId}/{productId}")
+    public BaseResponse<String> modifyProduct(@PathVariable("userId") int userId,
+                                              @PathVariable("productId") int productId,
+                                              @RequestBody PatchProductReq patchProductReq){
+        try{
+            if(userId != jwtService.getUserId()){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            productService.modifyProduct(userId, productId, patchProductReq);
+            return new BaseResponse<>(MODIFY_PRODUCT_SUCCESS);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+//    @PatchMapping("/condition/{userId}/{productId")
+//    public BaseResponse<String> modify
+
 
 }

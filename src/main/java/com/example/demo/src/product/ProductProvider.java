@@ -23,6 +23,7 @@ public class ProductProvider {
     public int getLastProductId(){
         return productDao.getLastProductId();
     }
+
     public GetProductRes getProductById(int userId,int productId) throws BaseException {
         try{
             GetProductRes getProductRes = productDao.getProductById(userId,productId);
