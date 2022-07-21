@@ -101,7 +101,8 @@ public enum BaseResponseStatus {
     // 사용자 정보 수정(폰번호/생년월일/성별)
     MODIFY_FAIL_INFO(false,4030,"사용자 정보 수정에 실패하였습니다."),
     WITHDRAWL_FAIL(false, 4031, "탈퇴처리에 실파해였습니다."),
-    MODIFY_FAIL_ACCOUNT(false,4032,"계좌정보 수정에 실패하였습니다.");
+    MODIFY_FAIL_ACCOUNT(false,4032,"계좌정보 수정에 실패하였습니다."),
+    MODIFY_FAIL_ADDRESS(false,4032,"배송지정보 수정에 실패하였습니다.");
 
 
     // 5000 : 필요시 만들어서 쓰세요

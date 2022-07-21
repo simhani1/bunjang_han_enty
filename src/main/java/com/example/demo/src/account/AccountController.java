@@ -137,6 +137,18 @@ public class AccountController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
             //////////////////////////////////////  JWT
+            // 예금주명 체크
+            if(patchAccountReq.getName().equals("")) {
+                return new BaseResponse<>(EMPTY_NAME);
+            }
+            // 계좌번호 체크
+            if(patchAccountReq.getAccountNum().equals((""))){
+                return new BaseResponse<>(EMPTY_ACCOUNTNUM);
+            }
+            // 계좌 자릿수 체크
+            if (isRegexAccountNum(patchAccountReq.getAccountNum())) {
+                return new BaseResponse<>(INVALID_ACCOUNT);
+            }
             accountService.modifyAccount(userId, accountId, patchAccountReq);
             String result = "계좌 정보가 수정되었습니다.";
             return new BaseResponse<>(result);

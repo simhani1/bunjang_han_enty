@@ -6,10 +6,7 @@ import com.example.demo.config.BaseResponse;
 import com.example.demo.src.account.AccountProvider;
 import com.example.demo.src.account.AccountService;
 import com.example.demo.src.account.model.*;
-import com.example.demo.src.address.model.Address;
-import com.example.demo.src.address.model.GetAddressRes;
-import com.example.demo.src.address.model.PostAddressReq;
-import com.example.demo.src.address.model.PostAddressRes;
+import com.example.demo.src.address.model.*;
 import com.example.demo.src.user.UserProvider;
 import com.example.demo.src.user.UserService;
 import com.example.demo.src.user.model.*;
@@ -132,25 +129,38 @@ public class AddressController {
 //        }
 //    }
 //
-//    // 계좌 수정
-//    @PatchMapping("/{userId}/{accountId}")
-//    public BaseResponse<String> modifyGender(@PathVariable("userId") int userId, @PathVariable("accountId") int accountId, @RequestBody PatchAccountReq patchAccountReq) {
-//        try {
-//            //////////////////////////////////////  JWT
-//            //jwt에서 idx 추출
-//            int userIdByJwt = jwtService.getUserId();
-//            //userId와 접근한 유저가 같은지 확인
-//            if(userId != userIdByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //////////////////////////////////////  JWT
-//            accountService.modifyAccount(userId, accountId, patchAccountReq);
-//            String result = "계좌 정보가 수정되었습니다.";
-//            return new BaseResponse<>(result);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+    // 배송지 수정
+    @PatchMapping("/{userId}/{addressId}")
+    public BaseResponse<String> modifyAddress(@PathVariable("userId") int userId, @PathVariable("addressId") int addressId, @RequestBody Address address) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            // 이름 체크
+            if(address.getName().equals("")) {
+                return new BaseResponse<>(EMPTY_NAME);
+            }
+            // 전화번호 자릿수 체크
+            if(isRegexTelephoneNum(address.getPhoneNum())){
+                return new BaseResponse<>(INVALID_PHONENUMBER);
+            }
+            // 주소 체크
+            if(address.getAddress().equals(("")) || address.getDetailAddress().equals("")){
+                return new BaseResponse<>(EMPTY_LOCATION);
+            }
+            PatchAddressReq patchAddressReq = new PatchAddressReq(address.getName(), address.getPhoneNum(), address.getAddress(), address.getDetailAddress(), address.isStandard());
+            addressService.modifyAddress(userId, addressId, patchAddressReq);
+            String result = "배송지 정보가 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 //
 //    // 로그인
 //    @ResponseBody

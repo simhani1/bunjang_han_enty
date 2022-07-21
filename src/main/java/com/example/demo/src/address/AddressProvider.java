@@ -6,6 +6,7 @@ import com.example.demo.src.account.AccountDao;
 import com.example.demo.src.account.model.GetAccountRes;
 import com.example.demo.src.account.model.PostAccountReq;
 import com.example.demo.src.address.model.GetAddressRes;
+import com.example.demo.src.address.model.PatchAddressReq;
 import com.example.demo.src.address.model.PostAddressReq;
 import com.example.demo.src.user.UserDao;
 import com.example.demo.src.user.model.GetUserRes;
@@ -84,10 +85,19 @@ public class AddressProvider {
         }
     }
 
-    // 해당 배송지 중복성 체크
+    // 해당 배송지 중복성 체크(배송지 추가)
     public int checkAddressExist(int userId, PostAddressReq postAddressReq) throws BaseException {
         try {
             return addressDao.checkAddressExist(userId, postAddressReq);  // 이미 등록된 배송지일 경우 1을 반환
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 해당 배송지 중복성 체크(배송지 수정)
+    public int checkAddressExist_modify(int userId, PatchAddressReq patchAddressReq) throws BaseException {
+        try {
+            return addressDao.checkAddressExist_modify(userId, patchAddressReq);  // 이미 등록된 배송지일 경우 1을 반환
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

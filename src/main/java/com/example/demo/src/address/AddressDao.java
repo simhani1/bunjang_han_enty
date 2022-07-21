@@ -4,6 +4,7 @@ import com.example.demo.src.account.model.GetAccountRes;
 import com.example.demo.src.account.model.PatchAccountReq;
 import com.example.demo.src.account.model.PostAccountReq;
 import com.example.demo.src.address.model.GetAddressRes;
+import com.example.demo.src.address.model.PatchAddressReq;
 import com.example.demo.src.address.model.PostAddressReq;
 import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.src.user.model.PostLoginReq;
@@ -69,12 +70,12 @@ public class AddressDao {
 //        return this.jdbcTemplate.update(deleteAccountQuery, deleteAccountParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
 //    }
 //
-//    // 계좌 정보 수정
-//    public int modifyAccount(int userId, int accountId, PatchAccountReq patchAccountReq) {
-//        String modifyAccountQuery = "update accountList set name = ?, bankId = ?, accountNum = ?, standard = ? where accountId = ? and userId = ? ";
-//        Object [] modifyAccountParams = new Object[]{patchAccountReq.getName(), patchAccountReq.getBankId(), patchAccountReq.getAccountNum(), patchAccountReq.isStandard(), accountId, userId};
-//        return this.jdbcTemplate.update(modifyAccountQuery, modifyAccountParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
-//    }
+    // 배송지 정보 수정
+    public int modifyAddress(int userId, int addressId, PatchAddressReq patchAddressReq) {
+        String modifyAddressQuery = "update address set name = ?, phoneNum = ?, address = ?, detailAddress = ?, standard = ? where addressId = ? and userId = ? ";
+        Object [] modifyAddressParams = new Object[]{patchAddressReq.getName(), patchAddressReq.getPhoneNum(), patchAddressReq.getAddress(), patchAddressReq.getDetailAddress(), patchAddressReq.isStandard(), addressId, userId};
+        return this.jdbcTemplate.update(modifyAddressQuery, modifyAddressParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
 ////    // 로그인 - 비밀번호 체크
 ////    public User getPwd(PostLoginReq postLoginReq) {
 ////        String getPwdQuery = "select userId, pwd from user where id = ?";
@@ -190,7 +191,7 @@ public class AddressDao {
 //                checkBankIdParams);  // 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
 //    }
 //
-    // 해당 배송지가 이미 존재하는지 검사
+    // 해당 배송지가 이미 존재하는지 검사(배송지 추가)
     public int checkAddressExist(int userId, PostAddressReq postAddressReq) {
         String checkAddressExistQuery = "select exists(\n" +
                 "    select addressId\n" +
@@ -201,6 +202,22 @@ public class AddressDao {
                 "      and address = ?\n" +
                 "      and detailAddress = ?)";
         Object[] checkAddressExistParams = new Object[]{userId, postAddressReq.getName(), postAddressReq.getPhoneNum(), postAddressReq.getAddress(), postAddressReq.getDetailAddress()};
+        return this.jdbcTemplate.queryForObject(checkAddressExistQuery,
+                int.class,
+                checkAddressExistParams);  // 이미 존재하는 주소라면 1을 반환
+    }
+
+    // 해당 배송지가 이미 존재하는지 검사(배송지 수정)
+    public int checkAddressExist_modify(int userId, PatchAddressReq patchAddressReq) {
+        String checkAddressExistQuery = "select exists(\n" +
+                "    select addressId\n" +
+                "    from address\n" +
+                "    where userId = ?\n" +
+                "      and name = ?\n" +
+                "      and phoneNum = ?\n" +
+                "      and address = ?\n" +
+                "      and detailAddress = ?)";
+        Object[] checkAddressExistParams = new Object[]{userId, patchAddressReq.getName(), patchAddressReq.getPhoneNum(), patchAddressReq.getAddress(), patchAddressReq.getDetailAddress()};
         return this.jdbcTemplate.queryForObject(checkAddressExistQuery,
                 int.class,
                 checkAddressExistParams);  // 이미 존재하는 주소라면 1을 반환
