@@ -7,6 +7,7 @@ import com.example.demo.src.product.model.PostProductReq;
 import com.example.demo.src.productImg.model.GetProductImgRes;
 import com.example.demo.src.tag.model.GetTagRes;
 import com.example.demo.src.user.model.GetUserRes;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -99,8 +100,7 @@ public class ProductDao {
                         "from product " +
                         "left join user on user.userId = product.userId " +
                         "left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId " +
-                        "where product.productId = ? " +
-                        "order by product.updatedAt desc";
+                        "where product.productId = ? and product.isDeleted=false";
         int getProductByIdParams = productId;
 
 
@@ -145,12 +145,12 @@ public class ProductDao {
 
         // Get follow status
         String getFollowStatusQuery = "select status from followList where followUserId="+userId+" and userId="+productUserId;
-        Boolean follow = this.jdbcTemplate.queryForObject(getFollowStatusQuery, Boolean.class);
+        List<Boolean> follow = this.jdbcTemplate.queryForList(getFollowStatusQuery, boolean.class);
 
-//        Boolean finalFollow = follow;
-//        if(finalFollow == null){
-//            follow = false;
-//        }
+        // follow의 값이 null일때 해결
+        if (follow.size() == 0){
+            follow.add(false);
+        }
 
         // Get CommentCount
         String getCommentCountQuery = "select count(productId) from comment where productId="+productId+" and isDeleted=0";
@@ -182,7 +182,7 @@ public class ProductDao {
                         rs.getString("nickname"),
                         star,
                         follower,
-                        follow,
+                        follow.get(0),
                         commentCount),
                 productId);
     }
@@ -286,4 +286,10 @@ public class ProductDao {
         String getProductIsDeleted = "select product.isDeleted from product where productId="+productId;
         return this.jdbcTemplate.queryForObject(getProductIsDeleted,Boolean.class);
     }
+
+    public List<Integer> getProductIdList(int userId){
+        String getProductIdListByUserId = "select productId from product where userId="+ userId +" order by productId desc";
+        return this.jdbcTemplate.queryForList(getProductIdListByUserId, Integer.class);
+    }
+
 }

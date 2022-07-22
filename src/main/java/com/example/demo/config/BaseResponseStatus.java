@@ -79,6 +79,11 @@ public enum BaseResponseStatus {
     NOT_SELECT_PAY(false, 2511, "번개페이 사용 여부를 선택해주세요."),
     NOT_SELECT_SHIPPING_FEE(false,2512, "배송비 포함 여부를 선택해주세요."),
 
+    // [GET] products
+    NEGATIVE_PAGE_NUM(false,2513, "0이상의 페이지 번호를 입력해주세요."),
+
+    // [POST] comments
+    WRONG_CONTENTS_LENGTH(false, 2514, "1 글자 이상 100 글자 이하로 써주세요."),
 
     /**
      * 3000 : Response 오류
@@ -120,6 +125,9 @@ public enum BaseResponseStatus {
     NO_EXISTED_PRODUCT(false, 3603, "등록되지 않은 상품입니다."),
 
     DELETED_PRODUCT(false, 3604, "삭제된 상품입니다."),
+    EXTRA_PAGE(false, 3605, "해당 페이지에 상품이 존재하지 않습니다."),
+
+    NOT_EXISTED_BANNER(false,3995, "등록된 배너가 없습니다."),
     // 상품 생성, 조회, 수정
     MODIFY_PRODUCT_IS_DELETED_FAILED(false,3996,"이 상품을 삭제할 수 없습니다."),
     MODIFY_PRODUCT_CONDITION_FAILED(false,3997,"상태변경을 실패하였습니다."),

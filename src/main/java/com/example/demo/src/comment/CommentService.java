@@ -4,6 +4,8 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.comment.model.PostCommentReq;
 import com.example.demo.src.comment.model.PostCommentRes;
+import com.example.demo.src.product.ProductDao;
+import com.example.demo.src.product.ProductProvider;
 import org.springframework.stereotype.Service;
 
 import static com.example.demo.config.BaseResponseStatus.*;
@@ -13,10 +15,15 @@ public class CommentService {
 
     final private CommentDao commentDao;
     final private CommentProvider commentProvider;
+    private final ProductProvider productProvider;
+    private final ProductDao productDao;
 
-    public CommentService(CommentDao commentDao, CommentProvider commentProvider){
+    public CommentService(CommentDao commentDao, CommentProvider commentProvider,
+                          ProductProvider productProvider, ProductDao productDao){
         this.commentProvider = commentProvider;
         this.commentDao = commentDao;
+        this.productProvider = productProvider;
+        this. productDao = productDao;
     }
 
     /**
@@ -29,6 +36,15 @@ public class CommentService {
      */
     public PostCommentRes createComment(int productId, int userId, PostCommentReq postCommentReq) throws BaseException {
         try{
+            if (userId < 0){
+                throw new BaseException(NO_EXISTED_USER);
+            }
+            if (productId < 0 || productId > productProvider.getLastProductId()){
+                throw new BaseException(NO_EXISTED_PRODUCT);
+            }
+            if (productDao.getProductIsDeleted(productId)){
+                throw new BaseException(DELETED_PRODUCT);
+            }
             int lastCommentId = commentDao.createComment(productId, userId, postCommentReq);
             return new PostCommentRes(lastCommentId);
         } catch (Exception exception){

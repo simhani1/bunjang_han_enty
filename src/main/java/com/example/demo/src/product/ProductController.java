@@ -129,7 +129,6 @@ public class ProductController {
                                                       @PathVariable("productId") int productId){
 
         try{
-            System.out.println(productProvider.getLastProductId());
             GetProductRes getProductRes = productProvider.getProductById(userId,productId);
             return new BaseResponse<>(GET_PRODUCT_SUCCESS, getProductRes);
         } catch (BaseException exception){
@@ -222,5 +221,24 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     *특정 유저 판매중 상품
+     * @param userId
+     * @return
+     */
+    @GetMapping("/sell/{userId}")
+    public BaseResponse<List<GetProductRes>> getSellProductByUserId(@PathVariable("userId") int userId){
+        try{
+            if(userId != jwtService.getUserId()){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            List<GetProductRes> getProductRes = productProvider.getSellProductByUserId(userId);
+            return new BaseResponse<>(GET_PRODUCTS_SUCCESS, getProductRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 
 }
