@@ -67,16 +67,36 @@ public class UserProvider {
             throw new BaseException(FAILED_TO_LOGIN);
         }
     }
-//
-//    // User들의 정보를 조회
-//    public List<GetUserRes> getUsers() throws BaseException {
-//        try {
-//            List<GetUserRes> getUserRes = userDao.getUsers();
-//            return getUserRes;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+
+    // 본인의 판매중 상품 조회
+    public List<GetUserProductRes> getUserProductRes_sel(int userId) throws BaseException {
+        try {
+            List<GetUserProductRes> getUserProductRes = userDao.getUserProductRes_sel(userId);
+            return getUserProductRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 본인의 예약중 상품 조회
+    public List<GetUserProductRes> getUserProductRes_res(int userId) throws BaseException {
+        try {
+            List<GetUserProductRes> getUserProductRes = userDao.getUserProductRes_res(userId);
+            return getUserProductRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 본인의 판매완료 상품 조회
+    public List<GetUserProductRes> getUserProductRes_sold_out(int userId) throws BaseException {
+        try {
+            List<GetUserProductRes> getUserProductRes = userDao.getUserProductRes_sold_out(userId);
+            return getUserProductRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 //
 //    // 해당 nickname을 갖는 User들의 정보 조회
 //    public List<GetUserRes> getUsersByNickname(String nickname) throws BaseException {
