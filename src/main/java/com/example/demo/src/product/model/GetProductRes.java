@@ -25,7 +25,7 @@ public class GetProductRes {
     private Boolean pay;
     private String title;
     private String location;
-    private LocalDateTime updatedAt;
+    private String updatedAt;
     private int viewCnt;
     private int heartCnt;
     private int chatCnt;

@@ -62,8 +62,21 @@ public enum BaseResponseStatus {
 
 
 
+    // [POST] products
+    EMPTY_PRODUCT_IMG(false, 2500, "사진을 한 개 이상 등록해주세요."),
+    EXCESS_PRODUCT_IMG(false,2501, "사진을 12개까지만 등록해주세요."),
+    NOT_ENOUGH_TITLE_LENGTH(false,2502, "상품명을 2글자 이상 입력해주세요."),
+    NOT_SELECT_FIRST_CATEGORY(false, 2503, "카테고리를 선택해주세요"),
+    NOT_SELECT_LAST_CATEGORY(false,2504, "하위 카테고리를 선택해주세요."),
+    EMPTY_TAGS(false,2505, "태그를 입력해주세요."),
+    NOT_ENOUGH_PRICE(false,2506, "100원 이상 입력해주세요."),
+    NOT_ENOUGH_CONTENTS(false,2507, "상품 설명을 10글자 이상 입력해주세요."),
+    NOT_ENOUGH_AMOUNT(false, 2508, "수량을 1개 이상 입력해주세요."),
+    NOT_SELECT_IS_USED(false, 2509, "중고상품인지 새상품인지 선택해주세요."),
+    NOT_SELECT_CHANGEABLE(false,2510, "교환 가능 여부를 선택해주세요."),
+    NOT_SELECT_PAY(false, 2511, "번개페이 사용 여부를 선택해주세요."),
+    NOT_SELECT_SHIPPING_FEE(false,2512, "배송비 포함 여부를 선택해주세요."),
 
-    // 로그인(2020 ~ 2029)
 
     /**
      * 3000 : Response 오류
@@ -98,6 +111,7 @@ public enum BaseResponseStatus {
 
     // 하위 카테고리 조회(3600 ~ 3610)
     NO_EXISTED_FIRST_CATEGORY(false, 3600, "상위 카테고리가 존재하지 않습니다."),
+    NO_EXISTED_LAST_CATEGORY(false,3601, "하위 카테고리가 존재하지 않습니다."),
 
     // 상품 생성, 조회, 수정
     MODIFY_PRODUCT_IS_DELETED_FAILED(false,3996,"이 상품을 삭제할 수 없습니다."),

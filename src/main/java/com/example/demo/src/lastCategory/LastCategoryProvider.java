@@ -19,6 +19,12 @@ public class LastCategoryProvider {
         this.lastCategoryDao = lastCategoryDao;
     }
 
+    /**
+     * 하위 카테고리 리스트 조회
+     * @param firstCategoryId
+     * @return
+     * @throws BaseException
+     */
     public List<GetLastCategoryRes> getLastCategories(int firstCategoryId) throws BaseException {
         try{
             List<GetLastCategoryRes> getLastCategoryRes = lastCategoryDao.getLastCategories(firstCategoryId);
@@ -29,5 +35,11 @@ public class LastCategoryProvider {
         }
     }
 
+    /**
+     * 하위 카테고리 마지막 번호 조회
+     */
+    public int getLastCategoryIdCount(){
+        return lastCategoryDao.getLastCategoryIdCount();
+    }
 
 }
