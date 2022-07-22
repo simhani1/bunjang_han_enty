@@ -44,8 +44,8 @@ com/example/demo/src/user/model/PostLoginRes.java
  com.example.demo.src.user.model.PostLoginRes
 com/example/demo/src/account/AccountDao.java
  com.example.demo.src.account.AccountDao
-com/example/demo/src/user/UserDao.java
- com.example.demo.src.user.UserDao
+com/example/demo/DemoApplication.java
+ com.example.demo.DemoApplication
 com/example/demo/src/user/model/PatchUserReq.java
  com.example.demo.src.user.model.PatchUserReq
 com/example/demo/src/productImg/ProductImgService.java
@@ -72,8 +72,8 @@ com/example/demo/src/tag/model/GetTagRes.java
  com.example.demo.src.tag.model.GetTagRes
 com/example/demo/src/product/model/Product.java
  com.example.demo.src.product.model.Product
-com/example/demo/src/user/UserController.java
- com.example.demo.src.user.UserController
+com/example/demo/src/address/AddressService.java
+ com.example.demo.src.address.AddressService
 com/example/demo/src/lastCategory/model/GetLastCategoryRes.java
  com.example.demo.src.lastCategory.model.GetLastCategoryRes
 com/example/demo/src/account/AccountController.java
@@ -92,8 +92,8 @@ com/example/demo/src/banner/model/PatchBannerRes.java
  com.example.demo.src.banner.model.PatchBannerRes
 com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
-com/example/demo/src/user/UserProvider.java
- com.example.demo.src.user.UserProvider
+com/example/demo/src/user/model/GetUserRes.java
+ com.example.demo.src.user.model.GetUserRes
 com/example/demo/src/kakao/OAuthController.java
  com.example.demo.src.kakao.OAuthController
 com/example/demo/src/productImg/model/PatchProductImgReq.java
@@ -144,8 +144,8 @@ com/example/demo/src/comment/CommentController.java
  com.example.demo.src.comment.CommentController
 com/example/demo/config/BaseResponse.java
  com.example.demo.config.BaseResponse
-com/example/demo/src/user/UserService.java
- com.example.demo.src.user.UserService
+com/example/demo/src/comment/model/GetCommentRes.java
+ com.example.demo.src.comment.model.GetCommentRes
 com/example/demo/src/address/model/PatchAddressReq.java
  com.example.demo.src.address.model.PatchAddressReq
 com/example/demo/src/productImg/model/PatchProductImgRes.java
@@ -204,11 +204,11 @@ com/example/demo/src/firstCategory/FirstCategoryDao.java
  com.example.demo.src.firstCategory.FirstCategoryDao
 com/example/demo/src/productImg/ProductImgProvider.java
  com.example.demo.src.productImg.ProductImgProvider
-com/example/demo/src/user/model/GetUserRes.java
- com.example.demo.src.user.model.GetUserRes
-com/example/demo/src/address/AddressService.java
- com.example.demo.src.address.AddressService
-com/example/demo/src/comment/model/GetCommentRes.java
- com.example.demo.src.comment.model.GetCommentRes
-com/example/demo/DemoApplication.java
- com.example.demo.DemoApplication
+com/example/demo/src/user/UserDao.java
+ com.example.demo.src.user.UserDao
+com/example/demo/src/user/UserService.java
+ com.example.demo.src.user.UserService
+com/example/demo/src/user/UserController.java
+ com.example.demo.src.user.UserController
+com/example/demo/src/user/UserProvider.java
+ com.example.demo.src.user.UserProvider
