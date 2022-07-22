@@ -138,8 +138,6 @@ public class ProductDao {
         String getCommentCountQuery = "select count(productId) from comment where productId="+productId+" and isDeleted=0";
         int commentCount = this.jdbcTemplate.queryForObject(getCommentCountQuery,int.class);
 
-//        String getAccountNumQuery = "select count(accountId) from accountList";
-//        int accountNum = this.jdbcTemplate.queryForObject(getAccountNumQuery,int.class);
 
         return this.jdbcTemplate.queryForObject(getProductByIdQuery,
                 (rs, rowNum) -> new GetProductRes(

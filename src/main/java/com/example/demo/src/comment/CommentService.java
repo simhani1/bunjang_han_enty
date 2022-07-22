@@ -19,6 +19,14 @@ public class CommentService {
         this.commentDao = commentDao;
     }
 
+    /**
+     * 댓글 생성
+     * @param productId
+     * @param userId
+     * @param postCommentReq
+     * @return
+     * @throws BaseException
+     */
     public PostCommentRes createComment(int productId, int userId, PostCommentReq postCommentReq) throws BaseException {
         try{
             int lastCommentId = commentDao.createComment(productId, userId, postCommentReq);
@@ -28,9 +36,14 @@ public class CommentService {
         }
     }
 
+    /**
+     * 댓글 삭제
+     * @param commentId
+     * @param userId
+     * @throws BaseException
+     */
     public void deleteComment(int commentId, int userId) throws BaseException {
         if(commentDao.deleteComment(commentId, userId) == 0){
-//                System.out.println("권한이 없습니다.");
             throw new BaseException(INVALID_USER_DELETE_COMMENT);
         }
         try{

@@ -21,6 +21,7 @@ public class CommentDao {
     }
 
     /**
+     * 댓글 생성
      * [POST] comment
      * @param productId
      * @param userId
@@ -38,6 +39,7 @@ public class CommentDao {
     }
 
     /**
+     * 댓글 조회
      * [GET] comments
      * @param productId
      * @return comments
@@ -66,6 +68,12 @@ public class CommentDao {
     }
 
 
+    /**
+     * 댓글 삭제
+     * @param commentId
+     * @param userId
+     * @return
+     */
     public int deleteComment(int commentId, int userId){
 
         String deleteCommentQuery = "update comment set isDeleted = true where commentId=? and userId=?";

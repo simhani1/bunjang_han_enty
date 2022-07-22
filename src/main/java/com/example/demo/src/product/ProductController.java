@@ -47,12 +47,6 @@ public class ProductController {
     @PostMapping("/{userId}")
     public BaseResponse<PostProductRes> createProduct(@PathVariable("userId") int userId, @RequestBody PostProductReq postProductReq){
         try{
-
-
-//            System.out.println(productImg);
-
-//            PostProductImgReq a = postProductReq.getProductImgs().get(2);
-
             int userIdByJwt = jwtService.getUserId();
             //userIdx와 접근한 유저가 같은지 확인
             if(userId != userIdByJwt){

@@ -31,6 +31,7 @@ public class CommentController {
     }
 
     /**
+     * 댓글 생성
      * [POST] /app/comment/:productId/:userId
      * @param productId
      * @param userId
@@ -53,6 +54,7 @@ public class CommentController {
     }
 
     /**
+     * 댓글 조회
      * [GET] /app/comments/:productId
      * @param productId
      * @return
@@ -67,6 +69,12 @@ public class CommentController {
         }
     }
 
+    /**
+     * 댓글 삭제
+     * @param commentId
+     * @param userId
+     * @return
+     */
     @PatchMapping("/{commentId}/{userId}")
     public BaseResponse<String> deleteComments(@PathVariable int commentId,
                                          @PathVariable int userId){

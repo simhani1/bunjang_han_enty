@@ -19,6 +19,12 @@ public class CommentProvider {
         this.commentDao = commentDao;
     }
 
+    /**
+     * 댓글 조회
+     * @param productId
+     * @return
+     * @throws BaseException
+     */
     public List<GetCommentRes> getComments(int productId) throws BaseException {
         try {
             List<GetCommentRes> getCommentRes = commentDao.getComments(productId);

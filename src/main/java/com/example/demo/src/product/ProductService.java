@@ -36,6 +36,14 @@ public class ProductService {
         }
     }
 
+
+    /**
+     * 상품 수정
+     * @param userId
+     * @param productId
+     * @param patchProductReq
+     * @throws BaseException
+     */
     public void modifyProduct(int userId, int productId, PatchProductReq patchProductReq) throws BaseException {
         try{
             int result = productDao.modifyProduct(userId, productId, patchProductReq);

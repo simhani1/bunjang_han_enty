@@ -24,6 +24,13 @@ public class ProductProvider {
         return productDao.getLastProductId();
     }
 
+    /**
+     * 상품 조회
+     * @param userId
+     * @param productId
+     * @return
+     * @throws BaseException
+     */
     public GetProductRes getProductById(int userId,int productId) throws BaseException {
         try{
             GetProductRes getProductRes = productDao.getProductById(userId,productId);
@@ -33,6 +40,12 @@ public class ProductProvider {
         }
     }
 
+    /**
+     * 전체 상품 조회
+     * @param page
+     * @return
+     * @throws BaseException
+     */
     public List<GetProductRes> getProducts(int page) throws BaseException{
         try{
             int amount = 6;
