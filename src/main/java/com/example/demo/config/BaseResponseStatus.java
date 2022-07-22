@@ -24,6 +24,8 @@ public enum BaseResponseStatus {
     GET_PRODUCT_SUCCESS(true, 1022, "상품 조회에 성공하였습니다."),
     // [GET] /banner
     GET_BANNER_SUCCESS(true, 1048, "배너 조회에 성공하였습니다."),
+    ADD_HEARTLIST_SUCCESS(true, 1049, "찜하기에 성공하였습니다."),
+
 
     // [GET] /c
     GET_CATEGORY_SUCCESS(true, 1059, "카테고리 조회에 성공하였습니다."),

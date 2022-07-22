@@ -248,33 +248,31 @@ public class UserController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
             //////////////////////////////////////  JWT
-            List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_sold_out(userId);
+            List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_fin(userId);
             return new BaseResponse<>(getUserProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
 
-
-
-//    /**
-//     * 회원 1명 조회 API
-//     * [GET] /users/:userIdx
-//     */
-//    // Path-variable
+//    // 찜하기
 //    @ResponseBody
-//    @GetMapping("/{userId}") // (GET) 127.0.0.1:9000/app/users/:userIdx
-//    public BaseResponse<GetUserRes> getUser(@PathVariable("userId") int userId) {
-//        // @PathVariable RESTful(URL)에서 명시된 파라미터({})를 받는 어노테이션, 이 경우 userId값을 받아옴.
-//        //  null값 or 공백값이 들어가는 경우는 적용하지 말 것
-//        //  .(dot)이 포함된 경우, .을 포함한 그 뒤가 잘려서 들어감
-//        // Get Users
+//    @PostMapping("/heart-list/{userId}/{productId}")
+//    public BaseResponse<PostHeartRes> addHeartList(@PathVariable int userId, @PathVariable int productId) {
 //        try {
-//            GetUserRes getUserRes = userProvider.getUser(userId);
-//            return new BaseResponse<>(getUserRes);
+//            // 해당 회원이 맞는지 검사
+//            //////////////////////////////////////  JWT
+//            //jwt에서 idx 추출
+//            int userIdByJwt = jwtService.getUserId();
+//            //userId와 접근한 유저가 같은지 확인
+//            if (userId != userIdByJwt) {
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
+//            //////////////////////////////////////  JWT
+//            PostHeartRes postHeartRes = userProvider.addHeartList(userId, productId);
+//            return new BaseResponse<>(ADD_HEARTLIST_SUCCESS, postHeartRes);
 //        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
+//            return new BaseResponse<>(exception.getStatus());
 //        }
-//
 //    }
 }
