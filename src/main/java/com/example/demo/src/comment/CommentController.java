@@ -46,6 +46,11 @@ public class CommentController {
             if(userId != jwtService.getUserId()){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
+
+            // 댓글 길이 제한
+            if(postCommentReq.getContents().length() < 1 && postCommentReq.getContents().length() > 100){
+                return new BaseResponse<>(WRONG_CONTENTS_LENGTH);
+            }
             PostCommentRes postCommentRes = commentService.createComment(productId, userId, postCommentReq);
             return new BaseResponse<>(POST_COMMENT_SUCCESS, postCommentRes);
         } catch (BaseException exception){

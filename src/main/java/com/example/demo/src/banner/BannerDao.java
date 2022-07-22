@@ -18,6 +18,10 @@ public class BannerDao {
 
     private JdbcTemplate jdbcTemplate;
 
+    public int getBannerLastNum(){
+        String getBannerLastNumQuery = "select count(*) from banner";
+        return this.jdbcTemplate.queryForObject(getBannerLastNumQuery, int.class);
+    }
     @Autowired //readme 참고
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
