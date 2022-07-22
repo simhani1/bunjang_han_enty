@@ -288,8 +288,8 @@ public class ProductDao {
     }
 
     public List<Integer> getProductIdList(int userId){
-        String getProductIdListByUserId = "select productId from product where userId="+ userId +"order by productId desc";
-        return this.jdbcTemplate.queryForList(getProductIdListByUserId, int.class);
+        String getProductIdListByUserId = "select productId from product where userId="+ userId +" order by productId desc";
+        return this.jdbcTemplate.queryForList(getProductIdListByUserId, Integer.class);
     }
 
 }

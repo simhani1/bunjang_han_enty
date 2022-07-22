@@ -119,22 +119,21 @@ public class ProductProvider {
         }
     }
 
+    /**
+     * 특정 유저 판매중 상품
+     * @param userId
+     * @return
+     * @throws BaseException
+     */
     public List<GetProductRes> getSellProductByUserId(int userId) throws BaseException {
-//        if (userId < 0){
-//            throw new BaseException(NO_EXISTED_USER);
-//        }
-//        if (productId < 0 || productId > getLastProductId()){
-//            throw new BaseException(NO_EXISTED_PRODUCT);
-//        }
-//        if (productDao.getProductIsDeleted(productId)){
-//            throw new BaseException(DELETED_PRODUCT);
-//        }
         try{
             List<GetProductRes> getProductRes = new ArrayList<>();
             List<Integer> productIdList = productDao.getProductIdList(userId);
-            System.out.println("사이즈, 0번째 값:" + productIdList.size() + "," + productIdList.get(0));
+
             for(int i = 0; i < productIdList.size(); i++){
-                getProductRes.add(productDao.getProductById(userId,productIdList.get(i)));
+                if(!productDao.getProductIsDeleted(productIdList.get(i))){
+                    getProductRes.add(productDao.getProductById(userId,productIdList.get(i)));
+                }
             }
             return getProductRes;
         } catch (Exception exception){

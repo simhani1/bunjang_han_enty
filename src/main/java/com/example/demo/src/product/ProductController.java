@@ -222,6 +222,11 @@ public class ProductController {
         }
     }
 
+    /**
+     *특정 유저 판매중 상품
+     * @param userId
+     * @return
+     */
     @GetMapping("/sell/{userId}")
     public BaseResponse<List<GetProductRes>> getSellProductByUserId(@PathVariable("userId") int userId){
         try{
