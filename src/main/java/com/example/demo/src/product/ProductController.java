@@ -129,6 +129,7 @@ public class ProductController {
                                                       @PathVariable("productId") int productId){
 
         try{
+            System.out.println(productProvider.getLastProductId());
             GetProductRes getProductRes = productProvider.getProductById(userId,productId);
             return new BaseResponse<>(GET_PRODUCT_SUCCESS, getProductRes);
         } catch (BaseException exception){
@@ -222,27 +223,4 @@ public class ProductController {
         }
     }
 
-
-
-    //        String dateFormatQuery =
-//                "case when timestampdiff(second , product.updatedAt, current_timestamp) <60 " +
-//                "then concat(timestampdiff(second, product.updatedAt, current_timestamp),' 초 전') " +
-//                "when timestampdiff(minute , product.updatedAt, current_timestamp) <60 " +
-//                "then concat(timestampdiff(minute, product.updatedAt, current_timestamp),' 분 전') " +
-//                "when timestampdiff(hour , product.updatedAt, current_timestamp) <24 " +
-//                "then concat(timestampdiff(hour, product.updatedAt, current_timestamp),' 시간 전') " +
-//                "else concat(datediff(current_timestamp, product.updatedAt),' 일 전') ";
-
-
-    //        String getProductByIdQuery =
-//                "select product.productId, product.condition, product.price, product.pay, product.title, user.location, " +
-//                        dateFormatQuery + "end as 'updatedAt', " +
-//                        "product.isUsed, product.amount, product.shippingFee, " +
-//                        "product.changeable, product.contents, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, " +
-//                        "user.profileImgUrl, user.nickname " +
-//                        "from product " +
-//                        "left join user on user.userId = product.userId " +
-//                        "left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId " +
-//                        "where product.productId = ? " +
-//                        "order by product.updatedAt desc";
 }

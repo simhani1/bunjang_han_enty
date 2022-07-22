@@ -113,6 +113,11 @@ public enum BaseResponseStatus {
     NO_EXISTED_FIRST_CATEGORY(false, 3600, "상위 카테고리가 존재하지 않습니다."),
     NO_EXISTED_LAST_CATEGORY(false,3601, "하위 카테고리가 존재하지 않습니다."),
 
+    // [GET] product
+    NO_EXISTED_USER(false,3602,"등록되지 않은 유저입니다."),
+    NO_EXISTED_PRODUCT(false, 3603, "등록되지 않은 상품입니다."),
+
+    DELETED_PRODUCT(false, 3604, "삭제된 상품입니다."),
     // 상품 생성, 조회, 수정
     MODIFY_PRODUCT_IS_DELETED_FAILED(false,3996,"이 상품을 삭제할 수 없습니다."),
     MODIFY_PRODUCT_CONDITION_FAILED(false,3997,"상태변경을 실패하였습니다."),

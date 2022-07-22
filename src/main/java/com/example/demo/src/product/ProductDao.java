@@ -147,6 +147,11 @@ public class ProductDao {
         String getFollowStatusQuery = "select status from followList where followUserId="+userId+" and userId="+productUserId;
         Boolean follow = this.jdbcTemplate.queryForObject(getFollowStatusQuery, Boolean.class);
 
+//        Boolean finalFollow = follow;
+//        if(finalFollow == null){
+//            follow = false;
+//        }
+
         // Get CommentCount
         String getCommentCountQuery = "select count(productId) from comment where productId="+productId+" and isDeleted=0";
         int commentCount = this.jdbcTemplate.queryForObject(getCommentCountQuery,int.class);
@@ -191,20 +196,6 @@ public class ProductDao {
         String getLastProductIdQuery = "select count(*) from product";
         return this.jdbcTemplate.queryForObject(getLastProductIdQuery, int.class);
     }
-
-
-    //    private List<String> productImgs;
-    //    private String title;
-    //    private int firstCategoryId;
-    //    private int lastCategoryId;
-    //    private List<String> tags;
-    //    private int price;
-    //    private String contents;
-    //    private int amount;
-    //    private Boolean isUsed;
-    //    private Boolean changeable;
-    //    private Boolean pay;
-    //    private Boolean shippingFee;
 
     public int modifyProduct(int userId, int productId, PatchProductReq patchProductReq){
 
@@ -289,5 +280,10 @@ public class ProductDao {
         Object[] modifyProductIsDeletedParams = new Object[]{isDeleted, productId, userId};
 
         return this.jdbcTemplate.update(modifyProductIsDeletedQuery, modifyProductIsDeletedParams);
+    }
+
+    public Boolean getProductIsDeleted(int productId){
+        String getProductIsDeleted = "select product.isDeleted from product where productId="+productId;
+        return this.jdbcTemplate.queryForObject(getProductIsDeleted,Boolean.class);
     }
 }
