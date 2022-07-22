@@ -3,6 +3,7 @@ package com.example.demo.src.user;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.config.secret.Secret;
+import com.example.demo.src.product.model.GetProductIdRes;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
@@ -11,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -71,7 +74,12 @@ public class UserProvider {
     // 본인의 판매중 상품 조회
     public List<GetUserProductRes> getUserProductRes_sel(int userId) throws BaseException {
         try {
-            List<GetUserProductRes> getUserProductRes = userDao.getUserProductRes_sel(userId);
+            List<GetUserProductRes> getUserProductRes = new ArrayList<>();
+            // 해당 사용자가 판매중인 상품 id 값을 리스트에 저장
+            List<GetProductIdRes> productsId = userDao.getProductId(userId, "sel");
+            for(GetProductIdRes obj : productsId){
+                getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "sel"));
+            }
             return getUserProductRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -81,7 +89,12 @@ public class UserProvider {
     // 본인의 예약중 상품 조회
     public List<GetUserProductRes> getUserProductRes_res(int userId) throws BaseException {
         try {
-            List<GetUserProductRes> getUserProductRes = userDao.getUserProductRes_res(userId);
+            List<GetUserProductRes> getUserProductRes = new ArrayList<>();
+            // 해당 사용자의 예약중인 상품 id 값을 리스트에 저장
+            List<GetProductIdRes> productsId = userDao.getProductId(userId,"res");
+            for(GetProductIdRes obj : productsId){
+                getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "res"));
+            }
             return getUserProductRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -89,33 +102,40 @@ public class UserProvider {
     }
 
     // 본인의 판매완료 상품 조회
-    public List<GetUserProductRes> getUserProductRes_sold_out(int userId) throws BaseException {
+    public List<GetUserProductRes> getUserProductRes_fin(int userId) throws BaseException {
         try {
-            List<GetUserProductRes> getUserProductRes = userDao.getUserProductRes_sold_out(userId);
+            List<GetUserProductRes> getUserProductRes = new ArrayList<>();
+            // 해당 사용자의 판매완료 상품 id 값을 리스트에 저장
+            List<GetProductIdRes> productsId = userDao.getProductId(userId, "fin");
+            for(GetProductIdRes obj : productsId){
+                getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "fin"));
+            }
             return getUserProductRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-//
-//    // 해당 nickname을 갖는 User들의 정보 조회
-//    public List<GetUserRes> getUsersByNickname(String nickname) throws BaseException {
-//        try {
-//            List<GetUserRes> getUsersRes = userDao.getUsersByNickname(nickname);
-//            return getUsersRes;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
+
+//    // 찜하기
+//    public PostHeartRes addHeartList(int userId, int productId) throws BaseException {
+//        // 본인의 물건인 경우 찜하기 불가능
+//        if(userDao.checkProductOwner(userId, productId)){
+//            throw new BaseException();
 //        }
-//    }
-//
-//
-//    // 해당 userIdx를 갖는 User의 정보 조회
-//    public GetUserRes getUser(int userId) throws BaseException {
+//        User user = userDao.getPwd(postLoginReq);
+//        String decryptPwd;
 //        try {
-//            GetUserRes getUserRes = userDao.getUser(userId);
-//            return getUserRes;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
+//            decryptPwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(user.getPwd()); // 복호화
+//            // 회원가입할 때 비밀번호가 암호화되어 저장되었기 떄문에 로그인을 할때도 암호화된 값끼리 비교를 해야합니다.
+//        } catch (Exception ignored) {
+//            throw new BaseException(PASSWORD_DECRYPTION_ERROR);
+//        }
+//        if (postLoginReq.getPwd().equals(decryptPwd)) { //비말번호가 일치한다면 userId를 가져온다.
+//            int userId = user.getUserId();
+//            String jwt = jwtService.createJwt(userId);
+//            return new PostLoginRes(userId,jwt);
+//        } else { // 비밀번호가 다르다면 에러메세지를 출력한다.
+//            throw new BaseException(FAILED_TO_LOGIN);
 //        }
 //    }
 

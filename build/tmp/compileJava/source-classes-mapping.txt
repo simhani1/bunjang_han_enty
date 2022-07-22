@@ -8,6 +8,8 @@ com/example/demo/src/address/AddressController.java
  com.example.demo.src.address.AddressController
 com/example/demo/config/BaseResponseStatus.java
  com.example.demo.config.BaseResponseStatus
+com/example/demo/src/product/model/GetProductIdRes.java
+ com.example.demo.src.product.model.GetProductIdRes
 com/example/demo/src/product/ProductDao.java
  com.example.demo.src.product.ProductDao
 com/example/demo/src/firstCategory/model/GetFirstCategoryRes.java
@@ -30,6 +32,8 @@ com/example/demo/src/user/model/PatchUserBirth.java
  com.example.demo.src.user.model.PatchUserBirth
 com/example/demo/src/account/model/DeleteAccountRes.java
  com.example.demo.src.account.model.DeleteAccountRes
+com/example/demo/src/user/model/PostHeartRes.java
+ com.example.demo.src.user.model.PostHeartRes
 com/example/demo/src/productImg/model/GetProductImgRes.java
  com.example.demo.src.productImg.model.GetProductImgRes
 com/example/demo/src/lastCategory/LastCategoryService.java

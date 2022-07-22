@@ -1,6 +1,7 @@
 package com.example.demo.src.user;
 
 
+import com.example.demo.src.product.model.GetProductIdRes;
 import com.example.demo.src.productImg.model.GetProductImgRes;
 import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -116,119 +118,53 @@ public class UserDao {
         return this.jdbcTemplate.update(withdrawlQuery, withdrawlParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
     }
 
-    // 본인의 판매중 상품 조회
-    public List<GetUserProductRes> getUserProductRes_sel(int userId) {
-        // 해당 상품의 사진 다 넘기기
-        String getProductImgQuery = "select\n" +
-                "    productImgUrl\n" +
-                "from productImg\n" +
-                "inner join product on product.productId = productImg.productId\n" +
-                "where product.condition = 'sel' and userId = ?";
-        int getProductImgParam = userId;
-        List<GetProductImgRes> getProductImg = this.jdbcTemplate.query(getProductImgQuery,
-                (rs,rowNum) -> new GetProductImgRes(
-                        rs.getString("productImgUrl")),
-                getProductImgParam);
-        // 나머지 정보 넘기기
-        String getUserProductQuery = "select\n" +
-                "    product.pay as 'pay',\n" +
-                "    case when timestampdiff(second , product.updatedAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(second, product.updatedAt, current_timestamp),' 초 전')\n" +
-                "           when timestampdiff(minute , product.updatedAt, current_timestamp) <60\n" +
-                "               then concat(timestampdiff(minute, product.updatedAt, current_timestamp),' 분 전')\n" +
-                "           when timestampdiff(hour , product.updatedAt, current_timestamp) <24\n" +
-                "               then concat(timestampdiff(hour, product.updatedAt, current_timestamp),' 시간 전')\n" +
-                "           else concat(datediff(current_timestamp, product.updatedAt),' 일 전')\n" +
-                "           end as 'updatedAt',\n" +
-                "    product.title as 'title',\n" +
-                "    product.price as 'price'\n" +
-                "from product\n" +
-                "where product.userId = ? and product.`condition`= 'sel'\n" +
-                "order by product.updatedAt desc";
-        int getUserProductParams = userId;
-        return this.jdbcTemplate.query(getUserProductQuery,
-                (rs, rowNum) -> new GetUserProductRes(
-                        getProductImg,
-                        rs.getBoolean("pay"),
-                        rs.getString("updatedAt"),
-                        rs.getString("title"),
-                        rs.getInt("price")),
-                getUserProductParams);
+    // 해당 유저의 판매중/예약중/판매완료 물건 id값을 저장
+    public List<GetProductIdRes> getProductId(int userId, String condition){
+        // 해당 사용자가 등록한 판매글 id를 리스트에 저장
+        String getProductIdQuery = "select productId from product where userId = ? and `condition` = ?";
+        Object[] getProductIdParams = new Object[]{userId,condition};
+        List<GetProductIdRes> getProductId = this.jdbcTemplate.query(getProductIdQuery,
+                (rs, rowNum) -> new GetProductIdRes(
+                        rs.getInt("productId")),
+                getProductIdParams);
+        return getProductId;
     }
 
-    // 본인의 예약중 상품 조회
-    public List<GetUserProductRes> getUserProductRes_res(int userId) {
+    // 해당 유저의 판매중/예약중/판매완료 물건 조회
+    public GetUserProductRes getUserProductRes(int userId, int productId, String condition) {
         // 해당 상품의 사진 다 넘기기
         String getProductImgQuery = "select\n" +
                 "    productImgUrl\n" +
                 "from productImg\n" +
-                "inner join product on product.productId = productImg.productId\n" +
-                "where product.condition = 'sel' and userId = ?";
-        int getProductImgParam = userId;
+                "inner join product on productImg.productId = product.productId\n" +
+                "where product.`condition` = 'sel' and product.userId = ? and productImg.productId = ?";
+        Object[] getProductImgParam = new Object[]{userId, productId};
         List<GetProductImgRes> getProductImg = this.jdbcTemplate.query(getProductImgQuery,
                 (rs,rowNum) -> new GetProductImgRes(
                         rs.getString("productImgUrl")),
                 getProductImgParam);
         // 나머지 정보 넘기기
         String getUserProductQuery = "select\n" +
+                "    product.productId as 'productId',\n" +
                 "    product.pay as 'pay',\n" +
                 "    case when timestampdiff(second , product.updatedAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(second, product.updatedAt, current_timestamp),' 초 전')\n" +
-                "           when timestampdiff(minute , product.updatedAt, current_timestamp) <60\n" +
-                "               then concat(timestampdiff(minute, product.updatedAt, current_timestamp),' 분 전')\n" +
-                "           when timestampdiff(hour , product.updatedAt, current_timestamp) <24\n" +
-                "               then concat(timestampdiff(hour, product.updatedAt, current_timestamp),' 시간 전')\n" +
-                "           else concat(datediff(current_timestamp, product.updatedAt),' 일 전')\n" +
-                "           end as 'updatedAt',\n" +
+                "        then concat(timestampdiff(second, product.updatedAt, current_timestamp),' 초 전')\n" +
+                "        when timestampdiff(minute , product.updatedAt, current_timestamp) <60\n" +
+                "            then concat(timestampdiff(minute, product.updatedAt, current_timestamp),' 분 전')\n" +
+                "        when timestampdiff(hour , product.updatedAt, current_timestamp) <24\n" +
+                "            then concat(timestampdiff(hour, product.updatedAt, current_timestamp),' 시간 전')\n" +
+                "        else concat(datediff(current_timestamp, product.updatedAt),' 일 전')\n" +
+                "        end as 'updatedAt',\n" +
                 "    product.title as 'title',\n" +
                 "    product.price as 'price'\n" +
                 "from product\n" +
-                "where product.userId = ? and product.`condition`= 'res'\n" +
+                "where product.userId = ? and product.productId = ? and product.`condition`= ?\n" +
                 "order by product.updatedAt desc";
-        int getUserProductParams = userId;
-        return this.jdbcTemplate.query(getUserProductQuery,
+        Object[] getUserProductParams = new Object[]{userId, productId, condition};
+        return this.jdbcTemplate.queryForObject(getUserProductQuery,
                 (rs, rowNum) -> new GetUserProductRes(
                         getProductImg,
-                        rs.getBoolean("pay"),
-                        rs.getString("updatedAt"),
-                        rs.getString("title"),
-                        rs.getInt("price")),
-                getUserProductParams);
-    }
-
-    // 본인의 판매완료 상품 조회
-    public List<GetUserProductRes> getUserProductRes_sold_out(int userId) {
-        // 해당 상품의 사진 다 넘기기
-        String getProductImgQuery = "select\n" +
-                "    productImgUrl\n" +
-                "from productImg\n" +
-                "inner join product on product.productId = productImg.productId\n" +
-                "where product.condition = 'sel' and userId = ?";
-        int getProductImgParam = userId;
-        List<GetProductImgRes> getProductImg = this.jdbcTemplate.query(getProductImgQuery,
-                (rs,rowNum) -> new GetProductImgRes(
-                        rs.getString("productImgUrl")),
-                getProductImgParam);
-        // 나머지 정보 넘기기
-        String getUserProductQuery = "select\n" +
-                "    product.pay as 'pay',\n" +
-                "    case when timestampdiff(second , product.updatedAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(second, product.updatedAt, current_timestamp),' 초 전')\n" +
-                "           when timestampdiff(minute , product.updatedAt, current_timestamp) <60\n" +
-                "               then concat(timestampdiff(minute, product.updatedAt, current_timestamp),' 분 전')\n" +
-                "           when timestampdiff(hour , product.updatedAt, current_timestamp) <24\n" +
-                "               then concat(timestampdiff(hour, product.updatedAt, current_timestamp),' 시간 전')\n" +
-                "           else concat(datediff(current_timestamp, product.updatedAt),' 일 전')\n" +
-                "           end as 'updatedAt',\n" +
-                "    product.title as 'title',\n" +
-                "    product.price as 'price'\n" +
-                "from product\n" +
-                "where product.userId = ? and product.`condition`= 'fin'\n" +
-                "order by product.updatedAt desc";
-        int getUserProductParams = userId;
-        return this.jdbcTemplate.query(getUserProductQuery,
-                (rs, rowNum) -> new GetUserProductRes(
-                        getProductImg,
+                        rs.getInt("productId"),
                         rs.getBoolean("pay"),
                         rs.getString("updatedAt"),
                         rs.getString("title"),
@@ -298,4 +234,8 @@ public class UserDao {
                 String.class,
                 checkStatusParams);  // 쿼리문의 결과(활동중: active, 비활성: inactive)를 문자열로 반환
     }
+//    public int checkProductOwner(int userId, int productId){
+//        String checkProductOwnerQuery = "select exists(select productId from product where userId = ? and productId = ?)";
+//        Object[] checkProductOwnerParams = new Object[]
+//    }
 }

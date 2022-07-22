@@ -13,6 +13,7 @@ import java.util.List;
 
 public class GetUserProductRes {
     private List<GetProductImgRes> productImgs;
+    private int productId;
     private boolean pay;
     private String updatedAt;
     private String title;
