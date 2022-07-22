@@ -249,4 +249,32 @@ public class ProductDao {
         return this.jdbcTemplate.update(modifyProductQuery,modifyProductParams);
 
     }
+
+    /**
+     * 상품 상태변경
+     * @param userId
+     * @param productId
+     * @param condition
+     * @return
+     */
+    public int modifyProductCondition(int userId, int productId, String condition){
+        String modifyProductConditionQuery = "update product set product.condition=? where productId=? and userId=?";
+        Object[] modifyProductConditionParams = new Object[]{condition, productId, userId};
+
+        return this.jdbcTemplate.update(modifyProductConditionQuery, modifyProductConditionParams);
+    }
+
+    /**
+     * 상품 삭제 여부
+     * @param userId
+     * @param productId
+     * @param isDeleted
+     * @return
+     */
+    public int modifyProductIsDeleted(int userId, int productId, Boolean isDeleted){
+        String modifyProductIsDeletedQuery = "update product set isDeleted=? where productId=? and userId=?";
+        Object[] modifyProductIsDeletedParams = new Object[]{isDeleted, productId, userId};
+
+        return this.jdbcTemplate.update(modifyProductIsDeletedQuery, modifyProductIsDeletedParams);
+    }
 }

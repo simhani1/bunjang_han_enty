@@ -54,4 +54,40 @@ public class ProductService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    /**
+     * 상품 상태변경
+     * @param userId
+     * @param productId
+     * @param condition
+     * @throws BaseException
+     */
+    public void modifyProductCondition(int userId, int productId, String condition) throws BaseException {
+        try{
+            int result = productDao.modifyProductCondition(userId, productId, condition);
+            if(result == 0){
+                throw new BaseException(MODIFY_PRODUCT_CONDITION_FAILED);
+            }
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    /**
+     * 상품 삭제여부
+     * @param userId
+     * @param productId
+     * @param isDeleted
+     * @throws BaseException
+     */
+    public void modifyProductIsDeleted(int userId, int productId, Boolean isDeleted) throws BaseException {
+        try{
+            int result = productDao.modifyProductIsDeleted(userId, productId, isDeleted);
+            if(result == 0){
+                throw new BaseException(MODIFY_PRODUCT_IS_DELETED_FAILED);
+            }
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

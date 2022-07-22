@@ -29,12 +29,15 @@ public enum BaseResponseStatus {
     GET_CATEGORY_SUCCESS(true, 1059, "카테고리 조회에 성공하였습니다."),
     GET_LAST_CATEGORY_SUCCESS(true, 1060, "하위 카테고리 조회에 성공하였습니다."),
 
-    POST_COMMENT_SUCCESS(true,1999,"댓글을 등록하였습니다."),
-    GET_COMMENTS_SUCCESS(true,1998, "댓글조회에 성공하였습니다."),
-
-    COMMENT_DELETE_SUCCESS(true,1997,"댓글을 삭제하였습니다."),
-
+    MODIFY_PRODUCT_IS_DELETED_SUCCESS(true,1994,"상품이 삭제되었습니다."),
+    MODIFY_PRODUCT_CONDITION_SUCCESS(true,1995,"상태변경이 완료되었습니다."),
     MODIFY_PRODUCT_SUCCESS(true,1996, "수정이 완료되었습니다."),
+    COMMENT_DELETE_SUCCESS(true,1997,"댓글을 삭제하였습니다."),
+    GET_COMMENTS_SUCCESS(true,1998, "댓글조회에 성공하였습니다."),
+    POST_COMMENT_SUCCESS(true,1999,"댓글을 등록하였습니다."),
+
+
+
     /**
      * 2000 : Request 오류
      */
@@ -96,6 +99,9 @@ public enum BaseResponseStatus {
     // 하위 카테고리 조회(3600 ~ 3610)
     NO_EXISTED_FIRST_CATEGORY(false, 3600, "상위 카테고리가 존재하지 않습니다."),
 
+    // 상품 생성, 조회, 수정
+    MODIFY_PRODUCT_IS_DELETED_FAILED(false,3996,"이 상품을 삭제할 수 없습니다."),
+    MODIFY_PRODUCT_CONDITION_FAILED(false,3997,"상태변경을 실패하였습니다."),
     MODIFY_PRODUCT_FAILED(false,3998,"상품 수정을 실패했습니다."),
     INVALID_USER_DELETE_COMMENT(false,3999,"댓글을 삭제할 권한이 없습니다."),
 

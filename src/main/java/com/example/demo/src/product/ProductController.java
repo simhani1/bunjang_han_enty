@@ -4,6 +4,7 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.product.model.*;
 import com.example.demo.utils.JwtService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -119,8 +120,51 @@ public class ProductController {
         }
     }
 
-//    @PatchMapping("/condition/{userId}/{productId")
-//    public BaseResponse<String> modify
+    /**
+     * 상품 상태 변경
+     * @param userId
+     * @param productId
+     * @param condition
+     * @return
+     */
+    @PatchMapping("/{userId}/{productId}/condition")
+    public BaseResponse<String> modifyProductCondition(@PathVariable("userId") int userId,
+                                                       @PathVariable("productId") int productId,
+                                                       @RequestParam String condition){
+        try{
+            if(userId != jwtService.getUserId()){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            productService.modifyProductCondition(userId, productId, condition);
+            return new BaseResponse<>(MODIFY_PRODUCT_CONDITION_SUCCESS);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 상품 삭제
+     * @param userId
+     * @param productId
+     * @param isDeleted
+     * @return
+     */
+    @PatchMapping("/{userId}/{productId}/isDeleted")
+    public BaseResponse<String> modifyProductCondition(@PathVariable("userId") int userId,
+                                                       @PathVariable("productId") int productId,
+                                                       @RequestParam Boolean isDeleted){
+        try{
+            if(userId != jwtService.getUserId()){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            productService.modifyProductIsDeleted(userId, productId, isDeleted);
+            return new BaseResponse<>(MODIFY_PRODUCT_IS_DELETED_SUCCESS);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 
 }
