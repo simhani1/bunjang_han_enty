@@ -3,6 +3,8 @@ package com.example.demo.src.product;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.config.BaseResponseStatus;
+import com.example.demo.src.firstCategory.FirstCategoryProvider;
+import com.example.demo.src.lastCategory.LastCategoryProvider;
 import com.example.demo.src.product.model.PatchProductReq;
 import com.example.demo.src.product.model.PostProductReq;
 import com.example.demo.src.product.model.PostProductRes;
@@ -14,9 +16,15 @@ import static com.example.demo.config.BaseResponseStatus.*;
 public class ProductService {
 
     final private ProductDao productDao;
+    private final ProductProvider productProvider;
+    private final FirstCategoryProvider firstCategoryProvider;
+    private final LastCategoryProvider lastCategoryProvider;
 
-    public ProductService(ProductDao productDao){
+    public ProductService(ProductDao productDao, ProductProvider productProvider, FirstCategoryProvider firstCategoryProvider, LastCategoryProvider lastCategoryProvider){
         this.productDao = productDao;
+        this.productProvider = productProvider;
+        this.firstCategoryProvider = firstCategoryProvider;
+        this.lastCategoryProvider = lastCategoryProvider;
     }
 
     /**
@@ -27,10 +35,17 @@ public class ProductService {
      * @throws BaseException
      */
     public PostProductRes createProduct(int userId, PostProductReq postProductReq) throws BaseException {
+        // 상위 카테고리 음수이거나 없는 카테고리일때
+        if(postProductReq.getFirstCategoryId() < 0 || postProductReq.getFirstCategoryId() > firstCategoryProvider.getCategoryCount()){
+            throw new BaseException(NO_EXISTED_FIRST_CATEGORY);
+        }
+        // 하위 카테고리 음수이거나 없는 카테고리일때
+        if(postProductReq.getLastCategoryId() < 0 || postProductReq.getLastCategoryId() > lastCategoryProvider.getLastCategoryIdCount()){
+            throw new BaseException(NO_EXISTED_LAST_CATEGORY);
+        }
         try{
             int productId = productDao.createProduct(userId, postProductReq);
             return new PostProductRes(productId);
-
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

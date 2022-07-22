@@ -18,6 +18,11 @@ public class LastCategoryDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    /**
+     * 하위 카테고리 조회
+     * @param firstCategoryId
+     * @return
+     */
     public List<GetLastCategoryRes> getLastCategories(int firstCategoryId){
         String getLastCategoryQuery =
                 "select firstCategory.firstCategoryId, firstCategory.firstCategory, " +
@@ -38,5 +43,10 @@ public class LastCategoryDao {
                         rs.getString("lastCategory"),
                         rs.getString("lastCategoryImgUrl")),
                 getCategoryParams);
+    }
+
+    public int getLastCategoryIdCount(){
+        String getLastCategoryIdCountQuery = "select count(*) from lastCategory";
+        return this.jdbcTemplate.queryForObject(getLastCategoryIdCountQuery, int.class);
     }
 }

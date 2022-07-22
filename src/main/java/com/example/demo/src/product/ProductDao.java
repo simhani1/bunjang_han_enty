@@ -79,15 +79,28 @@ public class ProductDao {
      */
     public GetProductRes getProductById(int userId, int productId){
 
+        String dateFormatQuery =
+                "case when timestampdiff(second , product.updatedAt, current_timestamp) <60 " +
+                "then concat(timestampdiff(second, product.updatedAt, current_timestamp),'초 전') " +
+                "when timestampdiff(minute , product.updatedAt, current_timestamp) <60 " +
+                "then concat(timestampdiff(minute, product.updatedAt, current_timestamp),'분 전') " +
+                "when timestampdiff(hour , product.updatedAt, current_timestamp) <24 " +
+                "then concat(timestampdiff(hour, product.updatedAt, current_timestamp),'시간 전') " +
+                "when timestampdiff(day , product.updatedAt, current_timestamp) <365 " +
+                "then concat(timestampdiff(day, product.updatedAt, current_timestamp),'일 전') " +
+                "else concat(timestampdiff(year, current_timestamp, product.updatedAt),' 년 전') ";
+
         String getProductByIdQuery =
-                "select product.productId, product.condition, product.price, product.pay, product.title, " +
-                        "user.location, product.updatedAt, product.isUsed, product.amount, product.shippingFee, " +
+                "select product.productId, product.condition, product.price, product.pay, product.title, user.location, " +
+                        dateFormatQuery + "end as 'updatedAt', " +
+                        "product.isUsed, product.amount, product.shippingFee, " +
                         "product.changeable, product.contents, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, " +
                         "user.profileImgUrl, user.nickname " +
-                "from product " +
-                "left join user on user.userId = product.userId " +
-                "left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId " +
-                "where product.productId = ?";
+                        "from product " +
+                        "left join user on user.userId = product.userId " +
+                        "left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId " +
+                        "where product.productId = ? " +
+                        "order by product.updatedAt desc";
         int getProductByIdParams = productId;
 
 
@@ -148,7 +161,7 @@ public class ProductDao {
                         rs.getBoolean("pay"),
                         rs.getString("title"),
                         rs.getString("location"),
-                        rs.getTimestamp("updatedAt").toLocalDateTime(),
+                        rs.getString("updatedAt"),
                         viewCnt,
                         heartCnt,
                         chatCnt,
