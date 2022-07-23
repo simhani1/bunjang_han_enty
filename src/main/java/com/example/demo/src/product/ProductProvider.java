@@ -70,12 +70,23 @@ public class ProductProvider {
             List<GetProductRes> getProductRes = new ArrayList<>();
 
             // paging
-            for(int i = (amount*page)+1; i < (amount*(page+1))+1; i++){
+//            for(int i = (amount*page)+1; i < (amount*(page+1))+1; i++){
+//                // 삭제 된 상품 예외처리
+//                if(!productDao.getProductIsDeleted(i)){
+//                    // i값이 productId값을 넘어갈때 오류나는것을 방지
+//                    if(i >= getLastProductId()){
+//                        getProductRes.add(productDao.getProductById(1,i));
+//                        return getProductRes;
+//                    }
+//                    getProductRes.add(productDao.getProductById(1,i));
+//                }
+//            }
 
+            for(int i = getLastProductId()-(amount*page); i > getLastProductId()-(amount*(page+1)); i--){
                 // 삭제 된 상품 예외처리
                 if(!productDao.getProductIsDeleted(i)){
                     // i값이 productId값을 넘어갈때 오류나는것을 방지
-                    if(i >= getLastProductId()){
+                    if(i <= 1){
                         getProductRes.add(productDao.getProductById(1,i));
                         return getProductRes;
                     }
@@ -83,36 +94,6 @@ public class ProductProvider {
                 }
             }
 
-            return getProductRes;
-        } catch (Exception exception){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    public List<GetProductRes> getProductsByUserId(int page) throws BaseException{
-        int amount = 6;
-
-        // 상품이 아예 존재하지 않을 때
-        if(getLastProductId() < page*amount){
-            throw new BaseException(EXTRA_PAGE);
-        }
-
-        try{
-            List<GetProductRes> getProductRes = new ArrayList<>();
-
-            // paging
-            for(int i = (amount*page)+1; i < (amount*(page+1))+1; i++){
-
-                // 삭제 된 상품 예외처리
-                if(!productDao.getProductIsDeleted(i)){
-                    // i값이 productId값을 넘어갈때 오류나는것을 방지
-                    if(i >= getLastProductId()){
-                        getProductRes.add(productDao.getProductById(1,i));
-                        return getProductRes;
-                    }
-                    getProductRes.add(productDao.getProductById(1,i));
-                }
-            }
             return getProductRes;
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);

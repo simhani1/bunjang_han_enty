@@ -92,7 +92,7 @@ public class ProductDao {
                 "else concat(timestampdiff(year, current_timestamp, product.updatedAt),' 년 전') ";
 
         String getProductByIdQuery =
-                "select product.productId, product.condition, product.price, product.pay, product.title, user.location, " +
+                "select product.productId, user.userId, product.condition, product.price, product.pay, product.title, user.location, " +
                         dateFormatQuery + "end as 'updatedAt', " +
                         "product.isUsed, product.amount, product.shippingFee, " +
                         "product.changeable, product.contents, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, " +
@@ -160,6 +160,7 @@ public class ProductDao {
         return this.jdbcTemplate.queryForObject(getProductByIdQuery,
                 (rs, rowNum) -> new GetProductRes(
                         rs.getInt("productId"),
+                        rs.getInt("userId"),
                         rs.getString("condition"),
                         getProductImg,
                         rs.getInt("price"),

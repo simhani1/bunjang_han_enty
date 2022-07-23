@@ -19,6 +19,7 @@ import java.util.List;
 public class GetProductRes {
 
     private int productId;
+    private int userId;
     private String condition;
     private List<GetProductImgRes> productImgs;
     private int price;
