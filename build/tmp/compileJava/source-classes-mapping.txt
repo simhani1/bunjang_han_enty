@@ -116,8 +116,8 @@ com/example/demo/src/user/model/PatchUserPhoneNum.java
  com.example.demo.src.user.model.PatchUserPhoneNum
 com/example/demo/src/lastCategory/LastCategoryController.java
  com.example.demo.src.lastCategory.LastCategoryController
-com/example/demo/src/comment/CommentProvider.java
- com.example.demo.src.comment.CommentProvider
+com/example/demo/src/product/ProductController.java
+ com.example.demo.src.product.ProductController
 com/example/demo/src/lastCategory/LastCategoryDao.java
  com.example.demo.src.lastCategory.LastCategoryDao
 com/example/demo/src/account/model/DeleteAccountReq.java
@@ -190,25 +190,25 @@ com/example/demo/src/account/model/PostAccountRes.java
  com.example.demo.src.account.model.PostAccountRes
 com/example/demo/src/test/Member.java
  com.example.demo.src.test.Member
-com/example/demo/src/comment/CommentDao.java
- com.example.demo.src.comment.CommentDao
+com/example/demo/src/product/model/GetProductRes.java
+ com.example.demo.src.product.model.GetProductRes
 com/example/demo/src/user/model/User.java
  com.example.demo.src.user.model.User
 com/example/demo/src/address/model/PostAddressRes.java
  com.example.demo.src.address.model.PostAddressRes
-com/example/demo/src/comment/model/GetCommentRes.java
- com.example.demo.src.comment.model.GetCommentRes
-com/example/demo/src/product/ProductDao.java
- com.example.demo.src.product.ProductDao
-com/example/demo/src/product/model/GetProductRes.java
- com.example.demo.src.product.model.GetProductRes
 com/example/demo/src/product/ProductProvider.java
  com.example.demo.src.product.ProductProvider
+com/example/demo/src/product/ProductDao.java
+ com.example.demo.src.product.ProductDao
 com/example/demo/src/product/ProductService.java
  com.example.demo.src.product.ProductService
-com/example/demo/src/product/ProductController.java
- com.example.demo.src.product.ProductController
+com/example/demo/src/comment/CommentDao.java
+ com.example.demo.src.comment.CommentDao
+com/example/demo/src/comment/model/GetCommentRes.java
+ com.example.demo.src.comment.model.GetCommentRes
 com/example/demo/src/comment/CommentService.java
  com.example.demo.src.comment.CommentService
 com/example/demo/src/comment/CommentController.java
  com.example.demo.src.comment.CommentController
+com/example/demo/src/comment/CommentProvider.java
+ com.example.demo.src.comment.CommentProvider

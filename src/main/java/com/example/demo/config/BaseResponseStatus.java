@@ -85,6 +85,10 @@ public enum BaseResponseStatus {
     // [POST] comments
     WRONG_CONTENTS_LENGTH(false, 2514, "1 글자 이상 100 글자 이하로 써주세요."),
 
+    // [PATCH] products
+    INVALID_CONDITION(false, 2515, "유효하지 않은 상태명 입니다."),
+
+
     /**
      * 3000 : Response 오류
      */
@@ -127,6 +131,8 @@ public enum BaseResponseStatus {
     DELETED_PRODUCT(false, 3604, "삭제된 상품입니다."),
     EXTRA_PAGE(false, 3605, "해당 페이지에 상품이 존재하지 않습니다."),
 
+    DELETED_COMMENT(false,3993, "이미 삭제된 댓글입니다."),
+    NEGATIVE_COMMENT_ID(false, 3994, "잘못된 댓글 번호입니다."),
     NOT_EXISTED_BANNER(false,3995, "등록된 배너가 없습니다."),
     // 상품 생성, 조회, 수정
     MODIFY_PRODUCT_IS_DELETED_FAILED(false,3996,"이 상품을 삭제할 수 없습니다."),

@@ -79,21 +79,21 @@ public class ProductDao {
      *
      */
     public GetProductRes getProductById(int userId, int productId){
-
+        String FormatData = "product.updatedAt";
         String dateFormatQuery =
-                "case when timestampdiff(second , product.updatedAt, current_timestamp) <60 " +
-                "then concat(timestampdiff(second, product.updatedAt, current_timestamp),'초 전') " +
-                "when timestampdiff(minute , product.updatedAt, current_timestamp) <60 " +
-                "then concat(timestampdiff(minute, product.updatedAt, current_timestamp),'분 전') " +
-                "when timestampdiff(hour , product.updatedAt, current_timestamp) <24 " +
-                "then concat(timestampdiff(hour, product.updatedAt, current_timestamp),'시간 전') " +
-                "when timestampdiff(day , product.updatedAt, current_timestamp) <365 " +
-                "then concat(timestampdiff(day, product.updatedAt, current_timestamp),'일 전') " +
-                "else concat(timestampdiff(year, current_timestamp, product.updatedAt),' 년 전') ";
+                "case when timestampdiff(second , "+FormatData+", current_timestamp) <60 " +
+                "then concat(timestampdiff(second, "+FormatData+", current_timestamp),'초 전') " +
+                "when timestampdiff(minute , "+FormatData+", current_timestamp) <60 " +
+                "then concat(timestampdiff(minute, "+FormatData+", current_timestamp),'분 전') " +
+                "when timestampdiff(hour , "+FormatData+", current_timestamp) <24 " +
+                "then concat(timestampdiff(hour, "+FormatData+", current_timestamp),'시간 전') " +
+                "when timestampdiff(day , "+FormatData+", current_timestamp) <365 " +
+                "then concat(timestampdiff(day, "+FormatData+", current_timestamp),'일 전') " +
+                "else concat(timestampdiff(year, current_timestamp, "+FormatData+"),' 년 전') end as ";
 
         String getProductByIdQuery =
                 "select product.productId, user.userId, product.condition, product.price, product.pay, product.title, user.location, " +
-                        dateFormatQuery + "end as 'updatedAt', " +
+                        dateFormatQuery + "'updatedAt', " +
                         "product.isUsed, product.amount, product.shippingFee, " +
                         "product.changeable, product.contents, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, " +
                         "user.profileImgUrl, user.nickname " +
@@ -273,12 +273,11 @@ public class ProductDao {
      * 상품 삭제 여부
      * @param userId
      * @param productId
-     * @param isDeleted
      * @return
      */
-    public int modifyProductIsDeleted(int userId, int productId, Boolean isDeleted){
-        String modifyProductIsDeletedQuery = "update product set isDeleted=? where productId=? and userId=?";
-        Object[] modifyProductIsDeletedParams = new Object[]{isDeleted, productId, userId};
+    public int modifyProductIsDeleted(int userId, int productId){
+        String modifyProductIsDeletedQuery = "update product set isDeleted=true where productId=? and userId=?";
+        Object[] modifyProductIsDeletedParams = new Object[]{productId, userId};
 
         return this.jdbcTemplate.update(modifyProductIsDeletedQuery, modifyProductIsDeletedParams);
     }
