@@ -184,7 +184,7 @@ public class UserProvider {
             if(result == 1){
                 return new PostHeartRes(status);
             }
-            throw new BaseException(FAILED_TO_ADDHEARTLIST);
+            throw new BaseException(FAILED_TO_ADD_HEARTLIST);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
