@@ -206,7 +206,6 @@ public class ProductController {
      * 상품 삭제
      * @param userId
      * @param productId
-     * @param isDeleted
      * @return
      */
     @PatchMapping("/{userId}/{productId}/isDeleted")

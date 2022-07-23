@@ -137,8 +137,8 @@ public class UserDao {
                 "    productImgUrl\n" +
                 "from productImg\n" +
                 "inner join product on productImg.productId = product.productId\n" +
-                "where product.`condition` = 'sel' and product.userId = ? and productImg.productId = ?";
-        Object[] getProductImgParam = new Object[]{userId, productId};
+                "where product.`condition` = ? and product.userId = ? and productImg.productId = ?";
+        Object[] getProductImgParam = new Object[]{condition,userId, productId};
         List<GetProductImgRes> getProductImg = this.jdbcTemplate.query(getProductImgQuery,
                 (rs,rowNum) -> new GetProductImgRes(
                         rs.getString("productImgUrl")),

@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
-import static com.example.demo.config.BaseResponseStatus.NOT_EXISTED_BANNER;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class BannerProvider {
@@ -33,7 +32,7 @@ public class BannerProvider {
      */
     public List<GetBannerRes> getBanners() throws BaseException {
         if(getBannerLastNum() < 1){
-            throw new BaseException(NOT_EXISTED_BANNER);
+            throw new BaseException(NO_EXISTED_BANNER);
         }
         try {
             List<GetBannerRes> getBannerRes = bannerDao.getBanners();

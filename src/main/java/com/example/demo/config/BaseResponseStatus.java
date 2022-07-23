@@ -27,7 +27,7 @@ public enum BaseResponseStatus {
     ADD_HEARTLIST_SUCCESS(true, 1049, "찜하기에 성공하였습니다."),
 
 
-    // [GET] /c
+    // [GET] /category
     GET_CATEGORY_SUCCESS(true, 1059, "카테고리 조회에 성공하였습니다."),
     GET_LAST_CATEGORY_SUCCESS(true, 1060, "하위 카테고리 조회에 성공하였습니다."),
 
@@ -37,6 +37,9 @@ public enum BaseResponseStatus {
     COMMENT_DELETE_SUCCESS(true,1997,"댓글을 삭제하였습니다."),
     GET_COMMENTS_SUCCESS(true,1998, "댓글조회에 성공하였습니다."),
     POST_COMMENT_SUCCESS(true,1999,"댓글을 등록하였습니다."),
+
+    // [POST] /chat
+    SEND_MESSAGE_SUCCESS(true, 1993, "메세지를 전송하였습니다."),
 
 
 
@@ -88,6 +91,13 @@ public enum BaseResponseStatus {
     // [PATCH] products
     INVALID_CONDITION(false, 2515, "유효하지 않은 상태명 입니다."),
 
+    // [POST] chat
+    REQUEST_REJECT_ROOM_ID(false, 2516, "1 이상의 방 번호를 입력해주세요."),
+    REQUEST_REJECT_MESSAGE_CLASS(false, 2517, "메세지를 문자열로 입력해주세요."),
+    REQUEST_REJECT_MESSAGE_TYPE_CLASS(false, 2518, "메세지 타입을 문자열로 입력해주세요."),
+    EMPTY_MESSAGE(false, 2519, "메세지를 입력해주세요."),
+    EMPTY_MESSAGE_TYPE(false, 2520, "메세지 타입을 입력해주세요."),
+
 
     /**
      * 3000 : Response 오류
@@ -133,13 +143,15 @@ public enum BaseResponseStatus {
 
     DELETED_COMMENT(false,3993, "이미 삭제된 댓글입니다."),
     NEGATIVE_COMMENT_ID(false, 3994, "잘못된 댓글 번호입니다."),
-    NOT_EXISTED_BANNER(false,3995, "등록된 배너가 없습니다."),
+    NO_EXISTED_BANNER(false,3995, "등록된 배너가 없습니다."),
     // 상품 생성, 조회, 수정
     MODIFY_PRODUCT_IS_DELETED_FAILED(false,3996,"이 상품을 삭제할 수 없습니다."),
     MODIFY_PRODUCT_CONDITION_FAILED(false,3997,"상태변경을 실패하였습니다."),
     MODIFY_PRODUCT_FAILED(false,3998,"상품 수정을 실패했습니다."),
     INVALID_USER_DELETE_COMMENT(false,3999,"댓글을 삭제할 권한이 없습니다."),
 
+    // /chat, /room
+    NO_EXISTED_ROOM(false, 3992, "등록되지 않은 채팅방입니다."),
     /**
      * 4000 : Database, Server 오류
      */
