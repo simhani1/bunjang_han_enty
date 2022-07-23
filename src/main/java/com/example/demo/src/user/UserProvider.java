@@ -116,6 +116,16 @@ public class UserProvider {
         }
     }
 
+    // 마이페이지 조회(찜/후기/팔로워/팔로잉)
+    public GetMyPageRes getMyPage(int userId) throws BaseException {
+        try {
+            GetMyPageRes getMyPageRes = userDao.getMyPage(userId);
+            return getMyPageRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 //    // 찜하기
 //    public PostHeartRes addHeartList(int userId, int productId) throws BaseException {
 //        // 본인의 물건인 경우 찜하기 불가능
