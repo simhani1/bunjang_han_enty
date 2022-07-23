@@ -297,24 +297,24 @@ public class UserController {
         }
     }
 
-//    // 찜하기
-//    @ResponseBody
-//    @PostMapping("/heart-list/{userId}/{productId}")
-//    public BaseResponse<PostHeartRes> addHeartList(@PathVariable int userId, @PathVariable int productId) {
-//        try {
-//            // 해당 회원이 맞는지 검사
-//            //////////////////////////////////////  JWT
-//            //jwt에서 idx 추출
-//            int userIdByJwt = jwtService.getUserId();
-//            //userId와 접근한 유저가 같은지 확인
-//            if (userId != userIdByJwt) {
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //////////////////////////////////////  JWT
-//            PostHeartRes postHeartRes = userProvider.addHeartList(userId, productId);
-//            return new BaseResponse<>(ADD_HEARTLIST_SUCCESS, postHeartRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>(exception.getStatus());
-//        }
-//    }
+    // 찜하기
+    @ResponseBody
+    @PostMapping("/heart-list/{userId}/{productId}")
+    public BaseResponse<PostHeartRes> addHeartList(@PathVariable int userId, @PathVariable int productId, @RequestBody PostHeartReq postHeartReq) {
+        try {
+            // 해당 회원이 맞는지 검사
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if (userId != userIdByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            PostHeartRes postHeartRes = userProvider.addHeartList(userId, productId, postHeartReq.isStatus());
+            return new BaseResponse<>(REQ_HEARTLIST_SUCCESS, postHeartRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }
