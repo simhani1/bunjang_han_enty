@@ -155,6 +155,10 @@ public class UserProvider {
 
     // 찜하기
     public PostHeartRes addHeartList(int userId, int productId, boolean status) throws BaseException {
+        // 해당 물건이 존재하는 물건인지 체크
+        if(!userDao.checkProductExist(productId)){
+            throw new BaseException(INVALID_PRODUCTID);
+        }
         // 본인의 물건인 경우 찜하기 불가능
         if(userDao.checkProductOwner(userId, productId) == 1){
             throw new BaseException(YOUR_PRODUCT);
@@ -162,6 +166,10 @@ public class UserProvider {
         // 삭제된 물건인지 체크
         if(userDao.checkProductIsDeleted(productId)){
             throw new BaseException(DELETED_PRODUCT);
+        }
+        // 판매완료 상품인지 체크
+        if(userDao.checkProductCondition(productId)){
+            throw new BaseException(SOLD_OUT_PRODUCT);
         }
         try {
             int result;
@@ -211,7 +219,7 @@ public class UserProvider {
     }
 }
 
-// 상점후기 시간순 정렬 5
+// 상점후기 시간순 정렬
 class GetShopReviewComparator implements Comparator<GetShopReviewRes>{
     @Override
     public int compare(GetShopReviewRes t1, GetShopReviewRes t2) {

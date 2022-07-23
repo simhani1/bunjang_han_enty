@@ -64,9 +64,8 @@ public enum BaseResponseStatus {
     INVALID_ACCOUNT(false, 2022, "올바른 계좌번호를 입력하세요."),
     EMPTY_NAME(false, 2023, "예금주 명을를 확인해주세요."),
     EMPTY_ACCOUNTNUM(false, 2024, "계좌번호를 확인해주세요."),
-
-
-
+    INVALID_PRODUCTID(false, 2030, "올바른 물건 id값을 입력하세요."),
+    SOLD_OUT_PRODUCT(false, 2030, "판매완료 상품입니다."),
     // [POST] products
     EMPTY_PRODUCT_IMG(false, 2500, "사진을 한 개 이상 등록해주세요."),
     EXCESS_PRODUCT_IMG(false,2501, "사진을 12개까지만 등록해주세요."),

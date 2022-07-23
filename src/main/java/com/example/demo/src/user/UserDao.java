@@ -292,6 +292,20 @@ public class UserDao {
         return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 삭제  false: 삭제x
     }
 
+    // 해당 물건이 존재하는 물건인지 체크
+    public boolean checkProductExist(int productId){
+        String getProductIsDeletedQuery = "select exists(select productId from product where productId = ?)";
+        int getProductIsDeletedParams = productId;
+        return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 삭제  false: 삭제x
+    }
+
+    // 판매완료 물건인지 체크
+    public boolean checkProductCondition(int productId){
+        String getProductIsDeletedQuery = "select exists(select productId from product where productId = ? and `condition` = 'fin')";
+        int getProductIsDeletedParams = productId;
+        return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 삭제  false: 삭제x
+    }
+
     // 본인의 상품인지 체크
     public int checkProductOwner(int userId, int productId){
         String checkProductOwnerQuery = "select exists(select productId from product where userId = ? and productId = ?)";
@@ -303,7 +317,7 @@ public class UserDao {
 
     // 이미 찜해둔 물건인지 체크
     public int checkHeartListExists(int userId, int productId){
-        String checkHeartListExistsQuery = "select exists(select hearId from heartList where userId = ? and productId = ?)";
+        String checkHeartListExistsQuery = "select exists(select heartId from heartList where userId = ? and productId = ?)";
         Object[] checkHeartListExistsParams = new Object[]{userId, productId};
         return this.jdbcTemplate.queryForObject(checkHeartListExistsQuery,
                 int.class,

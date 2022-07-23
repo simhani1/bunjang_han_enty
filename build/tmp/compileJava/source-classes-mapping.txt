@@ -172,10 +172,12 @@ com/example/demo/src/product/model/PostProductRes.java
  com.example.demo.src.product.model.PostProductRes
 com/example/demo/src/comment/model/PostCommentRes.java
  com.example.demo.src.comment.model.PostCommentRes
-com/example/demo/src/product/ProductProvider.java
- com.example.demo.src.product.ProductProvider
+com/example/demo/src/user/model/PostHeartReq.java
+ com.example.demo.src.user.model.PostHeartReq
 com/example/demo/src/user/model/PostHeartRes.java
  com.example.demo.src.user.model.PostHeartRes
+com/example/demo/src/product/ProductProvider.java
+ com.example.demo.src.product.ProductProvider
 com/example/demo/src/product/ProductService.java
  com.example.demo.src.product.ProductService
 com/example/demo/src/banner/BannerProvider.java
@@ -226,8 +228,6 @@ com/example/demo/src/product/ProductController.java
  com.example.demo.src.product.ProductController
 com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
-com/example/demo/src/user/model/PostHeartReq.java
- com.example.demo.src.user.model.PostHeartReq
 com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
 com/example/demo/src/user/UserProvider.java

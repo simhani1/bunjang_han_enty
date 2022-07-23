@@ -298,7 +298,6 @@ public class UserController {
     }
 
     // 찜하기
-    @ResponseBody
     @PostMapping("/heart-list/{userId}/{productId}")
     public BaseResponse<PostHeartRes> addHeartList(@PathVariable int userId, @PathVariable int productId, @RequestBody PostHeartReq postHeartReq) {
         try {
