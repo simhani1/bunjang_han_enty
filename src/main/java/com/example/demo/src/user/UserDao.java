@@ -138,7 +138,7 @@ public class UserDao {
                 "from productImg\n" +
                 "inner join product on productImg.productId = product.productId\n" +
                 "where product.`condition` = ? and product.userId = ? and productImg.productId = ?";
-        Object[] getProductImgParam = new Object[]{condition,userId, productId};
+        Object[] getProductImgParam = new Object[]{condition, userId, productId};
         List<GetProductImgRes> getProductImg = this.jdbcTemplate.query(getProductImgQuery,
                 (rs,rowNum) -> new GetProductImgRes(
                         rs.getString("productImgUrl")),
@@ -156,7 +156,9 @@ public class UserDao {
                 "        else concat(datediff(current_timestamp, product.updatedAt),' 일 전')\n" +
                 "        end as 'updatedAt',\n" +
                 "    product.title as 'title',\n" +
-                "    product.price as 'price'\n" +
+                "    product.price as 'price',\n" +
+                "    product.userId as 'userId',\n" +
+                "    product.productId as 'productId'\n" +
                 "from product\n" +
                 "where product.userId = ? and product.productId = ? and product.`condition`= ?\n" +
                 "order by product.updatedAt desc";
@@ -165,6 +167,7 @@ public class UserDao {
                 (rs, rowNum) -> new GetUserProductRes(
                         getProductImg,
                         rs.getInt("productId"),
+                        rs.getInt("userId"),
                         rs.getBoolean("pay"),
                         rs.getString("updatedAt"),
                         rs.getString("title"),
@@ -176,13 +179,12 @@ public class UserDao {
     public GetMyPageRes getMyPage(int userId) {
         String getMyPageQuery = "select\n" +
                 "    count(*) as 'heartCnt',\n" +
-                "    (select count(*)\n" +
-                "     from review\n" +
+                "    (select count(*) from review\n" +
                 "     inner join product on product.productId = review.productId and product.userId = ?) as 'reviewCnt',\n" +
-                "    (select count(*) from followList where followList.followUserId = ?) as 'followerCnt',\n" +
-                "    (select count(*) from followList where followList.userId = ?) as 'followingCnt'\n" +
+                "    (select count(*) from followList where followList.followUserId = ? and followList.status = true) as 'followerCnt',\n" +
+                "    (select count(*) from followList where followList.userId = ? and followList.status = true) as 'followingCnt'\n" +
                 "from heartList\n" +
-                "where userId = ?"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
+                "where userId = ? and heartList.status = true"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
         Object[] getMyPageParams = new Object[]{userId, userId, userId, userId};
         return this.jdbcTemplate.queryForObject(getMyPageQuery,
                 (rs, rowNum) -> new GetMyPageRes(
@@ -191,6 +193,43 @@ public class UserDao {
                         rs.getInt("followerCnt"),
                         rs.getInt("followingCnt")), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
                 getMyPageParams); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
+    }
+
+    // 상점후기 조회
+    public GetShopReviewRes getShopReview(int productId) {
+        String getShopReviewQuery = "select\n" +
+                "    user.profileImgUrl as 'profileImgUrl',\n" +
+                "    user.nickname as 'nickname',\n" +
+                "    review.star as 'star',\n" +
+                "    review.reviewContents as 'reviewContents',\n" +
+                "    product.productId as 'productId',\n" +
+                "    product.title as 'title',\n" +
+                "    case when timestampdiff(second , review.updatedAt, current_timestamp) <60\n" +
+                "           then concat(timestampdiff(second, review.updatedAt, current_timestamp),' 초 전')\n" +
+                "           when timestampdiff(minute , review.updatedAt, current_timestamp) <60\n" +
+                "               then concat(timestampdiff(minute, review.updatedAt, current_timestamp),' 분 전')\n" +
+                "           when timestampdiff(hour , review.updatedAt, current_timestamp) <24\n" +
+                "               then concat(timestampdiff(hour, review.updatedAt, current_timestamp),' 시간 전')\n" +
+                "           else concat(datediff(current_timestamp, review.updatedAt),' 일 전')\n" +
+                "           end as 'updatedAt',\n" +
+                "    review.updatedAt as 'time'\n" +
+                "from user\n" +
+                "inner join product on product.buyerId = user.userId\n" +
+                "left join review on review.productId = ?\n" +
+                "where product.productId = ?\n" +
+                "order by review.updatedAt desc"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
+        Object[] getShopReviewParams = new Object[]{productId, productId};
+        return this.jdbcTemplate.queryForObject(getShopReviewQuery,
+                (rs, rowNum) -> new GetShopReviewRes(
+                        rs.getString("profileImgUrl"),
+                        rs.getString("nickname"),
+                        rs.getDouble("star"),
+                        rs.getString("reviewContents"),
+                        rs.getInt("productId"),
+                        rs.getString("title"),
+                        rs.getString("updatedAt"),
+                        rs.getTimestamp("time")), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
+                getShopReviewParams); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
     }
 //    // 해당 nickname을 갖는 유저들의 정보 조회
 //    public List<GetUserRes> getUsersByNickname(String nickname) {
@@ -241,6 +280,13 @@ public class UserDao {
         return this.jdbcTemplate.queryForObject(checkStatusQuery,
                 String.class,
                 checkStatusParams);  // 쿼리문의 결과(활동중: active, 비활성: inactive)를 문자열로 반환
+    }
+
+    // 해당 글이 삭제됐는지 체크
+    public boolean checkProductIsDeleted(int productId){
+        String getProductIsDeletedQuery = "select product.isDeleted from product where productId = ?";
+        int getProductIsDeletedParams = productId;
+        return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 삭제  false: 삭제x
     }
 //    public int checkProductOwner(int userId, int productId){
 //        String checkProductOwnerQuery = "select exists(select productId from product where userId = ? and productId = ?)";

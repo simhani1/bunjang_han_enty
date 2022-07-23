@@ -1,20 +1,19 @@
 package com.example.demo.src.user;
 
 import com.example.demo.config.BaseException;
-import com.example.demo.config.BaseResponse;
 import com.example.demo.config.secret.Secret;
 import com.example.demo.src.product.model.GetProductIdRes;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
-import org.hibernate.hql.internal.antlr.HqlSqlBaseWalker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.*;
+
 import static com.example.demo.config.BaseResponseStatus.*;
 
 //Provider : Read의 비즈니스 로직 처리
@@ -78,7 +77,9 @@ public class UserProvider {
             // 해당 사용자가 판매중인 상품 id 값을 리스트에 저장
             List<GetProductIdRes> productsId = userDao.getProductId(userId, "sel");
             for(GetProductIdRes obj : productsId){
-                getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "sel"));
+                // 삭제되지 않은 경우 false
+                if(!userDao.checkProductIsDeleted(obj.getProductId()))
+                    getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "sel"));
             }
             return getUserProductRes;
         } catch (Exception exception) {
@@ -93,7 +94,9 @@ public class UserProvider {
             // 해당 사용자의 예약중인 상품 id 값을 리스트에 저장
             List<GetProductIdRes> productsId = userDao.getProductId(userId,"res");
             for(GetProductIdRes obj : productsId){
-                getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "res"));
+                // 삭제되지 않은 경우 false
+                if(!userDao.checkProductIsDeleted(obj.getProductId()))
+                    getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "res"));
             }
             return getUserProductRes;
         } catch (Exception exception) {
@@ -108,7 +111,9 @@ public class UserProvider {
             // 해당 사용자의 판매완료 상품 id 값을 리스트에 저장
             List<GetProductIdRes> productsId = userDao.getProductId(userId, "fin");
             for(GetProductIdRes obj : productsId){
-                getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "fin"));
+                // 삭제되지 않은 경우 false
+                if(!userDao.checkProductIsDeleted(obj.getProductId()))
+                    getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "fin"));
             }
             return getUserProductRes;
         } catch (Exception exception) {
@@ -121,6 +126,28 @@ public class UserProvider {
         try {
             GetMyPageRes getMyPageRes = userDao.getMyPage(userId);
             return getMyPageRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 상점후기 조회
+    public List<GetShopReviewRes> getShopReview(int userId) throws BaseException {
+        try {
+            List<GetShopReviewRes> getShopReview = new ArrayList<>();
+            // 해당 사용자의 판매완료 상품 id 값을 리스트에 저장
+            List<GetProductIdRes> productsId = userDao.getProductId(userId, "fin");
+            for(GetProductIdRes obj : productsId){
+                // 삭제된 글일경우 true
+                if(userDao.checkProductIsDeleted(obj.getProductId()))
+                    continue;
+                // 리뷰를 작성하지 않았다면 리뷰 작성시간이 null값이므로 필터링
+                if(userDao.getShopReview(obj.getProductId()).getTime() == null)
+                    continue;
+                getShopReview.add(userDao.getShopReview(obj.getProductId()));
+            }
+            Collections.sort(getShopReview, new GetShopReviewComparator());
+            return getShopReview;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
@@ -175,5 +202,20 @@ public class UserProvider {
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+}
+
+// 상점후기 시간순 정렬 5
+class GetShopReviewComparator implements Comparator<GetShopReviewRes>{
+    @Override
+    public int compare(GetShopReviewRes t1, GetShopReviewRes t2) {
+        Timestamp time_t1 = t1.getTime();
+        Timestamp time_t2 = t2.getTime();
+        if(time_t1.before(time_t2))
+            return 1;
+        else if(time_t1.after(time_t2))
+            return -1;
+        else
+            return 0;
     }
 }
