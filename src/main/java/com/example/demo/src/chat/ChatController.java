@@ -30,7 +30,7 @@ public class ChatController {
     }
 
     /**
-     * 메세지 보내기
+     * 메세지 전송
      * @param userId
      * @param roomId
      * @return
