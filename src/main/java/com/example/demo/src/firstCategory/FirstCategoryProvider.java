@@ -20,12 +20,11 @@ public class FirstCategoryProvider {
     }
 
     public List<GetFirstCategoryRes> getCategories() throws BaseException {
+        if(this.getCategoryCount() == 0){
+            throw new BaseException(NO_EXISTED_CATEGORY_LIST);
+        }
         try{
             List<GetFirstCategoryRes> getFirstCategoryRes = firstCategoryDao.getCategories();
-
-            if(this.getCategoryCount() == 0){
-                throw new BaseException(NO_EXISTED_CATEGORY_LIST);
-            }
             return getFirstCategoryRes;
 
         } catch (Exception exception){

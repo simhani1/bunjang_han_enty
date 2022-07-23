@@ -60,6 +60,15 @@ public class ProductService {
      * @throws BaseException
      */
     public void modifyProduct(int userId, int productId, PatchProductReq patchProductReq) throws BaseException {
+        if (productDao.getProductIsDeleted(productId)){
+            throw new BaseException(DELETED_PRODUCT);
+        }
+        if (userId < 0){
+            throw new BaseException(NO_EXISTED_USER);
+        }
+        if (productId < 0 || productId > productProvider.getLastProductId()){
+            throw new BaseException(NO_EXISTED_PRODUCT);
+        }
         try{
             int result = productDao.modifyProduct(userId, productId, patchProductReq);
             if(result == 0){
@@ -78,7 +87,17 @@ public class ProductService {
      * @throws BaseException
      */
     public void modifyProductCondition(int userId, int productId, String condition) throws BaseException {
+        if (userId < 0){
+            throw new BaseException(NO_EXISTED_USER);
+        }
+        if (productId < 0 || productId > productProvider.getLastProductId()){
+            throw new BaseException(NO_EXISTED_PRODUCT);
+        }
+        if (productDao.getProductIsDeleted(productId)){
+            throw new BaseException(DELETED_PRODUCT);
+        }
         try{
+
             int result = productDao.modifyProductCondition(userId, productId, condition);
             if(result == 0){
                 throw new BaseException(MODIFY_PRODUCT_CONDITION_FAILED);
@@ -89,15 +108,23 @@ public class ProductService {
     }
 
     /**
-     * 상품 삭제여부
+     * 상품 삭제여부 수정
      * @param userId
      * @param productId
-     * @param isDeleted
      * @throws BaseException
      */
-    public void modifyProductIsDeleted(int userId, int productId, Boolean isDeleted) throws BaseException {
+    public void modifyProductIsDeleted(int userId, int productId) throws BaseException {
+        if (userId < 0){
+            throw new BaseException(NO_EXISTED_USER);
+        }
+        if (productId < 0 || productId > productProvider.getLastProductId()){
+            throw new BaseException(NO_EXISTED_PRODUCT);
+        }
+        if (productDao.getProductIsDeleted(productId)){
+            throw new BaseException(DELETED_PRODUCT);
+        }
         try{
-            int result = productDao.modifyProductIsDeleted(userId, productId, isDeleted);
+            int result = productDao.modifyProductIsDeleted(userId, productId);
             if(result == 0){
                 throw new BaseException(MODIFY_PRODUCT_IS_DELETED_FAILED);
             }

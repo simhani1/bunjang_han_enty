@@ -70,29 +70,29 @@ public class ProductProvider {
             List<GetProductRes> getProductRes = new ArrayList<>();
 
             // paging
-//            for(int i = (amount*page)+1; i < (amount*(page+1))+1; i++){
-//                // 삭제 된 상품 예외처리
-//                if(!productDao.getProductIsDeleted(i)){
-//                    // i값이 productId값을 넘어갈때 오류나는것을 방지
-//                    if(i >= getLastProductId()){
-//                        getProductRes.add(productDao.getProductById(1,i));
-//                        return getProductRes;
-//                    }
-//                    getProductRes.add(productDao.getProductById(1,i));
-//                }
-//            }
-
-            for(int i = getLastProductId()-(amount*page); i > getLastProductId()-(amount*(page+1)); i--){
+            for(int i = (amount*page)+1; i < (amount*(page+1))+1; i++){
                 // 삭제 된 상품 예외처리
                 if(!productDao.getProductIsDeleted(i)){
                     // i값이 productId값을 넘어갈때 오류나는것을 방지
-                    if(i <= 1){
+                    if(i >= getLastProductId()){
                         getProductRes.add(productDao.getProductById(1,i));
                         return getProductRes;
                     }
                     getProductRes.add(productDao.getProductById(1,i));
                 }
             }
+
+//            for(int i = getLastProductId()-(amount*page); i > getLastProductId()-(amount*(page+1)); i--){
+//                // 삭제 된 상품 예외처리
+//                if(!productDao.getProductIsDeleted(i)){
+//                    // i값이 productId값을 넘어갈때 오류나는것을 방지
+//                    if(i <= 1){
+//                        getProductRes.add(productDao.getProductById(1,i));
+//                        return getProductRes;
+//                    }
+//                    getProductRes.add(productDao.getProductById(1,i));
+//                }
+//            }
 
             return getProductRes;
         } catch (Exception exception){

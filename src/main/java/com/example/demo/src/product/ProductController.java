@@ -191,6 +191,9 @@ public class ProductController {
             if(userId != jwtService.getUserId()){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
+            if(!(condition.equals("sel") || condition.equals("fin") || condition.equals("res"))){
+                return new BaseResponse<>(INVALID_CONDITION);
+            }
 
             productService.modifyProductCondition(userId, productId, condition);
             return new BaseResponse<>(MODIFY_PRODUCT_CONDITION_SUCCESS);
@@ -207,15 +210,13 @@ public class ProductController {
      * @return
      */
     @PatchMapping("/{userId}/{productId}/isDeleted")
-    public BaseResponse<String> modifyProductCondition(@PathVariable("userId") int userId,
-                                                       @PathVariable("productId") int productId,
-                                                       @RequestParam Boolean isDeleted){
+    public BaseResponse<String> modifyProductIsDeleted(@PathVariable("userId") int userId,
+                                                       @PathVariable("productId") int productId){
         try{
             if(userId != jwtService.getUserId()){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-
-            productService.modifyProductIsDeleted(userId, productId, isDeleted);
+            productService.modifyProductIsDeleted(userId, productId);
             return new BaseResponse<>(MODIFY_PRODUCT_IS_DELETED_SUCCESS);
         } catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

@@ -23,7 +23,7 @@ public class CommentService {
         this.commentProvider = commentProvider;
         this.commentDao = commentDao;
         this.productProvider = productProvider;
-        this. productDao = productDao;
+        this.productDao = productDao;
     }
 
     /**
@@ -61,6 +61,15 @@ public class CommentService {
     public void deleteComment(int commentId, int userId) throws BaseException {
         if(commentDao.deleteComment(commentId, userId) == 0){
             throw new BaseException(INVALID_USER_DELETE_COMMENT);
+        }
+        if (commentId < 0 || commentId > commentProvider.getCommentLastId()){
+            throw new BaseException(NEGATIVE_COMMENT_ID);
+        }
+        if (userId < 0){
+            throw new BaseException(NO_EXISTED_USER);
+        }
+        if (commentDao.isDeletedComment(commentId)){
+            throw new BaseException(DELETED_COMMENT);
         }
         try{
             // TODO: productId의 status가 이미 isDeleted == true라면 validation

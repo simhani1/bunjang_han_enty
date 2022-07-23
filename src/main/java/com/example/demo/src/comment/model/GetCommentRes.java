@@ -19,6 +19,6 @@ public class GetCommentRes {
     private String profileImgUrl;
     private String nickname;
     private String contents;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private Boolean isDeleted;
 }

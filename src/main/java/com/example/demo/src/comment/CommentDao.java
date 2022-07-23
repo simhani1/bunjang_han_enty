@@ -3,6 +3,7 @@ package com.example.demo.src.comment;
 import com.example.demo.src.comment.model.GetCommentRes;
 import com.example.demo.src.comment.model.PostCommentReq;
 import com.example.demo.src.comment.model.PostCommentRes;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -45,9 +46,23 @@ public class CommentDao {
      * @return comments
      */
     public List<GetCommentRes> getComments(int productId){
+        String FormatData = "comment.createdAt";
+        String dateFormatQuery =
+                "case when timestampdiff(second , "+FormatData+", current_timestamp) <60 " +
+                        "then concat(timestampdiff(second, "+FormatData+", current_timestamp),'초 전') " +
+                        "when timestampdiff(minute , "+FormatData+", current_timestamp) <60 " +
+                        "then concat(timestampdiff(minute, "+FormatData+", current_timestamp),'분 전') " +
+                        "when timestampdiff(hour , "+FormatData+", current_timestamp) <24 " +
+                        "then concat(timestampdiff(hour, "+FormatData+", current_timestamp),'시간 전') " +
+                        "when timestampdiff(day , "+FormatData+", current_timestamp) <365 " +
+                        "then concat(timestampdiff(day, "+FormatData+", current_timestamp),'일 전') " +
+                        "else concat(timestampdiff(year, current_timestamp, "+FormatData+"),' 년 전') end as ";
+
         String getCommentsQuery =
                 "select comment.commentId, comment.productId, comment.userId, user.profileImgUrl, user.nickname, " +
-                "comment.contents, comment.createdAt, comment.isDeleted " +
+                "comment.contents, " +
+                dateFormatQuery + "'createdAt', " +
+                "comment.isDeleted " +
                 "from comment " +
                 "left join user on user.userId = comment.userId " +
                 "where comment.isDeleted = false and comment.productId=?";
@@ -62,7 +77,7 @@ public class CommentDao {
                         rs.getString("profileImgUrl"),
                         rs.getString("nickname"),
                         rs.getString("contents"),
-                        rs.getTimestamp("createdAt").toLocalDateTime(),
+                        rs.getString("createdAt"),
                         rs.getBoolean("isDeleted")),
                 getCommentsParams);
     }
@@ -83,5 +98,15 @@ public class CommentDao {
         System.out.println(result);
         return result;
 
+    }
+
+    public Boolean isDeletedComment(int commentId){
+        String IsDeletedComment = "select status from comment where commentId="+commentId;
+        return this.jdbcTemplate.queryForObject(IsDeletedComment,Boolean.class);
+    }
+
+    public int getCommentLastId(){
+        String getCommentLastId = "select count(*) from comment";
+        return this.jdbcTemplate.queryForObject(getCommentLastId, int.class);
     }
 }
