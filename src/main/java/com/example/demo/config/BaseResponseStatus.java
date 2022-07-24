@@ -152,6 +152,7 @@ public enum BaseResponseStatus {
 
     // /chat, /room
     NO_EXISTED_ROOM(false, 3992, "등록되지 않은 채팅방입니다."),
+    NO_EXISTED_USER_CHATROOM(false, 3993, "유저가 입력한 채팅방에 없습니다."),
     /**
      * 4000 : Database, Server 오류
      */
