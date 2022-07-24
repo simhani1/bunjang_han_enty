@@ -35,6 +35,12 @@ public class GetProductRes {
     private Boolean shippingFee;
     private Boolean changeable;
     private String contents;
+    //새로추가
+    private int firstCategoryId;
+    private String firstCategoryImgUrl;
+    private String firstCategory;
+    private int lastCategoryId;
+    //여기까지
     private String lastCategoryImgUrl;
     private String lastCategory;
     private List<GetTagRes> tags;

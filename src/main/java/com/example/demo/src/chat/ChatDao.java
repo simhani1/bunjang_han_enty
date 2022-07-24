@@ -32,8 +32,22 @@ public class ChatDao {
         return this.jdbcTemplate.update(sendMessageQuery, sendMessageParams);
     }
 
-    public List<GetChatRes> getLastMessageType(int roomId){
-        String getLastMessageTypeQuery = "select userId, chatRoomId, message, messageType, createdAt from chattingMessage where chatRoomId=?";
+    public List<GetChatRes> getChatList(int roomId){
+        String FormatData = "chattingMessage.createdAt";
+        String dateFormatQuery =
+                "case when timestampdiff(second , "+FormatData+", current_timestamp) <60 " +
+                        "then concat(timestampdiff(second, "+FormatData+", current_timestamp),'초 전') " +
+                        "when timestampdiff(minute , "+FormatData+", current_timestamp) <60 " +
+                        "then concat(timestampdiff(minute, "+FormatData+", current_timestamp),'분 전') " +
+                        "when timestampdiff(hour , "+FormatData+", current_timestamp) <24 " +
+                        "then concat(timestampdiff(hour, "+FormatData+", current_timestamp),'시간 전') " +
+                        "when timestampdiff(day , "+FormatData+", current_timestamp) <365 " +
+                        "then concat(timestampdiff(day, "+FormatData+", current_timestamp),'일 전') " +
+                        "else concat(timestampdiff(year, current_timestamp, "+FormatData+"),' 년 전') end as ";
+
+        String getLastMessageTypeQuery =
+                "select userId, chatRoomId, message, messageType, " +
+                dateFormatQuery + "'createdAt' from chattingMessage where chatRoomId=?";
         int getLastMessageTypeParams = roomId;
 
         return this.jdbcTemplate.query(getLastMessageTypeQuery,

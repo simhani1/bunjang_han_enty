@@ -21,8 +21,17 @@ public class ChatProvider {
     // 마지막 채팅 타입 가져오기
     public GetChatRes getLastMessageType(int roomId) throws BaseException {
         try{
-            List<GetChatRes> getChatRes = chatDao.getLastMessageType(roomId);
+            List<GetChatRes> getChatRes = chatDao.getChatList(roomId);
             return getChatRes.get(getChatRes.size()-1);
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetChatRes> getChatList(int userId, int roomId) throws BaseException{
+        try{
+            List<GetChatRes> getChatRes = chatDao.getChatList(roomId);
+            return getChatRes;
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

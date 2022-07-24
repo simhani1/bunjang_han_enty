@@ -3,12 +3,15 @@ package com.example.demo.src.chat;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.config.BaseResponseStatus;
+import com.example.demo.src.chat.model.GetChatRes;
 import com.example.demo.src.chat.model.PostChatReq;
 import com.example.demo.src.chat.model.PostChatRes;
 import com.example.demo.src.product.ProductProvider;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -65,6 +68,27 @@ public class ChatController {
             }
             PostChatRes postChatRes = chatService.sendMessage(userId, roomId, postChatReq);
             return new BaseResponse<>(SEND_MESSAGE_SUCCESS,postChatRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @GetMapping("/{chatRoomId}")
+    public BaseResponse<GetChatRes> getLastChatMessageType(@PathVariable("chatRoomId") int roomId){
+        try{
+            GetChatRes getChatRes = chatProvider.getLastMessageType(roomId);
+            return new BaseResponse<>(getChatRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @GetMapping("/{userId}/{chatRoomId}")
+    public BaseResponse<List<GetChatRes>> getChatList(@PathVariable("userId") int userId,
+                                                      @PathVariable("chatRoomId") int roomId){
+        try{
+            List<GetChatRes> getChatRes = chatProvider.getChatList(userId, roomId);
+            return new BaseResponse<>(getChatRes);
         } catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

@@ -123,4 +123,21 @@ public class ProductProvider {
     }
 
 
+    public GetProductRes getProductByIdTest(int userId,int productId) throws BaseException {
+        if (userId < 0){
+            throw new BaseException(NO_EXISTED_USER);
+        }
+        if (productId < 0 || productId > getLastProductId()){
+            throw new BaseException(NO_EXISTED_PRODUCT);
+        }
+        if (productDao.getProductIsDeleted(productId)){
+            throw new BaseException(DELETED_PRODUCT);
+        }
+        try{
+            GetProductRes getProductRes = productDao.getProductByIdTest(userId,productId);
+            return getProductRes;
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
