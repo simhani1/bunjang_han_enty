@@ -153,28 +153,42 @@ public class UserProvider {
         }
     }
 
-//    // 찜하기
-//    public PostHeartRes addHeartList(int userId, int productId) throws BaseException {
-//        // 본인의 물건인 경우 찜하기 불가능
-//        if(userDao.checkProductOwner(userId, productId)){
-//            throw new BaseException();
-//        }
-//        User user = userDao.getPwd(postLoginReq);
-//        String decryptPwd;
-//        try {
-//            decryptPwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(user.getPwd()); // 복호화
-//            // 회원가입할 때 비밀번호가 암호화되어 저장되었기 떄문에 로그인을 할때도 암호화된 값끼리 비교를 해야합니다.
-//        } catch (Exception ignored) {
-//            throw new BaseException(PASSWORD_DECRYPTION_ERROR);
-//        }
-//        if (postLoginReq.getPwd().equals(decryptPwd)) { //비말번호가 일치한다면 userId를 가져온다.
-//            int userId = user.getUserId();
-//            String jwt = jwtService.createJwt(userId);
-//            return new PostLoginRes(userId,jwt);
-//        } else { // 비밀번호가 다르다면 에러메세지를 출력한다.
-//            throw new BaseException(FAILED_TO_LOGIN);
-//        }
-//    }
+    // 찜하기
+    public PostHeartRes addHeartList(int userId, int productId, boolean status) throws BaseException {
+        // 해당 물건이 존재하는 물건인지 체크
+        if(!userDao.checkProductExist(productId)){
+            throw new BaseException(INVALID_PRODUCTID);
+        }
+        // 본인의 물건인 경우 찜하기 불가능
+        if(userDao.checkProductOwner(userId, productId) == 1){
+            throw new BaseException(YOUR_PRODUCT);
+        }
+        // 삭제된 물건인지 체크
+        if(userDao.checkProductIsDeleted(productId)){
+            throw new BaseException(DELETED_PRODUCT);
+        }
+        // 판매완료 상품인지 체크
+        if(userDao.checkProductCondition(productId)){
+            throw new BaseException(SOLD_OUT_PRODUCT);
+        }
+        try {
+            int result;
+            // 이미 찜해둔 상태인지 체크
+            if(userDao.checkHeartListExists(userId, productId) == 1){
+                result = userDao.addHeartList_modify(userId, productId, status);
+            }
+            else{
+                result = userDao.addHeartList(userId, productId, true);
+            }
+            // 결과 반영이 성공적으로 이루어진 경우 요청받은 status 값을 반환
+            if(result == 1){
+                return new PostHeartRes(status);
+            }
+            throw new BaseException(FAILED_TO_ADD_HEARTLIST);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
     //////////////////////////////////////////////// VALIDATION ///////////////////////////////////////////////////
     // 해당 아이디 중복성 체크
@@ -205,7 +219,7 @@ public class UserProvider {
     }
 }
 
-// 상점후기 시간순 정렬 5
+// 상점후기 시간순 정렬
 class GetShopReviewComparator implements Comparator<GetShopReviewRes>{
     @Override
     public int compare(GetShopReviewRes t1, GetShopReviewRes t2) {

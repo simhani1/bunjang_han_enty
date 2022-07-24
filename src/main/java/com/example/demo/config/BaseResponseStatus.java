@@ -24,7 +24,7 @@ public enum BaseResponseStatus {
     GET_PRODUCT_SUCCESS(true, 1022, "상품 조회에 성공하였습니다."),
     // [GET] /banner
     GET_BANNER_SUCCESS(true, 1048, "배너 조회에 성공하였습니다."),
-    ADD_HEARTLIST_SUCCESS(true, 1049, "찜하기에 성공하였습니다."),
+    REQ_HEARTLIST_SUCCESS(true, 1049, "해당 찜 요청에 성공하였습니다."),
 
 
     // [GET] /category
@@ -64,9 +64,7 @@ public enum BaseResponseStatus {
     INVALID_ACCOUNT(false, 2022, "올바른 계좌번호를 입력하세요."),
     EMPTY_NAME(false, 2023, "예금주 명을를 확인해주세요."),
     EMPTY_ACCOUNTNUM(false, 2024, "계좌번호를 확인해주세요."),
-
-
-
+    INVALID_PRODUCTID(false, 2030, "올바른 물건 id값을 입력하세요."),
     // [POST] products
     EMPTY_PRODUCT_IMG(false, 2500, "사진을 한 개 이상 등록해주세요."),
     EXCESS_PRODUCT_IMG(false,2501, "사진을 12개까지만 등록해주세요."),
@@ -127,6 +125,8 @@ public enum BaseResponseStatus {
     EXISTS_ADDRESS(false,3041,"이미 등록된 배송지입니다."),
     INVALID_ADDRESSID(false, 3042, "없는 배송지이거나 본인의 배송지가 아닙니다."),
     EMPTY_ADDRESS(false,3043,"배송지 목록이 비어있습니다."),
+    YOUR_PRODUCT(false,3050,"본인의 물건은 찜하기가 불가능합니다."),
+    SOLD_OUT_PRODUCT(false, 3051, "판매완료 상품입니다."),
 
     NO_EXISTED_CATEGORY_LIST(false, 3590, "등록된 카테고리가 없습니다."),
 
@@ -165,7 +165,8 @@ public enum BaseResponseStatus {
     WITHDRAWL_FAIL(false, 4031, "탈퇴처리에 실파해였습니다."),
     MODIFY_FAIL_ACCOUNT(false,4032,"계좌정보 수정에 실패하였습니다."),
     MODIFY_FAIL_ADDRESS(false,4032,"배송지정보 수정에 실패하였습니다."),
-    DELETE_FAIL_ADDRESS(false,4033,"배송지정보 삭제에 실패하였습니다.");
+    DELETE_FAIL_ADDRESS(false,4033,"배송지정보 삭제에 실패하였습니다."),
+    FAILED_TO_ADD_HEARTLIST(false,4040,"찜하기에 실패하였습니다.");
 
 
 

@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Repository //  [Persistence Layer에서 DAO를 명시하기 위해 사용]
 
@@ -231,19 +232,21 @@ public class UserDao {
                         rs.getTimestamp("time")), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
                 getShopReviewParams); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
     }
-//    // 해당 nickname을 갖는 유저들의 정보 조회
-//    public List<GetUserRes> getUsersByNickname(String nickname) {
-//        String getUsersByNicknameQuery = "select * from User where nickname =?"; // 해당 이메일을 만족하는 유저를 조회하는 쿼리문
-//        String getUsersByNicknameParams = nickname;
-//        return this.jdbcTemplate.query(getUsersByNicknameQuery,
-//                (rs, rowNum) -> new GetUserRes(
-//                        rs.getInt("userId"),
-//                        rs.getString("nickname"),
-//                        rs.getString("Email"),
-//                        rs.getString("password")), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
-//                getUsersByNicknameParams); // 해당 닉네임을 갖는 모든 User 정보를 얻기 위해 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
-//    }
-//
+
+    // 찜하기(최초 찜하기)
+    public int addHeartList(int userId, int productId, boolean status) {
+        String addHeartListQuery = "insert into heartList (userId, productId, status) VALUES (?,?,?)";
+        Object[] addHeartListParmas = new Object[]{userId, productId, status};
+        return this.jdbcTemplate.update(addHeartListQuery, addHeartListParmas);
+    }
+
+    // 찜하기 / 찜해제
+    public int addHeartList_modify(int userId, int productId, boolean status) {
+        String addHeartListQuery = "update heartList set status = ? where userId = ? and productId = ? ";
+        Object[] addHeartListParmas = new Object[]{status, userId, productId};
+        return this.jdbcTemplate.update(addHeartListQuery, addHeartListParmas);
+    }
+
     //////////////////////////////////////////////// VALIDATION ///////////////////////////////////////////////////
 
     // 해당 아이디 중복성 체크
@@ -288,8 +291,37 @@ public class UserDao {
         int getProductIsDeletedParams = productId;
         return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 삭제  false: 삭제x
     }
-//    public int checkProductOwner(int userId, int productId){
-//        String checkProductOwnerQuery = "select exists(select productId from product where userId = ? and productId = ?)";
-//        Object[] checkProductOwnerParams = new Object[]
-//    }
+
+    // 해당 물건이 존재하는 물건인지 체크
+    public boolean checkProductExist(int productId){
+        String getProductIsDeletedQuery = "select exists(select productId from product where productId = ?)";
+        int getProductIsDeletedParams = productId;
+        return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 삭제  false: 삭제x
+    }
+
+    // 판매완료 물건인지 체크
+    public boolean checkProductCondition(int productId){
+        String getProductIsDeletedQuery = "select exists(select productId from product where productId = ? and `condition` = 'fin')";
+        int getProductIsDeletedParams = productId;
+        return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 삭제  false: 삭제x
+    }
+
+    // 본인의 상품인지 체크
+    public int checkProductOwner(int userId, int productId){
+        String checkProductOwnerQuery = "select exists(select productId from product where userId = ? and productId = ?)";
+        Object[] checkProductOwnerParams = new Object[]{userId, productId};
+        return this.jdbcTemplate.queryForObject(checkProductOwnerQuery,
+                int.class,
+                checkProductOwnerParams);  // 본인의 상품인 경우 1반환
+    }
+
+    // 이미 찜해둔 물건인지 체크
+    public int checkHeartListExists(int userId, int productId){
+        String checkHeartListExistsQuery = "select exists(select heartId from heartList where userId = ? and productId = ?)";
+        Object[] checkHeartListExistsParams = new Object[]{userId, productId};
+        return this.jdbcTemplate.queryForObject(checkHeartListExistsQuery,
+                int.class,
+                checkHeartListExistsParams);  // 이미 찜해둔 경우 1반환
+    }
+
 }
