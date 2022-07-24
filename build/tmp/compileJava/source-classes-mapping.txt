@@ -210,8 +210,8 @@ com/example/demo/src/account/AccountService.java
  com.example.demo.src.account.AccountService
 com/example/demo/src/address/AddressProvider.java
  com.example.demo.src.address.AddressProvider
-com/example/demo/src/user/UserController.java
- com.example.demo.src.user.UserController
+com/example/demo/src/chat/ChatService.java
+ com.example.demo.src.chat.ChatService
 com/example/demo/src/comment/CommentController.java
  com.example.demo.src.comment.CommentController
 com/example/demo/config/BaseResponse.java
@@ -233,5 +233,5 @@ com/example/demo/utils/JwtService.java
 com/example/demo/src/user/UserProvider.java
  com.example.demo.src.user.GetShopReviewComparator
  com.example.demo.src.user.UserProvider
-com/example/demo/src/chat/ChatService.java
- com.example.demo.src.chat.ChatService
+com/example/demo/src/user/UserController.java
+ com.example.demo.src.user.UserController

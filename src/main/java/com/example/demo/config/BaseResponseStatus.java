@@ -62,8 +62,9 @@ public enum BaseResponseStatus {
     INVALID_GENDER(false, 2020, "입력값을 확인해주세요."),
     INVALID_DATE(false, 2021, "올바른 날짜를 입력하세요."),
     INVALID_ACCOUNT(false, 2022, "올바른 계좌번호를 입력하세요."),
-    EMPTY_NAME(false, 2023, "예금주 명을를 확인해주세요."),
+    EMPTY_NAME(false, 2023, "예금주 명을 확인해주세요."),
     EMPTY_ACCOUNTNUM(false, 2024, "계좌번호를 확인해주세요."),
+    INVALID_NAME(false, 2025, "이름을 확인해주세요."),
     INVALID_PRODUCTID(false, 2030, "올바른 물건 id값을 입력하세요."),
     // [POST] products
     EMPTY_PRODUCT_IMG(false, 2500, "사진을 한 개 이상 등록해주세요."),

@@ -71,7 +71,7 @@ public class AddressController {
             //////////////////////////////////////  JWT
             // 이름 체크
             if(address.getName().equals("")) {
-                return new BaseResponse<>(EMPTY_NAME);
+                return new BaseResponse<>(INVALID_NAME);
             }
             // 전화번호 자릿수 체크
             if(isRegexTelephoneNum(address.getPhoneNum())){
@@ -144,7 +144,7 @@ public class AddressController {
             //////////////////////////////////////  JWT
             // 이름 체크
             if(address.getName().equals("")) {
-                return new BaseResponse<>(EMPTY_NAME);
+                return new BaseResponse<>(INVALID_NAME);
             }
             // 전화번호 자릿수 체크
             if(isRegexTelephoneNum(address.getPhoneNum())){
