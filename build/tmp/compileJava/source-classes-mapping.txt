@@ -176,6 +176,8 @@ com/example/demo/src/user/model/PostHeartReq.java
  com.example.demo.src.user.model.PostHeartReq
 com/example/demo/src/user/model/PostHeartRes.java
  com.example.demo.src.user.model.PostHeartRes
+com/example/demo/src/user/UserDao.java
+ com.example.demo.src.user.UserDao
 com/example/demo/src/product/ProductProvider.java
  com.example.demo.src.product.ProductProvider
 com/example/demo/src/product/ProductService.java
@@ -192,8 +194,6 @@ com/example/demo/src/lastCategory/LastCategoryController.java
  com.example.demo.src.lastCategory.LastCategoryController
 com/example/demo/src/comment/CommentProvider.java
  com.example.demo.src.comment.CommentProvider
-com/example/demo/src/user/UserDao.java
- com.example.demo.src.user.UserDao
 com/example/demo/src/address/AddressController.java
  com.example.demo.src.address.AddressController
 com/example/demo/config/BaseResponseStatus.java

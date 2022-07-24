@@ -237,7 +237,7 @@ public class UserController {
     // 본인의 판매완료 상품 조회
     @ResponseBody
     @GetMapping("/sold-out/{userId}")
-    public BaseResponse<List<GetUserProductRes>> getUserProductRes_sold_out (@PathVariable int userId) {
+    public BaseResponse<List<GetUserProductRes>> getUserProductRes_fin (@PathVariable int userId) {
         try {
             // 해당 회원이 맞는지 검사
             //////////////////////////////////////  JWT
