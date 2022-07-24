@@ -59,4 +59,12 @@ public class ChatDao {
                         rs.getString("createdAt")),
                 getLastMessageTypeParams);
     }
+
+    // 채팅방에 유저가 존재하는지 체크
+    public int checkUserExistRoom(int userId, int roomId){
+        String checkUserExistRoomQuery = "select exist(select userId from chattingMessage where userId=? and chatRoomId=?";
+        Object[] checkUserExistRoomParams = new Object[]{userId, roomId};
+
+        return this.jdbcTemplate.queryForObject(checkUserExistRoomQuery, int.class, checkUserExistRoomParams);
+    }
 }

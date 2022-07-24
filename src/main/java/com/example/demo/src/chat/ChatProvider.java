@@ -29,6 +29,9 @@ public class ChatProvider {
     }
 
     public List<GetChatRes> getChatList(int userId, int roomId) throws BaseException{
+        if(chatDao.checkUserExistRoom(userId, roomId) != 1){
+            throw new BaseException(NO_EXISTED_USER_CHATROOM);
+        }
         try{
             List<GetChatRes> getChatRes = chatDao.getChatList(roomId);
             return getChatRes;
