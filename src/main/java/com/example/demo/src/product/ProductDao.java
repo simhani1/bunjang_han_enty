@@ -82,23 +82,26 @@ public class ProductDao {
         String FormatData = "product.updatedAt";
         String dateFormatQuery =
                 "case when timestampdiff(second , "+FormatData+", current_timestamp) <60 " +
-                "then concat(timestampdiff(second, "+FormatData+", current_timestamp),'초 전') " +
-                "when timestampdiff(minute , "+FormatData+", current_timestamp) <60 " +
-                "then concat(timestampdiff(minute, "+FormatData+", current_timestamp),'분 전') " +
-                "when timestampdiff(hour , "+FormatData+", current_timestamp) <24 " +
-                "then concat(timestampdiff(hour, "+FormatData+", current_timestamp),'시간 전') " +
-                "when timestampdiff(day , "+FormatData+", current_timestamp) <365 " +
-                "then concat(timestampdiff(day, "+FormatData+", current_timestamp),'일 전') " +
-                "else concat(timestampdiff(year, current_timestamp, "+FormatData+"),' 년 전') end as ";
+                        "then concat(timestampdiff(second, "+FormatData+", current_timestamp),'초 전') " +
+                        "when timestampdiff(minute , "+FormatData+", current_timestamp) <60 " +
+                        "then concat(timestampdiff(minute, "+FormatData+", current_timestamp),'분 전') " +
+                        "when timestampdiff(hour , "+FormatData+", current_timestamp) <24 " +
+                        "then concat(timestampdiff(hour, "+FormatData+", current_timestamp),'시간 전') " +
+                        "when timestampdiff(day , "+FormatData+", current_timestamp) <365 " +
+                        "then concat(timestampdiff(day, "+FormatData+", current_timestamp),'일 전') " +
+                        "else concat(timestampdiff(year, current_timestamp, "+FormatData+"),' 년 전') end as ";
 
         String getProductByIdQuery =
                 "select product.productId, user.userId, product.condition, product.price, product.pay, product.title, user.location, " +
                         dateFormatQuery + "'updatedAt', " +
                         "product.isUsed, product.amount, product.shippingFee, " +
-                        "product.changeable, product.contents, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, " +
+                        "product.changeable, product.contents, " +
+                        "firstCategory.firstCategoryId, firstCategory.firstCategoryImgUrl, firstCategory.firstCategory, " +
+                        "lastCategory.lastCategoryId, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, " +
                         "user.profileImgUrl, user.nickname " +
                         "from product " +
                         "left join user on user.userId = product.userId " +
+                        "left join firstCategory on product.firstCategoryId = firstCategory.firstCategoryId " +
                         "left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId " +
                         "where product.productId = ? and product.isDeleted=false";
         int getProductByIdParams = productId;
@@ -176,6 +179,12 @@ public class ProductDao {
                         rs.getBoolean("shippingFee"),
                         rs.getBoolean("changeable"),
                         rs.getString("contents"),
+                        // 여기부터
+                        rs.getInt("firstCategoryId"),
+                        rs.getString("firstCategoryImgUrl"),
+                        rs.getString("firstCategory"),
+                        rs.getInt("lastCategoryId"),
+                        //여기까지
                         rs.getString("lastCategoryImgUrl"),
                         rs.getString("lastCategory"),
                         getTag,
@@ -290,6 +299,125 @@ public class ProductDao {
     public List<Integer> getProductIdList(int userId){
         String getProductIdListByUserId = "select productId from product where userId="+ userId +" order by productId desc";
         return this.jdbcTemplate.queryForList(getProductIdListByUserId, Integer.class);
+    }
+
+    public GetProductRes getProductByIdTest(int userId, int productId){
+        String FormatData = "product.updatedAt";
+        String dateFormatQuery =
+                "case when timestampdiff(second , "+FormatData+", current_timestamp) <60 " +
+                        "then concat(timestampdiff(second, "+FormatData+", current_timestamp),'초 전') " +
+                        "when timestampdiff(minute , "+FormatData+", current_timestamp) <60 " +
+                        "then concat(timestampdiff(minute, "+FormatData+", current_timestamp),'분 전') " +
+                        "when timestampdiff(hour , "+FormatData+", current_timestamp) <24 " +
+                        "then concat(timestampdiff(hour, "+FormatData+", current_timestamp),'시간 전') " +
+                        "when timestampdiff(day , "+FormatData+", current_timestamp) <365 " +
+                        "then concat(timestampdiff(day, "+FormatData+", current_timestamp),'일 전') " +
+                        "else concat(timestampdiff(year, current_timestamp, "+FormatData+"),' 년 전') end as ";
+
+        String getProductByIdQuery =
+                "select product.productId, user.userId, product.condition, product.price, product.pay, product.title, user.location, " +
+                        dateFormatQuery + "'updatedAt', " +
+                        "product.isUsed, product.amount, product.shippingFee, " +
+                        "product.changeable, product.contents, " +
+                        "firstCategory.firstCategoryId, firstCategory.firstCategoryImgUrl, firstCategory.firstCategory, " +
+                        "lastCategory.lastCategoryId, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, " +
+                        "user.profileImgUrl, user.nickname " +
+                        "from product " +
+                        "left join user on user.userId = product.userId " +
+                        "left join firstCategory on product.firstCategoryId = firstCategory.firstCategoryId " +
+                        "left join lastCategory on product.lastCategoryId = lastCategory.lastCategoryId " +
+                        "where product.productId = ? and product.isDeleted=false";
+        int getProductByIdParams = productId;
+
+
+        // Get ProductImg
+        String getProductImgQuery = "select productImgUrl from productImg where productId = ?";
+
+        List<GetProductImgRes> getProductImg = this.jdbcTemplate.query(getProductImgQuery,
+                (rs, rowNum) -> new GetProductImgRes(
+                        rs.getString("productImgUrl")),
+                productId);
+
+        // Get tag
+        String getProductTagQuery = "select tagContents from productTag where productId = ?";
+
+        List<GetTagRes> getTag = this.jdbcTemplate.query(getProductTagQuery,
+                (rs, rowNum) -> new GetTagRes(
+                        rs.getString("tagContents")),
+                productId);
+
+        // Get viewCnt
+        String getViewCountQuery = "select count(productId) from view where productId =" + productId;
+        int viewCnt = this.jdbcTemplate.queryForObject(getViewCountQuery, int.class);
+
+        // Get heartCnt
+        String getHeartCountQuery = "select count(productId) from heartList where productId="+productId+" and status = 1";
+        int heartCnt = this.jdbcTemplate.queryForObject(getHeartCountQuery, int.class);
+
+        // Get chatCnt
+        String getChatCountQuery = "select count(productId) from chattingRoom where productId="+productId+" and isDeleted=0";
+        int chatCnt = this.jdbcTemplate.queryForObject(getChatCountQuery, int.class);
+
+        // Get star
+        String getStarQuery = "select avg(star) from review where productId="+productId;
+        Double star = this.jdbcTemplate.queryForObject(getStarQuery, Double.class);
+
+        // Get follow
+        String getUserIdQuery = "select userId from product where productId="+productId;
+        int productUserId = this.jdbcTemplate.queryForObject(getUserIdQuery, int.class);
+
+        String getFollowerNumQuery = "select count(userId) from followList where userId="+productUserId+" and status = 1";
+        int follower = this.jdbcTemplate.queryForObject(getFollowerNumQuery, int.class);
+
+        // Get follow status
+        String getFollowStatusQuery = "select status from followList where followUserId="+userId+" and userId="+productUserId;
+        List<Boolean> follow = this.jdbcTemplate.queryForList(getFollowStatusQuery, boolean.class);
+
+        // follow의 값이 null일때 해결
+        if (follow.size() == 0){
+            follow.add(false);
+        }
+
+        // Get CommentCount
+        String getCommentCountQuery = "select count(productId) from comment where productId="+productId+" and isDeleted=0";
+        int commentCount = this.jdbcTemplate.queryForObject(getCommentCountQuery,int.class);
+
+
+        return this.jdbcTemplate.queryForObject(getProductByIdQuery,
+                (rs, rowNum) -> new GetProductRes(
+                        rs.getInt("productId"),
+                        rs.getInt("userId"),
+                        rs.getString("condition"),
+                        getProductImg,
+                        rs.getInt("price"),
+                        rs.getBoolean("pay"),
+                        rs.getString("title"),
+                        rs.getString("location"),
+                        rs.getString("updatedAt"),
+                        viewCnt,
+                        heartCnt,
+                        chatCnt,
+                        rs.getBoolean("isUsed"),
+                        rs.getInt("amount"),
+                        rs.getBoolean("shippingFee"),
+                        rs.getBoolean("changeable"),
+                        rs.getString("contents"),
+                        // 여기부터
+                        rs.getInt("firstCategoryId"),
+                        rs.getString("firstCategoryImgUrl"),
+                        rs.getString("firstCategory"),
+                        rs.getInt("lastCategoryId"),
+                        //여기까지
+                        rs.getString("lastCategoryImgUrl"),
+                        rs.getString("lastCategory"),
+                        getTag,
+                        rs.getString("profileImgUrl"),
+                        rs.getString("nickname"),
+                        star,
+                        follower,
+                        follow.get(0),
+                        commentCount),
+                productId);
     }
 
 }
