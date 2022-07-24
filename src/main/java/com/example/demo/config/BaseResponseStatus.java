@@ -97,6 +97,9 @@ public enum BaseResponseStatus {
     EMPTY_MESSAGE(false, 2519, "메세지를 입력해주세요."),
     EMPTY_MESSAGE_TYPE(false, 2520, "메세지 타입을 입력해주세요."),
 
+    // [GET] products/category
+    NEGATIVE_CATEGORY_ID(false, 2521, "1 이상의 카테고리 번호를 입력해주세요."),
+
 
     /**
      * 3000 : Response 오류

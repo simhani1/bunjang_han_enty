@@ -87,6 +87,9 @@ public class ChatController {
     public BaseResponse<List<GetChatRes>> getChatList(@PathVariable("userId") int userId,
                                                       @PathVariable("chatRoomId") int roomId){
         try{
+            if(userId != jwtService.getUserId()){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             List<GetChatRes> getChatRes = chatProvider.getChatList(userId, roomId);
             return new BaseResponse<>(getChatRes);
         } catch (BaseException exception){

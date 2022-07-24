@@ -50,5 +50,6 @@ public class GetProductRes {
     private int follower;
     private Boolean follow;
     private int commentCount;
+    private Boolean heart;
 
 }
