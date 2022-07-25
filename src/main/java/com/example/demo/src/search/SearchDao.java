@@ -46,7 +46,7 @@ public class SearchDao {
                         "product.changeable, product.contents, " +
                         "firstCategory.firstCategoryId, firstCategory.firstCategoryImgUrl, firstCategory.firstCategory, " +
                         "lastCategory.lastCategoryId, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, " +
-                        "user.profileImgUrl, user.nickname, product.updatedAt" +
+                        "user.profileImgUrl, user.nickname, product.updatedAt as 'time'\n" +
                         "from product " +
                         "left join user on user.userId = product.userId " +
                         "left join firstCategory on product.firstCategoryId = firstCategory.firstCategoryId " +
