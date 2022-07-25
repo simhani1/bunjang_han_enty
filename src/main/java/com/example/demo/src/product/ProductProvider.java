@@ -76,25 +76,24 @@ public class ProductProvider {
 
         try{
             List<GetProductRes> getProductRes = new ArrayList<>();
-            List<GetProductRes> getProductResTemp = new ArrayList<>();
-
-            System.out.println(getLastProductId());
-            for(int i = 1; i < getLastProductId()+1; i++){
-                if(!productDao.getProductIsDeleted(i)){
-                    getProductRes.add(productDao.getProductById(1,i));
-                }
-            }
-            Collections.sort(getProductRes, new GetProductResComparator());
-
-            System.out.println(getProductRes.size());
-            for(int i = (amount*page); i < (amount*(page+1)); i++){
-                if(i >= getProductRes.size()-1){
-                    getProductResTemp.add(getProductRes.get(i));
-                    return getProductResTemp;
-                }
-                getProductResTemp.add(getProductRes.get(i));
-            }
-            return getProductResTemp;
+//            List<GetProductRes> getProductResTemp = new ArrayList<>();
+//
+//            for(int i = 1; i < getLastProductId()+1; i++){
+//                if(!productDao.getProductIsDeleted(i)){
+//                    getProductRes.add(productDao.getProductById(1,i));
+//                }
+//            }
+//            Collections.sort(getProductRes, new GetProductResComparator());
+//
+//            System.out.println(getProductRes.size());
+//            for(int i = (amount*page); i < (amount*(page+1)); i++){
+//                if(i >= getProductRes.size()-1){
+//                    getProductResTemp.add(getProductRes.get(i));
+//                    return getProductResTemp;
+//                }
+//                getProductResTemp.add(getProductRes.get(i));
+//            }
+//            return getProductResTemp;
             // 순서대로 안하고 작동되는거 (구식)
 //            for(int i = (amount*page)+1; i < (amount*(page+1)+1); i++){
 //                // 삭제 된 상품 예외처리
@@ -109,17 +108,18 @@ public class ProductProvider {
 //            }
 
             // 역순으로 작동되는거 (구식)
-//            for(int i = getLastProductId()-(amount*page); i > getLastProductId()-(amount*(page+1)+1); i--){
-//                // 삭제 된 상품 예외처리
-//                if(!productDao.getProductIsDeleted(i)){
-//                    // i값이 productId값을 넘어갈때 오류나는것을 방지
-//                    if(i <= 1){
-//                        getProductRes.add(productDao.getProductById(1,i));
-//                        return getProductRes;
-//                    }
-//                    getProductRes.add(productDao.getProductById(1,i));
-//                }
-//            }
+            for(int i = getLastProductId()-(amount*page); i > getLastProductId()-(amount*(page+1)+1); i--){
+                // 삭제 된 상품 예외처리
+                if(!productDao.getProductIsDeleted(i)){
+                    // i값이 productId값을 넘어갈때 오류나는것을 방지
+                    if(i <= 1){
+                        getProductRes.add(productDao.getProductById(1,i));
+                        return getProductRes;
+                    }
+                    getProductRes.add(productDao.getProductById(1,i));
+                }
+            }
+            return getProductRes;
 
 //            for(int i = (amount*page); i < (amount*(page+1)); i++){
 //                // 삭제 된 상품 예외처리
