@@ -5,7 +5,6 @@ import com.example.demo.config.BaseResponse;
 import com.example.demo.src.firstCategory.FirstCategoryProvider;
 import com.example.demo.src.product.model.*;
 import com.example.demo.utils.JwtService;
-//import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -144,7 +143,11 @@ public class ProductController {
      */
     @GetMapping("")
     public BaseResponse<List<GetProductRes>> getProducts(@RequestParam int page){
+
         try{
+            if(page < 0){
+                return new BaseResponse<>(NEGATIVE_PAGE_NUM);
+            }
             List<GetProductRes> getProductRes = productProvider.getProducts(page);
             return new BaseResponse<>(GET_PRODUCTS_SUCCESS, getProductRes);
         } catch (BaseException exception){
@@ -240,16 +243,67 @@ public class ProductController {
         }
     }
 
-
-    @GetMapping("/test/{userId}/{productId}")
-    public BaseResponse<GetProductRes> getProductByIdTest(@PathVariable("userId") int userId,
-                                                      @PathVariable("productId") int productId){
-
+    /**
+     * 카테고리 별 상품 조회
+     * @param page
+     * @param firstCategoryId
+     * @param lastCategoryId
+     * @return
+     */
+    @GetMapping("/category")
+    public BaseResponse<List<GetProductRes>> getProductByCategoryId(@RequestParam int page,
+                                                                    @RequestParam(required = false) String firstCategoryId,
+                                                                    @RequestParam(required = false) String lastCategoryId){
         try{
-            GetProductRes getProductRes = productProvider.getProductByIdTest(userId,productId);
-            return new BaseResponse<>(GET_PRODUCT_SUCCESS, getProductRes);
+            // 페이지가 음수일 때
+            if(page < 0){
+                return new BaseResponse<>(NEGATIVE_PAGE_NUM);
+            }
+            // 카테고리 번호가 음수일 때
+            if(Integer.parseInt(firstCategoryId) <= 0 || Integer.parseInt(lastCategoryId) <= 0){
+                return new BaseResponse<>(NEGATIVE_CATEGORY_ID);
+            }
+
+            if(lastCategoryId == null){
+                List<GetProductRes> getProductRes = productProvider.getProductByCategoryId(page,Integer.parseInt(firstCategoryId));
+                return new BaseResponse<>(GET_PRODUCT_SUCCESS,getProductRes);
+            }
+
+            List<GetProductRes> getProductRes = productProvider.getProductByLastCategoryId(page,Integer.parseInt(lastCategoryId));
+            return new BaseResponse<>(GET_PRODUCT_SUCCESS,getProductRes);
+
         } catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+//    @GetMapping("/filter/")
+//    public BaseResponse<List<GetProductRes>> getProductByFirstCategoryId(@RequestParam int page,
+//                                                                         @RequestParam String firstCategoryId,
+//                                                                         @RequestParam String lastCategoryId,
+//                                                                         @RequestParam Boolean isUsed,
+//                                                                         @RequestParam String startPrice,
+//                                                                         @RequestParam String endPrice){
+//        try{
+//            if(firstCategoryId == null && lastCategoryId == null && isUsed == null && startPrice == null && endPrice == null){
+//                List<GetProductRes> getProductRes = productProvider.getProducts(page);
+//                return new BaseResponse<>(GET_PRODUCTS_SUCCESS, getProductRes);
+//            }
+//
+//        } catch (BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
+
+//    @GetMapping("/test/{userId}/{productId}")
+//    public BaseResponse<GetProductRes> getProductByIdTest(@PathVariable("userId") int userId,
+//                                                      @PathVariable("productId") int productId){
+//
+//        try{
+//            GetProductRes getProductRes = productProvider.getProductByIdTest(userId,productId);
+//            return new BaseResponse<>(GET_PRODUCT_SUCCESS, getProductRes);
+//        } catch (BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
 }

@@ -45,19 +45,19 @@ public class ChatDao {
                         "then concat(timestampdiff(day, "+FormatData+", current_timestamp),'일 전') " +
                         "else concat(timestampdiff(year, current_timestamp, "+FormatData+"),' 년 전') end as ";
 
-        String getLastMessageTypeQuery =
+        String getChatListQuery =
                 "select userId, chatRoomId, message, messageType, " +
                 dateFormatQuery + "'createdAt' from chattingMessage where chatRoomId=?";
-        int getLastMessageTypeParams = roomId;
+        int getChatListParams = roomId;
 
-        return this.jdbcTemplate.query(getLastMessageTypeQuery,
+        return this.jdbcTemplate.query(getChatListQuery,
                 (rs, rowNum) -> new GetChatRes(
                         rs.getInt("userId"),
                         rs.getInt("chatRoomId"),
                         rs.getString("message"),
                         rs.getString("messageType"),
                         rs.getString("createdAt")),
-                getLastMessageTypeParams);
+                getChatListParams);
     }
 
     // 채팅방에 유저가 존재하는지 체크

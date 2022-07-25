@@ -200,11 +200,11 @@ public class UserController {
             // 해당 회원이 맞는지 검사
             //////////////////////////////////////  JWT
             //jwt에서 idx 추출
-            int userIdByJwt = jwtService.getUserId();
-            //userId와 접근한 유저가 같은지 확인
-            if (userId != userIdByJwt) {
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
+//            int userIdByJwt = jwtService.getUserId();
+//            //userId와 접근한 유저가 같은지 확인
+//            if (userId != userIdByJwt) {
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
             //////////////////////////////////////  JWT
             List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_sel(userId);
             return new BaseResponse<>(getUserProductRes);
@@ -284,11 +284,11 @@ public class UserController {
             // 해당 회원이 맞는지 검사
             //////////////////////////////////////  JWT
             //jwt에서 idx 추출
-            int userIdByJwt = jwtService.getUserId();
-            //userId와 접근한 유저가 같은지 확인
-            if (userId != userIdByJwt) {
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
+//            int userIdByJwt = jwtService.getUserId();
+//            //userId와 접근한 유저가 같은지 확인
+//            if (userId != userIdByJwt) {
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
             //////////////////////////////////////  JWT
             List<GetShopReviewRes> getShopReview = userProvider.getShopReview(userId);
             return new BaseResponse<>(getShopReview);
