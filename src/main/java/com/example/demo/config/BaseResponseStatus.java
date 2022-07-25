@@ -69,6 +69,7 @@ public enum BaseResponseStatus {
     EMPTY_ACCOUNTNUM(false, 2024, "계좌번호를 확인해주세요."),
     INVALID_NAME(false, 2025, "이름을 확인해주세요."),
     INVALID_PRODUCTID(false, 2030, "올바른 물건 id값을 입력하세요."),
+    WRONG_REVIEW_LENGTH(false, 2031, "20자 이상 작성하세요."),
     // [POST] products
     EMPTY_PRODUCT_IMG(false, 2500, "사진을 한 개 이상 등록해주세요."),
     EXCESS_PRODUCT_IMG(false,2501, "사진을 12개까지만 등록해주세요."),
@@ -135,6 +136,7 @@ public enum BaseResponseStatus {
     EMPTY_ADDRESS(false,3043,"배송지 목록이 비어있습니다."),
     YOUR_PRODUCT(false,3050,"본인의 물건은 찜하기가 불가능합니다."),
     SOLD_OUT_PRODUCT(false, 3051, "판매완료 상품입니다."),
+    CANNOT_REVIEW_YOUR_PRODUCT(false,3050,"본인의 물건에는 리뷰작성이 불가능합니다."),
 
     NO_EXISTED_CATEGORY_LIST(false, 3590, "등록된 카테고리가 없습니다."),
 
@@ -176,6 +178,7 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_ADDRESS(false,4032,"배송지정보 수정에 실패하였습니다."),
     DELETE_FAIL_ADDRESS(false,4033,"배송지정보 삭제에 실패하였습니다."),
     FAILED_TO_ADD_HEARTLIST(false,4040,"찜하기에 실패하였습니다."),
+    FAILED_TO_POST_REVIEW(false,4041,"리뷰 작성에 실패하였습니다."),
     EMPTY_RESULT(false, 4060, "검색 결과가 없습니다.");
 
 

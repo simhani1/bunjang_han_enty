@@ -12,6 +12,9 @@ import java.util.List;
 @AllArgsConstructor // 해당 클래스의 모든 멤버 변수(userIdx, nickname, email, password)를 받는 생성자를 생성
 
 public class GetMyPageRes {
+    private String profileImgUrl;
+    private String nickname;
+    private double star;
     private int heartCnt;
     private int reviewCnt;
     private int followerCnt;

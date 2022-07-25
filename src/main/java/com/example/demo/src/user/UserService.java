@@ -3,6 +3,7 @@ package com.example.demo.src.user;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
+import com.example.demo.src.product.model.GetProductIdRes;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -113,6 +117,30 @@ public class UserService {
                 throw new BaseException(WITHDRAWL_FAIL);
             }
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
+    // 상점후기 작성
+    public void postShopReview(int userId, PostShopReviewReq postShopReviewReq) throws BaseException {
+        // 해당 물건이 삭제된 경우
+        if(userDao.checkProductIsDeleted(postShopReviewReq.getProductId()))
+            throw new BaseException(DELETED_PRODUCT);
+        // 해당 물건이 존재하는 물건인지 체크
+        if(userDao.checkProductExist(postShopReviewReq.getProductId()))
+            throw new BaseException(INVALID_PRODUCTID);
+        // 본인의 상품인지 체크
+        if(userDao.checkProductOwner(userId, postShopReviewReq.getProductId()) == 1)
+            throw new BaseException(CANNOT_REVIEW_YOUR_PRODUCT);
+        // 리뷰는 20자 이상 작성해야함
+        if(postShopReviewReq.getReviewContents().length() < 20)
+            throw new BaseException(WRONG_REVIEW_LENGTH);
+        try {
+            int result = userDao.postShopReview(userId, postShopReviewReq); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
+            if (result == 0)  // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
+                throw new BaseException(FAILED_TO_POST_REVIEW);
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }

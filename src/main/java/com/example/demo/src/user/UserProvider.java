@@ -125,6 +125,29 @@ public class UserProvider {
     public GetMyPageRes getMyPage(int userId) throws BaseException {
         try {
             GetMyPageRes getMyPageRes = userDao.getMyPage(userId);
+            // 별점 평균 0.5단윈로 수정
+            if(0 <= getMyPageRes.getStar() && getMyPageRes.getStar()<0.5)
+                getMyPageRes.setStar(0);
+            else if(0.5 <= getMyPageRes.getStar() && getMyPageRes.getStar() < 1)
+                getMyPageRes.setStar(0.5);
+            else if(1 <= getMyPageRes.getStar() && getMyPageRes.getStar() < 1.5)
+                getMyPageRes.setStar(1);
+            else if(1.5 <= getMyPageRes.getStar() && getMyPageRes.getStar() < 2)
+                getMyPageRes.setStar(1.5);
+            else if(2 <= getMyPageRes.getStar() && getMyPageRes.getStar() < 2.5)
+                getMyPageRes.setStar(2);
+            else if(2.5 <= getMyPageRes.getStar() && getMyPageRes.getStar() < 3)
+                getMyPageRes.setStar(2.5);
+            else if(3 <= getMyPageRes.getStar() && getMyPageRes.getStar() < 3.5)
+                getMyPageRes.setStar(3);
+            else if(3.5 <= getMyPageRes.getStar() && getMyPageRes.getStar() < 4)
+                getMyPageRes.setStar(3.5);
+            else if(4 <= getMyPageRes.getStar() && getMyPageRes.getStar() < 4.5)
+                getMyPageRes.setStar(4);
+            else if(4.5 <= getMyPageRes.getStar() && getMyPageRes.getStar() < 5)
+                getMyPageRes.setStar(4.5);
+            else if(4.5 <= getMyPageRes.getStar())
+                getMyPageRes.setStar(5);
             return getMyPageRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

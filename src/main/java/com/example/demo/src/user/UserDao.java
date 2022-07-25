@@ -179,16 +179,28 @@ public class UserDao {
     // 마이페이지 조회(찜/후기/팔로워/팔로잉)
     public GetMyPageRes getMyPage(int userId) {
         String getMyPageQuery = "select\n" +
-                "    count(*) as 'heartCnt',\n" +
-                "    (select count(*) from review\n" +
-                "     inner join product on product.productId = review.productId and product.userId = ?) as 'reviewCnt',\n" +
+                "    (select profileImgUrl from user where userId = ?) as 'profileImgUrl',\n" +
+                "    (select nickname from user where userId = ?) as 'nickname',\n" +
+                "    (select\n" +
+                "         avg(star)\n" +
+                "     from review\n" +
+                "        inner join product on product.productId = review.productId and product.userId = ? where product.isDeleted = false) as 'star',\n" +
+                "    count(heartId) as 'heartCnt',\n" +
+                "    (select\n" +
+                "         count(*)\n" +
+                "     from review\n" +
+                "        inner join product on product.productId = review.productId and product.userId = ? where product.isDeleted = false) as 'reviewCnt',\n" +
                 "    (select count(*) from followList where followList.followUserId = ? and followList.status = true) as 'followerCnt',\n" +
                 "    (select count(*) from followList where followList.userId = ? and followList.status = true) as 'followingCnt'\n" +
                 "from heartList\n" +
-                "where userId = ? and heartList.status = true"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
-        Object[] getMyPageParams = new Object[]{userId, userId, userId, userId};
+                "inner join product on product.productId = heartList.productId and product.isDeleted = false\n" +
+                "where heartList.userId = ? and heartList.status = true"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
+        Object[] getMyPageParams = new Object[]{userId, userId, userId, userId, userId, userId, userId};
         return this.jdbcTemplate.queryForObject(getMyPageQuery,
                 (rs, rowNum) -> new GetMyPageRes(
+                        rs.getString("profileImgUrl"),
+                        rs.getString("nickname"),
+                        rs.getDouble("star"),
                         rs.getInt("heartCnt"),
                         rs.getInt("reviewCnt"),
                         rs.getInt("followerCnt"),
@@ -322,6 +334,13 @@ public class UserDao {
         return this.jdbcTemplate.queryForObject(checkHeartListExistsQuery,
                 int.class,
                 checkHeartListExistsParams);  // 이미 찜해둔 경우 1반환
+    }
+
+    // 상점 후기 작성
+    public int postShopReview(int userId, PostShopReviewReq postShopReviewReq) {
+        String postShopReviewQuery = "insert into review (userId, productId, star, reviewContents) VALUES (?,?,?,?)";
+        Object[] postShopReviewParams= new Object[]{userId, postShopReviewReq.getProductId(), postShopReviewReq.getStar(), postShopReviewReq.getReviewContents()};
+        return this.jdbcTemplate.update(postShopReviewQuery, postShopReviewParams);
     }
 
 }
