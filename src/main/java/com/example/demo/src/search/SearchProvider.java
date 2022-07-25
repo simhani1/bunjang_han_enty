@@ -37,7 +37,7 @@ public class SearchProvider {
 
     // 검색어로 판매글 검색
     public List<GetProductByKeywordRes> getProductByKeyword(int userId, int lastProductId, String keyword, String type) throws BaseException {
-        int amount = 3;
+        int amount = 9;
         try {
             List<GetProductByKeywordRes> getProductByKeywordRes = new ArrayList<>();
             // paging
@@ -249,36 +249,45 @@ public class SearchProvider {
 //}
 //
 
-// 낮은 가격순 정렬
-class GetProductByKeywordComparatorDescend implements Comparator<GetProductByKeywordRes> {
-    @Override
-    public int compare(GetProductByKeywordRes t2, GetProductByKeywordRes t1) {
-        if (t1.getPrice() > t2.getPrice())
-            return 1;
-        else if (t1.getPrice() < t2.getPrice())
-            return -1;
-        else
-            return 0;
+    // 낮은 가격순 정렬
+    class GetProductByKeywordComparatorDescend implements Comparator<GetProductByKeywordRes> {
+        @Override
+        public int compare(GetProductByKeywordRes t2, GetProductByKeywordRes t1) {
+            if (t1.getPrice() > t2.getPrice())
+                return 1;
+            else if (t1.getPrice() < t2.getPrice())
+                return -1;
+            else
+                return 0;
+        }
+    }
+
+    // 높은 가격순 정렬
+    class GetProductByKeywordComparatorAscend implements Comparator<GetProductByKeywordRes> {
+        @Override
+        public int compare(GetProductByKeywordRes t2, GetProductByKeywordRes t1) {
+            if (t1.getPrice() > t2.getPrice())
+                return -1;
+            else if (t1.getPrice() < t2.getPrice())
+                return 1;
+            else
+                return 0;
+        }
+    }
+
+    // 상점후기 시간순 정렬
+    class GetProductByKeywordComparatorRecent implements Comparator<GetProductByKeywordRes> {
+        @Override
+        public int compare(GetProductByKeywordRes t1, GetProductByKeywordRes t2) {
+            Timestamp time_t1 = t1.getTime();
+            Timestamp time_t2 = t2.getTime();
+            if(time_t1.before(time_t2))
+                return 1;
+            else if(time_t1.after(time_t2))
+                return -1;
+            else
+                return 0;
+
+        }
     }
 }
-
-// 높은 가격순 정렬
-class GetProductByKeywordComparatorAscend implements Comparator<GetProductByKeywordRes> {
-    @Override
-    public int compare(GetProductByKeywordRes t2, GetProductByKeywordRes t1) {
-        if (t1.getPrice() > t2.getPrice())
-            return -1;
-        else if (t1.getPrice() < t2.getPrice())
-            return 1;
-        else
-            return 0;
-    }
-}
-
-// 상점후기 시간순 정렬
-class GetProductByKeywordComparatorRecent implements Comparator<GetProductByKeywordRes> {
-    @Override
-    public int compare(GetProductByKeywordRes getProductByKeywordRes, GetProductByKeywordRes t1) {
-        return 0;
-    }
-}}

@@ -56,6 +56,8 @@ public class SearchController {
             }
             //////////////////////////////////////  JWT
             List<GetProductByKeywordRes> getProductByKeyword = searchProvider.getProductByKeyword(userId, lastProductId, keyword, type);
+            if(getProductByKeyword.size() == 0)
+                return new BaseResponse<>(EMPTY_RESULT);
             return new BaseResponse<>(getProductByKeyword);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

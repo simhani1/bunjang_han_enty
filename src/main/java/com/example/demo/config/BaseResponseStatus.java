@@ -168,7 +168,8 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_ACCOUNT(false,4032,"계좌정보 수정에 실패하였습니다."),
     MODIFY_FAIL_ADDRESS(false,4032,"배송지정보 수정에 실패하였습니다."),
     DELETE_FAIL_ADDRESS(false,4033,"배송지정보 삭제에 실패하였습니다."),
-    FAILED_TO_ADD_HEARTLIST(false,4040,"찜하기에 실패하였습니다.");
+    FAILED_TO_ADD_HEARTLIST(false,4040,"찜하기에 실패하였습니다."),
+    EMPTY_RESULT(false, 4060, "검색 결과가 없습니다.");
 
 
 
