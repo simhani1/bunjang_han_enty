@@ -2,11 +2,14 @@ package com.example.demo.src.follow;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
+import com.example.demo.src.follow.model.GetFollowerRes;
 import com.example.demo.src.follow.model.PostFollowReq;
 import com.example.demo.src.follow.model.PostFollowRes;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -50,6 +53,20 @@ public class FollowController {
 
             PostFollowRes postFollowRes = followService.follow(userId, followUserId, postFollowReq.getStatus());
             return new BaseResponse<>(FOLLOW_SUCCESS, postFollowRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    //팔로워 조회
+    @GetMapping("/to-me/{userId}")
+    public BaseResponse<List<GetFollowerRes>> getFollowers(@PathVariable("userId") int userId){
+        try{
+            if(userId != jwtService.getUserId()){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            List<GetFollowerRes> getFollowerRes = followProvider.getFollowers(userId);
+            return new BaseResponse<>(GET_FOLLOWER_LIST_SUCCESS,getFollowerRes);
         } catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

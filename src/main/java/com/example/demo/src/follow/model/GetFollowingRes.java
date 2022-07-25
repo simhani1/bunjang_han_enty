@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetFollowRes {
+public class GetFollowingRes {
     private int followId;
 }

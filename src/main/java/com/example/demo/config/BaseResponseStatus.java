@@ -45,7 +45,7 @@ public enum BaseResponseStatus {
     BROWSE_ROOM_SUCCESS(true, 1992, "채팅방 조회에 성공하였습니다."),
     // [POST] /follow
     FOLLOW_SUCCESS(true, 1991, "팔로우 성공하였습니다."),
-
+    GET_FOLLOWER_LIST_SUCCESS(true, 1990, "팔로워 목록을 조회했습니다."),
 
 
     /**
