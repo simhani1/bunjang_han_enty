@@ -276,9 +276,31 @@ public class UserController {
         }
     }
 
+    // 상점후기 작성
+    @ResponseBody
+    @PostMapping("/shop/reviews/{userId}")
+    public BaseResponse<String> postShopReview (@PathVariable int userId, @RequestBody PostShopReviewReq postShopReviewReq) {
+        try {
+            // 해당 회원이 맞는지 검사
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if (userId != userIdByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            ////////////////////////////////////  JWT
+            userService.postShopReview(userId, postShopReviewReq);
+            String result = "리뷰가 작성되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
     // 상점후기 조회
     @ResponseBody
-    @GetMapping("/shop/review/{userId}")
+    @GetMapping("/shop/reviews/{userId}")
     public BaseResponse<List<GetShopReviewRes>> getShopReview (@PathVariable int userId) {
         try {
             // 해당 회원이 맞는지 검사
