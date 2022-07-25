@@ -98,7 +98,7 @@ public class ProductDao {
                         "product.changeable, product.contents, " +
                         "firstCategory.firstCategoryId, firstCategory.firstCategoryImgUrl, firstCategory.firstCategory, " +
                         "lastCategory.lastCategoryId, lastCategory.lastCategoryImgUrl, lastCategory.lastCategory, " +
-                        "user.profileImgUrl, user.nickname " +
+                        "user.profileImgUrl, user.nickname, product.updatedAt as 'time' " +
                         "from product " +
                         "left join user on user.userId = product.userId " +
                         "left join firstCategory on product.firstCategoryId = firstCategory.firstCategoryId " +
@@ -136,8 +136,15 @@ public class ProductDao {
         int chatCnt = this.jdbcTemplate.queryForObject(getChatCountQuery, int.class);
 
         // Get star
-        String getStarQuery = "select avg(star) from review where productId="+productId;
+        String getStarQuery =
+                "select avg(star) " +
+                "from review " +
+                "left join (select productId from product where userId = (select userId from product where productId="+productId+")) " +
+                "as A on review.productId = A.productId " +
+                "where A.productId = review.productId";
         Double star = this.jdbcTemplate.queryForObject(getStarQuery, Double.class);
+
+        Double downStar = Math.floor(star * 10) / 10.0;
 
         // Get follow
         String getUserIdQuery = "select userId from product where productId="+productId;
@@ -196,11 +203,12 @@ public class ProductDao {
                         getTag,
                         rs.getString("profileImgUrl"),
                         rs.getString("nickname"),
-                        star,
+                        downStar,
                         follower,
                         follow.get(0),
                         commentCount,
-                        heart.get(0)),
+                        heart.get(0),
+                        rs.getTimestamp("time")),
                 productId);
     }
 

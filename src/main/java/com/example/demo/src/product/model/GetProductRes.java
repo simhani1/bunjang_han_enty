@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -51,5 +52,6 @@ public class GetProductRes {
     private Boolean follow;
     private int commentCount;
     private Boolean heart;
+    private Timestamp time;
 
 }

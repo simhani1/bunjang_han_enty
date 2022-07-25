@@ -41,6 +41,9 @@ public enum BaseResponseStatus {
     // [POST] /chat
     SEND_MESSAGE_SUCCESS(true, 1993, "메세지를 전송하였습니다."),
 
+    // [GET] /chat
+    BROWSE_ROOM_SUCCESS(true, 1992, "채팅방 조회에 성공하였습니다."),
+
 
 
     /**
@@ -99,6 +102,7 @@ public enum BaseResponseStatus {
 
     // [GET] products/category
     NEGATIVE_CATEGORY_ID(false, 2521, "1 이상의 카테고리 번호를 입력해주세요."),
+
 
 
     /**

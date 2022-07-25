@@ -90,8 +90,11 @@ public class ChatController {
             if(userId != jwtService.getUserId()){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
+            if(roomId <= 0){
+                return new BaseResponse<>(REQUEST_REJECT_ROOM_ID);
+            }
             List<GetChatRes> getChatRes = chatProvider.getChatList(userId, roomId);
-            return new BaseResponse<>(getChatRes);
+            return new BaseResponse<>(BROWSE_ROOM_SUCCESS, getChatRes);
         } catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

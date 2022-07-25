@@ -260,9 +260,9 @@ public class ProductController {
                 return new BaseResponse<>(NEGATIVE_PAGE_NUM);
             }
             // 카테고리 번호가 음수일 때
-            if(Integer.parseInt(firstCategoryId) <= 0 || Integer.parseInt(lastCategoryId) <= 0){
-                return new BaseResponse<>(NEGATIVE_CATEGORY_ID);
-            }
+//            if(Integer.parseInt(firstCategoryId) <= 0 || Integer.parseInt(lastCategoryId) <= 0){
+//                return new BaseResponse<>(NEGATIVE_CATEGORY_ID);
+//            }
 
             if(lastCategoryId == null){
                 List<GetProductRes> getProductRes = productProvider.getProductByCategoryId(page,Integer.parseInt(firstCategoryId));

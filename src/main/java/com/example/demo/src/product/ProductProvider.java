@@ -70,15 +70,32 @@ public class ProductProvider {
     public List<GetProductRes> getProducts(int page) throws BaseException{
 
         // 상품이 아예 존재하지 않을 때
-        if(getLastProductId() < page*amount){
+        if(getLastProductId() <= page*amount){
             throw new BaseException(EXTRA_PAGE);
         }
 
         try{
             List<GetProductRes> getProductRes = new ArrayList<>();
+            List<GetProductRes> getProductResTemp = new ArrayList<>();
 
-            // paging
-//            for(int i = (amount*page)+1; i < (amount*(page+1))+1; i++){
+            System.out.println(getLastProductId());
+            for(int i = 1; i < getLastProductId()+1; i++){
+                if(!productDao.getProductIsDeleted(i)){
+                    getProductRes.add(productDao.getProductById(1,i));
+                }
+            }
+            Collections.sort(getProductRes, new GetProductResComparator());
+
+            for(int i = (amount*page); i < (amount*(page+1)); i++){
+                if(i >= getLastProductId()){
+                    getProductResTemp.add(getProductRes.get(i));
+                    return getProductResTemp;
+                }
+                getProductResTemp.add(getProductRes.get(i));
+            }
+
+            // 순서대로 안하고 작동되는거 (구식)
+//            for(int i = (amount*page)+1; i < (amount*(page+1)+1); i++){
 //                // 삭제 된 상품 예외처리
 //                if(!productDao.getProductIsDeleted(i)){
 //                    // i값이 productId값을 넘어갈때 오류나는것을 방지
@@ -90,19 +107,44 @@ public class ProductProvider {
 //                }
 //            }
 
-            for(int i = getLastProductId()-(amount*page); i > getLastProductId()-(amount*(page+1)); i--){
-                // 삭제 된 상품 예외처리
-                if(!productDao.getProductIsDeleted(i)){
-                    // i값이 productId값을 넘어갈때 오류나는것을 방지
-                    if(i <= 1){
-                        getProductRes.add(productDao.getProductById(1,i));
-                        return getProductRes;
-                    }
-                    getProductRes.add(productDao.getProductById(1,i));
-                }
-            }
+            // 역순으로 작동되는거 (구식)
+//            for(int i = getLastProductId()-(amount*page); i > getLastProductId()-(amount*(page+1)+1); i--){
+//                // 삭제 된 상품 예외처리
+//                if(!productDao.getProductIsDeleted(i)){
+//                    // i값이 productId값을 넘어갈때 오류나는것을 방지
+//                    if(i <= 1){
+//                        getProductRes.add(productDao.getProductById(1,i));
+//                        return getProductRes;
+//                    }
+//                    getProductRes.add(productDao.getProductById(1,i));
+//                }
+//            }
 
-            return getProductRes;
+//            for(int i = (amount*page); i < (amount*(page+1)); i++){
+//                // 삭제 된 상품 예외처리
+//                if(!productDao.getProductIsDeleted(i+1)){
+//                    // i값이 productId값을 넘어갈때 오류나는것을 방지
+//                    if(i == getLastProductId()+1){
+//                        getProductResTemp.add(getProductRes.get(i));
+//                        return getProductRes;
+//                    }
+//                    getProductResTemp.add(getProductRes.get(i));
+//                }
+//            }
+
+//            for(int i = 1; i <= getLastProductId(); i++){
+//                if(!productDao.getProductIsDeleted(i)){
+//                    if(productDao.getProductById(1,i).getFirstCategoryId() == firstCategoryId){
+//                        getProductRes.add(productDao.getProductById(1,i));
+//                    }
+//                }
+//            }
+//            Collections.sort(getProductRes, new GetProductResComparator());
+//
+//            for(int i = (amount*page); i < (amount*(page+1)); i++){
+//                getProductResTemp.add(getProductRes.get(i));
+//            }
+            return getProductResTemp;
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
@@ -117,25 +159,30 @@ public class ProductProvider {
      */
     List<GetProductRes> getProductByCategoryId(int page, int firstCategoryId) throws BaseException {
         // 상위 카테고리 음수이거나 없는 카테고리일때
-        if(firstCategoryId > firstCategoryProvider.getCategoryCount()){
-            throw new BaseException(NO_EXISTED_FIRST_CATEGORY);
-        }
+//        if(firstCategoryId > firstCategoryProvider.getCategoryCount()){
+//            throw new BaseException(NO_EXISTED_FIRST_CATEGORY);
+//        }
         try{
             List<GetProductRes> getProductRes = new ArrayList<>();
-            for(int i = getLastProductId()-(amount*page); i > getLastProductId()-(amount*(page+1)); i--){
+            List<GetProductRes> getProductResTemp = new ArrayList<>();
+
+            for(int i = 1; i <= getLastProductId(); i++){
                 if(!productDao.getProductIsDeleted(i)){
                     if(productDao.getProductById(1,i).getFirstCategoryId() == firstCategoryId){
-                        if(i <= 1){
-                            getProductRes.add(productDao.getProductById(1,i));
-                            return getProductRes;
-                        }
-
                         getProductRes.add(productDao.getProductById(1,i));
                     }
                 }
             }
-//            Collections.sort();
-            return getProductRes;
+            Collections.sort(getProductRes, new GetProductResComparator());
+
+            for(int i = (amount*page); i < (amount*(page+1)); i++){
+                if(i >= getLastProductId()){
+                    getProductResTemp.add(getProductRes.get(i));
+                    return getProductResTemp;
+                }
+                getProductResTemp.add(getProductRes.get(i));
+            }
+            return getProductResTemp;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
@@ -143,9 +190,9 @@ public class ProductProvider {
 
     List<GetProductRes> getProductByLastCategoryId(int page, int lastCategoryId) throws BaseException {
         // 하위 카테고리 음수이거나 없는 카테고리일때
-        if(lastCategoryId > lastCategoryProvider.getLastCategoryIdCount()){
-            throw new BaseException(NO_EXISTED_LAST_CATEGORY);
-        }
+//        if(lastCategoryId > lastCategoryProvider.getLastCategoryIdCount()){
+//            throw new BaseException(NO_EXISTED_LAST_CATEGORY);
+//        }
         try{
             List<GetProductRes> getProductRes = new ArrayList<>();
             for(int i = getLastProductId()-(amount*page); i > getLastProductId()-(amount*(page+1)); i--){
@@ -210,7 +257,16 @@ public class ProductProvider {
 //    }
 }
 
-//class GetProductComparator implements Comparator<GetProductRes>{
-//    @Override
-//    public int compare(GetProductRes t1, GetProductRes t2) {
-//}
+class GetProductResComparator implements Comparator<GetProductRes>{
+    @Override
+    public int compare(GetProductRes t1, GetProductRes t2) {
+        Timestamp time_t1 = t1.getTime();
+        Timestamp time_t2 = t2.getTime();
+        if(time_t1.before(time_t2))
+            return 1;
+        else if(time_t1.after(time_t2))
+            return -1;
+        else
+            return 0;
+    }
+}

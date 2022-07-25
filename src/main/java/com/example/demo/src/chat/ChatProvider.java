@@ -20,6 +20,10 @@ public class ChatProvider {
 
     // 마지막 채팅 타입 가져오기
     public GetChatRes getLastMessageType(int roomId) throws BaseException {
+        // TODO: roomId가 max(roomId) 보다 클때 validation
+//        if(roomId > roomProvider.getLastRoomId()){
+//            throw new BaseException(NO_EXISTED_ROOM);
+//        }
         try{
             List<GetChatRes> getChatRes = chatDao.getChatList(roomId);
             return getChatRes.get(getChatRes.size()-1);
@@ -29,6 +33,11 @@ public class ChatProvider {
     }
 
     public List<GetChatRes> getChatList(int userId, int roomId) throws BaseException{
+        // TODO: roomId가 max(roomId) 보다 클때 validation
+//        if(roomId > roomProvider.getLastRoomId()){
+//            throw new BaseException(NO_EXISTED_ROOM);
+//        }
+        // 유저가 조회한 방 안에 없을 때
         if(chatDao.checkUserExistRoom(userId, roomId) != 1){
             throw new BaseException(NO_EXISTED_USER_CHATROOM);
         }
