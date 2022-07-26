@@ -124,6 +124,7 @@ public class ProductService {
         if (productId < 0 || productId > productProvider.getLastProductId()){
             throw new BaseException(NO_EXISTED_PRODUCT);
         }
+        // 이미 삭제된 상품인지 확인
         if (productDao.getProductIsDeleted(productId)){
             throw new BaseException(DELETED_PRODUCT);
         }
