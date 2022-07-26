@@ -9,6 +9,8 @@ import com.example.demo.src.product.model.PatchProductReq;
 import com.example.demo.src.product.model.PostProductReq;
 import com.example.demo.src.product.model.PostProductRes;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -34,6 +36,7 @@ public class ProductService {
      * @return
      * @throws BaseException
      */
+    @Transactional
     public PostProductRes createProduct(int userId, PostProductReq postProductReq) throws BaseException {
         // 상위 카테고리 음수이거나 없는 카테고리일때
         if(postProductReq.getFirstCategoryId() < 0 || postProductReq.getFirstCategoryId() > firstCategoryProvider.getCategoryCount()){
@@ -59,6 +62,7 @@ public class ProductService {
      * @param patchProductReq
      * @throws BaseException
      */
+    @Transactional
     public void modifyProduct(int userId, int productId, PatchProductReq patchProductReq) throws BaseException {
         if (productDao.getProductIsDeleted(productId)){
             throw new BaseException(DELETED_PRODUCT);

@@ -255,7 +255,7 @@ public class ProductController {
      * @param lastCategoryId
      * @return
      */
-    @GetMapping("/category/{userId}")
+    @GetMapping("/categories/{userId}")
     public BaseResponse<List<GetProductRes>> getProductByCategoryId(@PathVariable int userId,
                                                                     @RequestParam int page,
                                                                     @RequestParam String type,

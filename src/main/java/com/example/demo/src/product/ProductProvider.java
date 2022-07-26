@@ -8,6 +8,7 @@ import com.example.demo.src.product.model.GetProductRes;
 import com.example.demo.src.user.model.GetShopReviewRes;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -17,7 +18,7 @@ import static com.example.demo.config.BaseResponseStatus.*;
 @Service
 public class ProductProvider {
 
-    int amount = 6;
+    int amount = 9;
     final private ProductDao productDao;
     private final FirstCategoryProvider firstCategoryProvider;
     private final LastCategoryProvider lastCategoryProvider;
@@ -43,6 +44,7 @@ public class ProductProvider {
      * @return
      * @throws BaseException
      */
+    @Transactional(readOnly=true)
     public GetProductRes getProductById(int userId,int productId) throws BaseException {
         if (userId < 0){
             throw new BaseException(NO_EXISTED_USER);
@@ -402,18 +404,4 @@ public class ProductProvider {
 //            throw new BaseException(DATABASE_ERROR);
 //        }
 //    }
-}
-
-class GetProductResComparator implements Comparator<GetProductRes>{
-    @Override
-    public int compare(GetProductRes t1, GetProductRes t2) {
-        Timestamp time_t1 = t1.getTime();
-        Timestamp time_t2 = t2.getTime();
-        if(time_t1.before(time_t2))
-            return 1;
-        else if(time_t1.after(time_t2))
-            return -1;
-        else
-            return 0;
-    }
 }

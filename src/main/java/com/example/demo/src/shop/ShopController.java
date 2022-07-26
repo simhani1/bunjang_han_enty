@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/app/users/shop")
+@RequestMapping("/app/shops")
 public class ShopController {
 
     private final ShopProvider shopProvider;
@@ -25,6 +25,5 @@ public class ShopController {
         this.jwtService = jwtService;
     }
 
-//    @GetMapping("/followers")
-//    public List<Get>
+
 }

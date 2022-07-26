@@ -31,6 +31,7 @@ public class ProductDao {
      * @param postProductReq
      * @return
      */
+
     public int createProduct(int userId, PostProductReq postProductReq){
 
         int productId;

@@ -47,6 +47,10 @@ public enum BaseResponseStatus {
     FOLLOW_SUCCESS(true, 1991, "팔로우 성공하였습니다."),
     GET_FOLLOWER_LIST_SUCCESS(true, 1990, "팔로워 목록을 조회했습니다."),
     GET_FOLLOWING_LIST_SUCCESS(true, 1989, "팔로잉 목록을 조회했습니다."),
+    // /block
+    BLOCK_USER_SUCCESS(true,1988,"유저를 차단했습니다."),
+    GET_BLOCK_LIST_SUCCESS(true, 1987, "차단 목록을 조회했습니다."),
+    DELETE_BLOCK_USER_SUCCESS(false, 1986, "차단을 해제하였습니다."),
 
 
     /**
@@ -111,6 +115,9 @@ public enum BaseResponseStatus {
     CAN_NOT_FOLLOW_MYSELF(false, 2522, "본인은 팔로우 할 수 없습니다."),
     REQUEST_REJECT_FOLLOW_ID(false, 2523,"팔로우 하려는 유저의 번호를 확인해주세요."),
     EMPTY_FOLLOW_STATUS(false, 2524, "팔로우 상태를 입력해주세요."),
+
+    // [POST] /block-lists
+    INVALID_BLOCK_USER_ID(false, 2525, "차단할 유저 아이디를 확인해주세요."),
 
 
 
@@ -179,6 +186,10 @@ public enum BaseResponseStatus {
     GET_PRODUCTS_FAILED(false, 3989, "전체 상품 조회에 실패하였습니다."),
     GET_FIRST_CATEGORY_PRODUCTS_FAILD(false, 3988, "상위 카테고리별 상품 조회에 실패하였습니다."),
     GET_LAST_CATEGORY_PRODUCTS_FAILD(false, 3988, "하위 카테고리별 상품 조회에 실패하였습니다."),
+
+    // [POST] /block-lists
+    BLOCKED_USER(false, 3987, "이미 차단한 유저입니다."),
+    NO_BLOCKED_USER(false, 3986, "차단한 유저가 아닙니다."),
     /**
      * 4000 : Database, Server 오류
      */
