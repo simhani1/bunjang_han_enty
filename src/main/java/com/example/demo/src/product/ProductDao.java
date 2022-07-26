@@ -239,6 +239,42 @@ public class ProductDao {
         String getProductIdListQuery = "select productId from product where isDeleted=false order by price desc";
         return this.jdbcTemplate.queryForList(getProductIdListQuery, int.class);
     }
+
+    // 삭제 안된 상품 최신순 by firstCategory
+    public List<Integer> getExistsProductIdListReCentByFirstCategoryId(int firstCategoryId){
+        String getProductIdListQuery = "select productId from product where isDeleted=false and firstCategoryId = ? order by updatedAt desc";
+        return this.jdbcTemplate.queryForList(getProductIdListQuery, int.class, firstCategoryId);
+    }
+
+    // 삭제 안된 상품 낮은가격순 by firstCategory
+    public List<Integer> getExistsProductIdListAscendByFirstCategoryId(int firstCategoryId){
+        String getProductIdListQuery = "select productId from product where isDeleted=false and firstCategoryId = ? order by price";
+        return this.jdbcTemplate.queryForList(getProductIdListQuery, int.class, firstCategoryId);
+    }
+
+    // 삭제 안된 상품 높은가격순 by firstCategory
+    public List<Integer> getExistsProductIdListDescendByFirstCategoryId(int firstCategoryId){
+        String getProductIdListQuery = "select productId from product where isDeleted=false and firstCategoryId = ? order by price desc";
+        return this.jdbcTemplate.queryForList(getProductIdListQuery, int.class, firstCategoryId);
+    }
+
+    // 삭제 안된 상품 최신순 by lastCategory
+    public List<Integer> getExistsProductIdListReCentByLastCategoryId(int lastCategoryId){
+        String getProductIdListQuery = "select productId from product where isDeleted=false and lastCategoryId = ? order by updatedAt desc";
+        return this.jdbcTemplate.queryForList(getProductIdListQuery, int.class, lastCategoryId);
+    }
+
+    // 삭제 안된 상품 낮은가격순 by lastCategory
+    public List<Integer> getExistsProductIdListAscendByLastCategoryId(int lastCategoryId){
+        String getProductIdListQuery = "select productId from product where isDeleted=false and lastCategoryId = ? order by price";
+        return this.jdbcTemplate.queryForList(getProductIdListQuery, int.class, lastCategoryId);
+    }
+
+    // 삭제 안된 상품 높은가격순 by lastCategory
+    public List<Integer> getExistsProductIdListDescendByLastCategoryId(int lastCategoryId){
+        String getProductIdListQuery = "select productId from product where isDeleted=false and lastCategoryId = ? order by price desc";
+        return this.jdbcTemplate.queryForList(getProductIdListQuery, int.class, lastCategoryId);
+    }
     // 상품 수정
     public int modifyProduct(int userId, int productId, PatchProductReq patchProductReq){
 

@@ -78,9 +78,6 @@ public class ProductProvider {
             List<GetProductRes> getProductRes = new ArrayList<>();
 
             // 최신순
-            //if(type.equals("ascend"))
-            //else if(type.equals("descend"))
-            //else if(type.equals("recent"))
             if(type.equals("recent")){
                 for(int i = amount*page; i < amount*(page+1); i++){
                     if(i >= getExistProductCount()-1){
@@ -104,6 +101,7 @@ public class ProductProvider {
                 return getProductRes;
             }
 
+            // 높은 가격순
             if(type.equals("descend")){
                 for(int i = amount*page; i < amount*(page+1); i++){
                     if(i >= getExistProductCount()-1){
@@ -203,7 +201,7 @@ public class ProductProvider {
      * @return
      * @throws BaseException
      */
-    List<GetProductRes> getProductByCategoryId(int page, int firstCategoryId) throws BaseException {
+    List<GetProductRes> getProductByCategoryId(int page, String type, int firstCategoryId, int userId) throws BaseException {
         // 상위 카테고리 음수이거나 없는 카테고리일때
         if(firstCategoryId > firstCategoryProvider.getCategoryCount()){
             throw new BaseException(NO_EXISTED_FIRST_CATEGORY);
@@ -213,32 +211,73 @@ public class ProductProvider {
         }
 
         try{
+
             List<GetProductRes> getProductRes = new ArrayList<>();
-            List<GetProductRes> getProductResTemp = new ArrayList<>();
 
-            for(int i = 1; i < getLastProductId()+1; i++){
-                if(!productDao.getProductIsDeleted(i)){
-                    if(productDao.getProductById(1,i).getFirstCategoryId() == firstCategoryId){
-                        getProductRes.add(productDao.getProductById(1,i));
+            // 최신순
+            if(type.equals("recent")){
+                for(int i = amount*page; i < amount*(page+1); i++){
+                    if(i >= getExistCategoryProductCount(firstCategoryId)-1){
+                        getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListReCentByFirstCategoryId(firstCategoryId).get(i)));
+                        return getProductRes;
                     }
+                    getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListReCentByFirstCategoryId(firstCategoryId).get(i)));
                 }
+                return getProductRes;
             }
-            Collections.sort(getProductRes, new GetProductResComparator());
 
-            for(int i = (amount*page); i < (amount*(page+1)); i++){
-                if(i >= getProductRes.size()-1){
-                    getProductResTemp.add(getProductRes.get(i));
-                    return getProductResTemp;
+            // 낮은 가격순
+            if(type.equals("ascend")){
+                for(int i = amount*page; i < amount*(page+1); i++){
+                    if(i >= getExistCategoryProductCount(firstCategoryId)-1){
+                        getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListAscendByFirstCategoryId(firstCategoryId).get(i)));
+                        return getProductRes;
+                    }
+                    getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListAscendByFirstCategoryId(firstCategoryId).get(i)));
                 }
-                getProductResTemp.add(getProductRes.get(i));
+                return getProductRes;
             }
-            return getProductResTemp;
+
+            // 높은 가격순
+            if(type.equals("descend")){
+                for(int i = amount*page; i < amount*(page+1); i++){
+                    if(i >= getExistCategoryProductCount(firstCategoryId)-1){
+                        getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListDescendByFirstCategoryId(firstCategoryId).get(i)));
+                        return getProductRes;
+                    }
+                    getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListDescendByFirstCategoryId(firstCategoryId).get(i)));
+                }
+                return getProductRes;
+            }
+
+//            List<GetProductRes> getProductRes = new ArrayList<>();
+//            List<GetProductRes> getProductResTemp = new ArrayList<>();
+//
+//            for(int i = 1; i < getLastProductId()+1; i++){
+//                if(!productDao.getProductIsDeleted(i)){
+//                    if(productDao.getProductById(1,i).getFirstCategoryId() == firstCategoryId){
+//                        getProductRes.add(productDao.getProductById(1,i));
+//                    }
+//                }
+//            }
+//            Collections.sort(getProductRes, new GetProductResComparator());
+//
+//            for(int i = (amount*page); i < (amount*(page+1)); i++){
+//                if(i >= getProductRes.size()-1){
+//                    getProductResTemp.add(getProductRes.get(i));
+//                    return getProductResTemp;
+//                }
+//                getProductResTemp.add(getProductRes.get(i));
+//            }
+//            return getProductResTemp;
+            throw new BaseException(GET_FIRST_CATEGORY_PRODUCTS_FAILD);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    List<GetProductRes> getProductByLastCategoryId(int page, int lastCategoryId) throws BaseException {
+    // 하위 카테고리별 상품 조회
+    List<GetProductRes> getProductByLastCategoryId(int page, String type, int lastCategoryId, int userId) throws BaseException {
         // 하위 카테고리 음수이거나 없는 카테고리일때
         if(lastCategoryId > lastCategoryProvider.getLastCategoryIdCount()){
             throw new BaseException(NO_EXISTED_LAST_CATEGORY);
@@ -248,25 +287,61 @@ public class ProductProvider {
         }
         try{
             List<GetProductRes> getProductRes = new ArrayList<>();
-            List<GetProductRes> getProductResTemp = new ArrayList<>();
 
-            for(int i = 1; i < getLastProductId()+1; i++){
-                if(!productDao.getProductIsDeleted(i)){
-                    if(productDao.getProductById(1,i).getLastCategoryId() == lastCategoryId){
-                        getProductRes.add(productDao.getProductById(1,i));
+            if(type.equals("recent")){
+                for(int i = amount*page; i < amount*(page+1); i++){
+                    if(i >= getExistLastCategoryProductCount(lastCategoryId)-1){
+                        getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListReCentByLastCategoryId(lastCategoryId).get(i)));
+                        return getProductRes;
                     }
+                    getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListReCentByLastCategoryId(lastCategoryId).get(i)));
                 }
+                return getProductRes;
             }
-            Collections.sort(getProductRes, new GetProductResComparator());
+            // 낮은 가격순
+            if(type.equals("ascend")){
+                for(int i = amount*page; i < amount*(page+1); i++){
+                    if(i >= getExistLastCategoryProductCount(lastCategoryId)-1){
+                        getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListAscendByLastCategoryId(lastCategoryId).get(i)));
+                        return getProductRes;
+                    }
+                    getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListAscendByLastCategoryId(lastCategoryId).get(i)));
+                }
+                return getProductRes;
+            }
 
-            for(int i = (amount*page); i < (amount*(page+1)); i++){
-                if(i >= getProductRes.size()-1){
-                    getProductResTemp.add(getProductRes.get(i));
-                    return getProductResTemp;
+            // 높은 가격순
+            if(type.equals("descend")){
+                for(int i = amount*page; i < amount*(page+1); i++){
+                    if(i >= getExistLastCategoryProductCount(lastCategoryId)-1){
+                        getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListDescendByLastCategoryId(lastCategoryId).get(i)));
+                        return getProductRes;
+                    }
+                    getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListDescendByLastCategoryId(lastCategoryId).get(i)));
                 }
-                getProductResTemp.add(getProductRes.get(i));
+                return getProductRes;
             }
-            return getProductResTemp;
+//            List<GetProductRes> getProductRes = new ArrayList<>();
+//            List<GetProductRes> getProductResTemp = new ArrayList<>();
+//
+//            for(int i = 1; i < getLastProductId()+1; i++){
+//                if(!productDao.getProductIsDeleted(i)){
+//                    if(productDao.getProductById(1,i).getLastCategoryId() == lastCategoryId){
+//                        getProductRes.add(productDao.getProductById(1,i));
+//                    }
+//                }
+//            }
+//            Collections.sort(getProductRes, new GetProductResComparator());
+//
+//            for(int i = (amount*page); i < (amount*(page+1)); i++){
+//                if(i >= getProductRes.size()-1){
+//                    getProductResTemp.add(getProductRes.get(i));
+//                    return getProductResTemp;
+//                }
+//                getProductResTemp.add(getProductRes.get(i));
+//            }
+//            return getProductResTemp;
+            throw new BaseException(GET_LAST_CATEGORY_PRODUCTS_FAILD);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
