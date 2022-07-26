@@ -222,6 +222,24 @@ public class ProductDao {
         return this.jdbcTemplate.queryForObject(getLastProductIdQuery, int.class);
     }
 
+    // 삭제 안된 상품 최신순
+    public List<Integer> getExistsProductIdListReCent(){
+        String getProductIdListQuery = "select productId from product where isDeleted=false order by updatedAt desc";
+        return this.jdbcTemplate.queryForList(getProductIdListQuery, int.class);
+    }
+
+    // 삭제 안된 상품 낮은가격순
+    public List<Integer> getExistsProductIdListAscend(){
+        String getProductIdListQuery = "select productId from product where isDeleted=false order by price";
+        return this.jdbcTemplate.queryForList(getProductIdListQuery, int.class);
+    }
+
+    // 삭제 안된 상품 높은가격순
+    public List<Integer> getExistsProductIdListDescend(){
+        String getProductIdListQuery = "select productId from product where isDeleted=false order by price desc";
+        return this.jdbcTemplate.queryForList(getProductIdListQuery, int.class);
+    }
+    // 상품 수정
     public int modifyProduct(int userId, int productId, PatchProductReq patchProductReq){
 
         String modifyProductQuery;

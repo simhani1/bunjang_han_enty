@@ -67,7 +67,7 @@ public class ProductProvider {
      * @return
      * @throws BaseException
      */
-    public List<GetProductRes> getProducts(int page) throws BaseException{
+    public List<GetProductRes> getProducts(int userId, int page, String type) throws BaseException{
 
         // 상품이 아예 존재하지 않을 때
         if(getExistProductCount() <= page*amount){
@@ -76,8 +76,52 @@ public class ProductProvider {
 
         try{
             List<GetProductRes> getProductRes = new ArrayList<>();
+
+            // 최신순
+            //if(type.equals("ascend"))
+            //else if(type.equals("descend"))
+            //else if(type.equals("recent"))
+            if(type.equals("recent")){
+                for(int i = amount*page; i < amount*(page+1); i++){
+                    if(i >= getExistProductCount()-1){
+                        getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListReCent().get(i)));
+                        return getProductRes;
+                    }
+                    getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListReCent().get(i)));
+                }
+                return getProductRes;
+            }
+
+            // 낮은 가격순
+            if(type.equals("ascend")){
+                for(int i = amount*page; i < amount*(page+1); i++){
+                    if(i >= getExistProductCount()-1){
+                        getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListAscend().get(i)));
+                        return getProductRes;
+                    }
+                    getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListAscend().get(i)));
+                }
+                return getProductRes;
+            }
+
+            if(type.equals("descend")){
+                for(int i = amount*page; i < amount*(page+1); i++){
+                    if(i >= getExistProductCount()-1){
+                        getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListDescend().get(i)));
+                        return getProductRes;
+                    }
+                    getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListDescend().get(i)));
+                }
+                return getProductRes;
+            }
+
+            throw new BaseException(GET_PRODUCTS_FAILED);
+
+
+
 //            List<GetProductRes> getProductResTemp = new ArrayList<>();
 //
+//            productDao.getExistsProductIdList().get(0);
 //            for(int i = 1; i < getLastProductId()+1; i++){
 //                if(!productDao.getProductIsDeleted(i)){
 //                    getProductRes.add(productDao.getProductById(1,i));
@@ -93,7 +137,8 @@ public class ProductProvider {
 //                }
 //                getProductResTemp.add(getProductRes.get(i));
 //            }
-//            return getProductResTemp;
+
+
             // 순서대로 안하고 작동되는거 (구식)
 //            for(int i = (amount*page)+1; i < (amount*(page+1)+1); i++){
 //                // 삭제 된 상품 예외처리
@@ -108,18 +153,18 @@ public class ProductProvider {
 //            }
 
             // 역순으로 작동되는거 (구식)
-            for(int i = getLastProductId()-(amount*page); i > getLastProductId()-(amount*(page+1)+1); i--){
-                // 삭제 된 상품 예외처리
-                if(!productDao.getProductIsDeleted(i)){
-                    // i값이 productId값을 넘어갈때 오류나는것을 방지
-                    if(i <= 1){
-                        getProductRes.add(productDao.getProductById(1,i));
-                        return getProductRes;
-                    }
-                    getProductRes.add(productDao.getProductById(1,i));
-                }
-            }
-            return getProductRes;
+//            for(int i = getExistProductCount()-(amount*page); i > getExistProductCount()-(amount*(page+1)); i--){
+//                // 삭제 된 상품 예외처리
+//                if(!productDao.getProductIsDeleted(i)){
+//                    // i값이 productId값을 넘어갈때 오류나는것을 방지
+//                    if(i <= 1){
+//                        getProductRes.add(productDao.getProductById(userId,i));
+//                        return getProductRes;
+//                    }
+//                    getProductRes.add(productDao.getProductById(userId,i));
+//                }
+//            }
+//            return getProductRes;
 
 //            for(int i = (amount*page); i < (amount*(page+1)); i++){
 //                // 삭제 된 상품 예외처리
@@ -253,12 +298,15 @@ public class ProductProvider {
         }
     }
 
+    // 삭제안된 상품 수
     public int getExistProductCount(){
         return productDao.getExistProductCount();
     }
+    // 특정 상위 카테고리 상품 수
     public int getExistCategoryProductCount(int firstCategoryId){
         return productDao.getExistCategoryProductCount(firstCategoryId);
     }
+    // 특정 하위 카테고리 상품 수
     public int getExistLastCategoryProductCount(int lastCategoryId){
         return productDao.getExistLastCategoryProductCount(lastCategoryId);
     }
