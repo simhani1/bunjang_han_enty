@@ -186,10 +186,11 @@ public class SearchDao {
 
     // 인기 검색어 조회
     public List<GetKeywordsLogRes> getHotKeywordsLog() {
-        String getHotKeywordsLogQuery = "select keyword from hotKeyword";
+        String getHotKeywordsLogQuery = "select keyword, keywordId from hotKeyword";
         return this.jdbcTemplate.query(getHotKeywordsLogQuery,
                 (rs, rowNum) -> new GetKeywordsLogRes(
-                        rs.getString("keyword")
+                        rs.getString("keyword"),
+                        rs.getInt("keywordId")
                 ));
     }
 //    @Transactional
