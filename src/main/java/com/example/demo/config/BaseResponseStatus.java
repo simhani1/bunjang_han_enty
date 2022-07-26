@@ -53,7 +53,7 @@ public enum BaseResponseStatus {
     DELETE_BLOCK_USER_SUCCESS(false, 1986, "차단을 해제하였습니다."),
 
     // shop
-    MODIFY_SHOP_INFORM_SUCCESS(true, 1985, "상점 소개를 수정하였습니다."),
+    MODIFY_SHOP_SUCCESS(true, 1985, "상점 수정을 완료하였습니다."),
 
 
     /**
@@ -122,6 +122,13 @@ public enum BaseResponseStatus {
     // [POST] /block-lists
     INVALID_BLOCK_USER_ID(false, 2525, "차단할 유저 아이디를 확인해주세요."),
     NOT_STRING_TYPE_INFORM(false, 2526, "상점 소개를 문자열로 입력해주세요."),
+
+    // [PATCH] /shop
+    EMPTY_PROFILE_IMG(false, 2527, "프로필 사진을 등록해주세요."),
+    EMPTY_START_TIME(false, 2528, "시작시간을 설정해주세요."),
+    EMPTY_END_TIME(false, 2529, "끝 시간을 설정해주세요."),
+    INVALID_START_TIME(false, 2530, "시작시간 입력값을 확인해주세요."),
+    INVALID_END_TIME(false, 2531, "끝 시간 입력값을 확인해주세요."),
 
 
 

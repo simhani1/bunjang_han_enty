@@ -28,18 +28,36 @@ public class ShopController {
         this.jwtService = jwtService;
     }
 
-    @PatchMapping("/informs/{userId}")
+    // 상점 정보 수정
+    @PatchMapping("/{userId}")
     public BaseResponse<String> modifyShopsInform(@PathVariable int userId,
                                                   @RequestBody PatchShopReq patchShopReq){
         try{
             if (userId != jwtService.getUserId()){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-            if(inform.getClass() != String.class){
-                return new BaseResponse<>(NOT_STRING_TYPE_INFORM);
+            // 프로필 사진이 빈칸일 때
+            if (patchShopReq.getProfileImgUrl().equals("")){
+                return new BaseResponse<>(EMPTY_PROFILE_IMG);
             }
-            shopService.modifyShopsInform(userId, inform);
-            return new BaseResponse<>(MODIFY_SHOP_INFORM_SUCCESS);
+            // startTime 이 빈칸일 때
+            if (patchShopReq.getStartTimeId().equals("")){
+                return new BaseResponse<>(EMPTY_START_TIME);
+            }
+            // endTime 이 빈칸일 때
+            if (patchShopReq.getEndTimeId().equals("")){
+                return new BaseResponse<>(EMPTY_END_TIME);
+            }
+            // 시작 시간이 음수이거나 24를 넘어갈 때
+            if (Integer.parseInt(patchShopReq.getStartTimeId()) <= 0 || Integer.parseInt(patchShopReq.getStartTimeId()) > 24){
+                return new BaseResponse<>(INVALID_START_TIME);
+            }
+            // 끝 시간이 음수이거나 24를 넘어갈 때
+            if (Integer.parseInt(patchShopReq.getEndTimeId()) <= 0 || Integer.parseInt(patchShopReq.getEndTimeId()) > 24){
+                return new BaseResponse<>(INVALID_END_TIME);
+            }
+            shopService.modifyShops(userId, patchShopReq);
+            return new BaseResponse<>(MODIFY_SHOP_SUCCESS);
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }

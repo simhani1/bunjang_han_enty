@@ -10,7 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatchShopReq {
-    private String inform;
+    private String profileImgUrl;
+    private String nickname;
+    private String startTimeId;
+    private String endTimeId;
+    private String introduce;
     private String policy;
     private String caution;
 }

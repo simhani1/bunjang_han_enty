@@ -2,23 +2,28 @@ package com.example.demo.src.shop;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.src.shop.model.PatchShopReq;
+import com.example.demo.src.user.UserProvider;
 import org.springframework.stereotype.Service;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class ShopService {
-    public final ShopDao shopDao;
-    public final ShopProvider shopProvider;
+    private final ShopDao shopDao;
+    private final ShopProvider shopProvider;
 
     public ShopService(ShopDao shopDao, ShopProvider shopProvider){
         this.shopDao = shopDao;
         this.shopProvider = shopProvider;
     }
 
-    public void modifyShopsInform(int userId, String inform) throws BaseException {
+    public void modifyShops(int userId, PatchShopReq patchShopReq) throws BaseException {
+        // nickname 중복 확인(수정 할 때)
+        if (shopProvider.checkExistsModifyNickname(userId, patchShopReq.getNickname()) == 1) {
+            throw new BaseException(EXISTS_NICKNAME);
+        }
         try{
-            if(shopDao.modifyShopsInform(userId, inform) == 0){
+            if(shopDao.modifyShops(userId, patchShopReq) == 0){
                 throw new BaseException(MODIFY_SHOPS_INFORM_FAILD);
             }
         } catch (Exception exception){
