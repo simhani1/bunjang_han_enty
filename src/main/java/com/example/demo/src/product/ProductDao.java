@@ -361,6 +361,28 @@ public class ProductDao {
         return this.jdbcTemplate.update(modifyProductIsDeletedQuery, modifyProductIsDeletedParams);
     }
 
+    // 상품 UP하기
+    public int upProductById(int productId){
+        String upProductByIdQuery = "update product set updatedAt=current_timestamp where productId=?";
+        int upProductByIdParam = productId;
+
+        return this.jdbcTemplate.update(upProductByIdQuery,upProductByIdParam);
+    }
+
+    // 상품 주인인지 확인
+    public int checkExistsUserOwnProduct(int userId, int productId){
+        String checkExistsUserOwnProductQuery = "select exists(select productId from product where userId=? and productId=?)";
+        Object[] checkExistsUserOwnProductParams = new Object[]{userId, productId};
+
+        return this.jdbcTemplate.queryForObject(checkExistsUserOwnProductQuery,int.class, checkExistsUserOwnProductParams);
+    }
+    // 상품이 존재하는지, 판매중인지
+    public int checkExistsSellProduct(int productId){
+        String checkExistsSellProductQuery = "select exists(select productId from product where productId=? and isDeleted=false and product.condition='sel')";
+        int checkExistsSellProductParams = productId;
+
+        return this.jdbcTemplate.queryForObject(checkExistsSellProductQuery, int.class, checkExistsSellProductParams);
+    }
     public Boolean getProductIsDeleted(int productId){
         String getProductIsDeleted = "select product.isDeleted from product where productId="+productId;
         return this.jdbcTemplate.queryForObject(getProductIsDeleted,Boolean.class);

@@ -387,6 +387,14 @@ public class ProductProvider {
     public int getExistLastCategoryProductCount(int lastCategoryId){
         return productDao.getExistLastCategoryProductCount(lastCategoryId);
     }
+    // 상품의 주인인지 확인
+    public int checkExistsUserOwnProduct(int userId, int productId){
+        return productDao.checkExistsUserOwnProduct(userId, productId);
+    }
+    // 삭제되지 않고 판매중인지
+    public int checkExistsSellProduct(int productId){
+        return productDao.checkExistsSellProduct(productId);
+    }
 //    public GetProductRes getProductByIdTest(int userId,int productId) throws BaseException {
 //        if (userId < 0){
 //            throw new BaseException(NO_EXISTED_USER);

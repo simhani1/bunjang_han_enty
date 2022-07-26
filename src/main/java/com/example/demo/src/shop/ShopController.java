@@ -2,12 +2,11 @@ package com.example.demo.src.shop;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
+import com.example.demo.src.shop.model.GetShopInformRes;
 import com.example.demo.src.shop.model.PatchShopReq;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -28,6 +27,20 @@ public class ShopController {
         this.jwtService = jwtService;
     }
 
+    // 상점 정보 조회(수정할 때 나오는 화면)
+//    @GetMapping("/inform/{userId}")
+//    public BaseResponse<GetShopInformRes> getShopInform(@PathVariable int userId){
+//        try{
+//            if (userId != jwtService.getUserId()){
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
+//
+//            GetShopInformRes getShopInformRes = shopProvider.getShopInform(userId);
+//            return new BaseResponse<>(GET_SHOP_INFORM_SUCCESS,getShopInformRes);
+//        } catch (BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
     // 상점 정보 수정
     @PatchMapping("/{userId}")
     public BaseResponse<String> modifyShopsInform(@PathVariable int userId,

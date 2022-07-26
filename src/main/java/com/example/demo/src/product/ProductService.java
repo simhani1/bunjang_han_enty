@@ -137,4 +137,23 @@ public class ProductService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    // up 하기
+    public void upProductById(int userId, int productId) throws BaseException {
+        // 해당 상품의 주인이 아닐 때
+        if(productProvider.checkExistsUserOwnProduct(userId, productId) != 1){
+            throw new BaseException(NOT_YOUR_PRODUCT);
+        }
+        // 삭제되지 않고 판매중인지
+        if(productProvider.checkExistsSellProduct(productId) != 1){
+            throw new BaseException(NOT_EXISTS_OR_SOLD_OUT_RES);
+        }
+        try{
+            if(productDao.upProductById(productId) != 1){
+                throw new BaseException(FAILED_UP_PRODUCT);
+            }
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

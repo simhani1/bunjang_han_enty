@@ -55,6 +55,9 @@ public enum BaseResponseStatus {
     // shop
     MODIFY_SHOP_SUCCESS(true, 1985, "상점 수정을 완료하였습니다."),
 
+    // up product
+    UP_PRODUCT_SUCCESS(true, 1984, "상품을 UP 했습니다."),
+
 
     /**
      * 2000 : Request 오류
@@ -204,6 +207,10 @@ public enum BaseResponseStatus {
 
     // [PATCH] /shops
     MODIFY_SHOPS_INFORM_FAILD(false, 3985, "상품 소개 수정을 실패하였습니다."),
+
+    // up product
+    NOT_YOUR_PRODUCT(false, 3984, "상품의 등록자가 아닙니다."),
+    NOT_EXISTS_OR_SOLD_OUT_RES(false, 3982, "없는 상품이거나 판매중이 아닙니다."),
     /**
      * 4000 : Database, Server 오류
      */
@@ -221,12 +228,15 @@ public enum BaseResponseStatus {
     FAILED_TO_ADD_HEARTLIST(false,4040,"찜하기에 실패하였습니다."),
     FAILED_TO_POST_REVIEW(false,4041,"리뷰 작성에 실패하였습니다."),
     FAILED_TO_DELETE_KEYWORDS(false,4042,"최근 검색어 삭제에 실패하였습니다."),
-    EMPTY_RESULT(false, 4060, "조회 결과가 없습니다.");
+    EMPTY_RESULT(false, 4060, "조회 결과가 없습니다."),
 
 
+    // 수정 실패
+    FAILED_UP_PRODUCT(false, 4500, "상품UP 실패하였습니다."),
 
 
     // 5000 : 필요시 만들어서 쓰세요
+    NEED_TO_DELETE_VALIDATION(false,5000,"마지막에 지울것");
     // 6000 : 필요시 만들어서 쓰세요
 
 

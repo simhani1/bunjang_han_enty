@@ -4,6 +4,7 @@ import com.example.demo.config.BaseException;
 import com.example.demo.src.shop.model.PatchShopReq;
 import com.example.demo.src.user.UserProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -17,6 +18,7 @@ public class ShopService {
         this.shopProvider = shopProvider;
     }
 
+    @Transactional
     public void modifyShops(int userId, PatchShopReq patchShopReq) throws BaseException {
         // nickname 중복 확인(수정 할 때)
         if (shopProvider.checkExistsModifyNickname(userId, patchShopReq.getNickname()) == 1) {

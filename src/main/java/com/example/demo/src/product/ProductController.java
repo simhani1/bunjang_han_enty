@@ -279,6 +279,26 @@ public class ProductController {
         }
     }
 
+    // up하기
+    @PatchMapping("/up/{userId}/{productId}")
+    public BaseResponse<String> upProductById(@PathVariable int userId,
+                                              @PathVariable int productId){
+        try{
+            if(userId != jwtService.getUserId()){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            // 상품
+            if(productId <= 0){
+                return new BaseResponse<>(INVALID_PRODUCTID);
+            }
+            productService.upProductById(userId, productId);
+            return new BaseResponse<>(UP_PRODUCT_SUCCESS);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
 //    @GetMapping("/filter/")
 //    public BaseResponse<List<GetProductRes>> getProductByFirstCategoryId(@RequestParam int page,
 //                                                                         @RequestParam String firstCategoryId,
