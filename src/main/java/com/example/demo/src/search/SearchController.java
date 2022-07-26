@@ -4,6 +4,7 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.search.model.GetKeywordsLogRes;
 import com.example.demo.src.search.model.GetProductByKeywordRes;
+import com.example.demo.src.user.model.PatchUserReq;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +84,26 @@ public class SearchController {
             if(getKeywordsLogList.size() == 0)
                 return new BaseResponse<>(EMPTY_RESULT);
             return new BaseResponse<>(getKeywordsLogList);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    // 최근 검색어 전체 삭제
+    @PatchMapping("/log/{userId}")
+    public BaseResponse<String> modifyGender(@PathVariable("userId") int userId) {
+        try {
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if(userId != userIdByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            searchService.removeKeywordsLog(userId);
+            String result = "최근 검색어가 삭제되었습니다.";
+            return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
@@ -167,25 +188,6 @@ public class SearchController {
 //        }
 //    }
 //
-//    // 성별 수정
-//    @PatchMapping("/gender/{userId}")
-//    public BaseResponse<String> modifyGender(@PathVariable("userId") int userId, @RequestBody PatchUserReq patchUserReq) {
-//        try {
-//            //////////////////////////////////////  JWT
-//            //jwt에서 idx 추출
-//            int userIdByJwt = jwtService.getUserId();
-//            //userId와 접근한 유저가 같은지 확인
-//            if(userId != userIdByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //////////////////////////////////////  JWT
-//            userService.modifyGender(userId, patchUserReq.isGender());
-//            String result = "성별이 수정되었습니다.";
-//            return new BaseResponse<>(result);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
 //
 //    // 생일 수정
 //    @PatchMapping("/birth/{userId}")

@@ -176,6 +176,13 @@ public class SearchDao {
                     ),
                     getKeywordsLogParams);
         }
+
+    // 최근 검색어 전체 삭제
+    public int removeKeywordsLog(int userId) {
+        String removeKeywordsLogQuery = "update keywordsLog set isDeleted = true where userId = ?";
+        int removeKeywordsLogParams = userId;
+        return this.jdbcTemplate.update(removeKeywordsLogQuery, removeKeywordsLogParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
 //    @Transactional
 //    // 회원가입
 //    public int createUser(PostUserReq postUserReq) {
@@ -238,13 +245,6 @@ public class SearchDao {
 //        String modifyPhoneNumQuery = "update user set phoneNum = ? where userId = ? ";
 //        Object [] modifyPhoneNumParams = new Object[]{phoneNum, userId};
 //        return this.jdbcTemplate.update(modifyPhoneNumQuery, modifyPhoneNumParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
-//    }
-//
-//    // 성별 수정
-//    public int modifyGender(int userId, boolean gender) {
-//        String modifyGenderQuery = "update user set gender = ? where userId = ? ";
-//        Object [] modifyGenderParams = new Object[]{gender, userId};
-//        return this.jdbcTemplate.update(modifyGenderQuery, modifyGenderParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
 //    }
 //
 //    // 생일 수정
