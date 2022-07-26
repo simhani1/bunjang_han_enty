@@ -174,7 +174,11 @@ public enum BaseResponseStatus {
 
     // [POST] follow
     FAILD_USER_FOLLOW(false, 3990, "팔로우 실패하였습니다."),
+
+    // [GET] /products
     GET_PRODUCTS_FAILED(false, 3989, "전체 상품 조회에 실패하였습니다."),
+    GET_FIRST_CATEGORY_PRODUCTS_FAILD(false, 3988, "상위 카테고리별 상품 조회에 실패하였습니다."),
+    GET_LAST_CATEGORY_PRODUCTS_FAILD(false, 3988, "하위 카테고리별 상품 조회에 실패하였습니다."),
     /**
      * 4000 : Database, Server 오류
      */

@@ -255,8 +255,10 @@ public class ProductController {
      * @param lastCategoryId
      * @return
      */
-    @GetMapping("/category")
-    public BaseResponse<List<GetProductRes>> getProductByCategoryId(@RequestParam int page,
+    @GetMapping("/category/{userId}")
+    public BaseResponse<List<GetProductRes>> getProductByCategoryId(@PathVariable int userId,
+                                                                    @RequestParam int page,
+                                                                    @RequestParam String type,
                                                                     @RequestParam(required = false) String firstCategoryId,
                                                                     @RequestParam(required = false) String lastCategoryId){
         try{
@@ -264,17 +266,12 @@ public class ProductController {
             if(page < 0){
                 return new BaseResponse<>(NEGATIVE_PAGE_NUM);
             }
-            // 카테고리 번호가 음수일 때
-//            if(Integer.parseInt(firstCategoryId) <= 0 || Integer.parseInt(lastCategoryId) <= 0){
-//                return new BaseResponse<>(NEGATIVE_CATEGORY_ID);
-//            }
-
             if(lastCategoryId == null){
-                List<GetProductRes> getProductRes = productProvider.getProductByCategoryId(page,Integer.parseInt(firstCategoryId));
+                List<GetProductRes> getProductRes = productProvider.getProductByCategoryId(page,type,Integer.parseInt(firstCategoryId), userId);
                 return new BaseResponse<>(GET_PRODUCT_SUCCESS,getProductRes);
             }
 
-            List<GetProductRes> getProductRes = productProvider.getProductByLastCategoryId(page,Integer.parseInt(lastCategoryId));
+            List<GetProductRes> getProductRes = productProvider.getProductByLastCategoryId(page,type,Integer.parseInt(lastCategoryId), userId);
             return new BaseResponse<>(GET_PRODUCT_SUCCESS,getProductRes);
 
         } catch (BaseException exception){
