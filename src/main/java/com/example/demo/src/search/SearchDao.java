@@ -156,9 +156,9 @@ public class SearchDao {
 
     // 검색 내역이 있는지 체크
     public boolean existKeywordsLog (int userId, String keyword) {
-        String existKeywordsLogQuery = "select exists(select logId from keywordsLog where userId = ? and keyword = ? and isDeleted = false)";
-        Object existKeywordsLogParams = new Object[]{userId, keyword};
-        return this.jdbcTemplate.queryForObject(existKeywordsLogQuery, boolean.class, existKeywordsLogParams);  // 이미 내역이 있으면 true
+        String existKeywordsLogQuery = "select exists(select logId from keywordsLog where keywordsLog.userId = ? and keywordsLog.keyword = ? and keywordsLog.isDeleted = false)";
+        Object[] existKeywordsLogParams = new Object[]{userId, keyword};
+        return this.jdbcTemplate.queryForObject(existKeywordsLogQuery, boolean.class, existKeywordsLogParams); // 이미 내역이 있으면 true
     }
 
     // 검색 내역 조회(최신 검색어 6개)
@@ -166,7 +166,9 @@ public class SearchDao {
             String getKeywordsLogQuery = "select\n" +
                     "    keyword\n" +
                     "from keywordsLog\n" +
-                    "where userId = ?";
+                    "where userId = ? and isDeleted = false\n" +
+                    "order by logId desc\n" +
+                    "limit 6";
             int getKeywordsLogParams = userId;
             return this.jdbcTemplate.query(getKeywordsLogQuery,
                     (rs, rowNum) -> new GetKeywordsLogRes(
