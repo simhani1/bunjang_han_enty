@@ -194,19 +194,21 @@ public class UserController {
 
     // 본인의 판매중 상품 조회
     @ResponseBody
-    @GetMapping("/sell/{userId}")
-    public BaseResponse<List<GetUserProductRes>> getUserProductRes_sel (@PathVariable int userId) {
+    @GetMapping("/sell/{userId}/{otherId}")
+    public BaseResponse<List<GetUserProductRes>> getUserProductRes_sel (@PathVariable int userId, @PathVariable int otherId) {
         try {
             // 해당 회원이 맞는지 검사
             //////////////////////////////////////  JWT
             //jwt에서 idx 추출
-//            int userIdByJwt = jwtService.getUserId();
-//            //userId와 접근한 유저가 같은지 확인
-//            if (userId != userIdByJwt) {
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if (userId != userIdByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             //////////////////////////////////////  JWT
-            List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_sel(userId);
+            List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_sel(userId, otherId);
+            if(getUserProductRes.isEmpty())
+                return new BaseResponse<>(EMPTY_RESULT);
             return new BaseResponse<>(getUserProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -228,6 +230,8 @@ public class UserController {
             }
             //////////////////////////////////////  JWT
             List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_res(userId);
+            if(getUserProductRes.isEmpty())
+                return new BaseResponse<>(EMPTY_RESULT);
             return new BaseResponse<>(getUserProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -249,6 +253,8 @@ public class UserController {
             }
             //////////////////////////////////////  JWT
             List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_fin(userId);
+            if(getUserProductRes.isEmpty())
+                return new BaseResponse<>(EMPTY_RESULT);
             return new BaseResponse<>(getUserProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -338,4 +344,25 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+//    // 찜목록 조회
+//    @ResponseBody
+//    @GetMapping("/heart-list/{userId}")
+//    public BaseResponse<List<GetHeartProductsRes>> getHeartProducts (@PathVariable int userId) {
+//        try {
+//            // 해당 회원이 맞는지 검사
+//            //////////////////////////////////////  JWT
+//            //jwt에서 idx 추출
+//            int userIdByJwt = jwtService.getUserId();
+//            //userId와 접근한 유저가 같은지 확인
+//            if (userId != userIdByJwt) {
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
+//            //////////////////////////////////////  JWT
+//            List<GetHeartProductsRes> getHeartProducts = userProvider.getHeartProducts(userId);
+//            return new BaseResponse<>(getHeartProducts);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
 }

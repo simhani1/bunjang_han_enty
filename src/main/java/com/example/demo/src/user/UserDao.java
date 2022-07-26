@@ -132,14 +132,14 @@ public class UserDao {
     }
 
     // 해당 유저의 판매중/예약중/판매완료 물건 조회
-    public GetUserProductRes getUserProductRes(int userId, int productId, String condition) {
+    public GetUserProductRes getUserProductRes(int userId, int otherId, int productId, String condition) {
         // 해당 상품의 사진 다 넘기기
         String getProductImgQuery = "select\n" +
                 "    productImgUrl\n" +
                 "from productImg\n" +
                 "inner join product on productImg.productId = product.productId\n" +
                 "where product.`condition` = ? and product.userId = ? and productImg.productId = ?";
-        Object[] getProductImgParam = new Object[]{condition, userId, productId};
+        Object[] getProductImgParam = new Object[]{condition, otherId, productId};
         List<GetProductImgRes> getProductImg = this.jdbcTemplate.query(getProductImgQuery,
                 (rs,rowNum) -> new GetProductImgRes(
                         rs.getString("productImgUrl")),
@@ -159,11 +159,12 @@ public class UserDao {
                 "    product.title as 'title',\n" +
                 "    product.price as 'price',\n" +
                 "    product.userId as 'userId',\n" +
-                "    product.productId as 'productId'\n" +
+                "    product.productId as 'productId',\n" +
+                "    (select exists(select heartId from heartList where heartList.userId = ? and heartList.productId = ? and status = true)) as 'heart'\n" +
                 "from product\n" +
                 "where product.userId = ? and product.productId = ? and product.`condition`= ?\n" +
                 "order by product.updatedAt desc";
-        Object[] getUserProductParams = new Object[]{userId, productId, condition};
+        Object[] getUserProductParams = new Object[]{userId, productId, otherId, productId, condition};
         return this.jdbcTemplate.queryForObject(getUserProductQuery,
                 (rs, rowNum) -> new GetUserProductRes(
                         getProductImg,
@@ -172,7 +173,8 @@ public class UserDao {
                         rs.getBoolean("pay"),
                         rs.getString("updatedAt"),
                         rs.getString("title"),
-                        rs.getInt("price")),
+                        rs.getInt("price"),
+                        rs.getBoolean("heart")),
                 getUserProductParams);
     }
 
