@@ -2,7 +2,6 @@ package com.example.demo.src.search;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.src.search.model.GetProductByKeywordRes;
-import com.example.demo.src.user.model.GetShopReviewRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,29 +35,21 @@ public class SearchProvider {
     // ******************************************************************************
 
     // 검색어로 판매글 검색
-    public List<GetProductByKeywordRes> getProductByKeyword(int userId, int lastProductId, String keyword, String type) throws BaseException {
+    public List<GetProductByKeywordRes> getProductByKeyword(int userId, int page, String keyword, String type) throws BaseException {
         int amount = 9;
         try {
             List<GetProductByKeywordRes> getProductByKeywordRes = new ArrayList<>();
+            // 삭제되지 않은 productId를 배열에 저장
+            List<Integer> getExistProductsIdByKeyword = searchDao.getExistProductsIdByKeyword(userId, keyword);
             // paging
-            int cnt = 1;
-            int productId = lastProductId;  // 마지막으로 삽입된 id값 다음부터 amount만큼 탐색 후 정보 저장
-            int productId_end = searchDao.getLastProductId();
-            while(cnt <= amount && productId <= productId_end) {
-                // 해당 물건이 삭제된 경우 or 판매완료 상품인 경우 pass
-                if(searchDao.checkProductIsDeleted(productId) || searchDao.checkProductCondition(productId)) {
-                    productId++;
-                    continue;
-                }
+            for(int i = (page - 1)*amount; i < page * amount; i++) {
+                // 해당 페이지에서 요청하는 글의 번호보다 존재하는 글의 번호가 더 작은 경우
+                if(i >= getExistProductsIdByKeyword.size())
+                    break;
+                int productId = getExistProductsIdByKeyword.get(i);
                 // 해당 글의 제목/본문에 키워드가 포함된다면 배열에 정보 저장
-                if(searchDao.checkProductByKeyword(productId, keyword)) {
+                if(searchDao.checkProductByKeyword(productId, keyword))
                     getProductByKeywordRes.add(searchDao.getProductByKeyword(userId, productId));
-                    productId++;
-                    cnt++;
-                }
-                // 해당 키워드가 포함되지 않은 경우 pass
-                else
-                    productId++;
             }
             if(type.equals("ascend"))
                 Collections.sort(getProductByKeywordRes, new GetProductByKeywordComparatorAscend());

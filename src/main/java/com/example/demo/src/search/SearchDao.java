@@ -388,4 +388,11 @@ public class SearchDao {
         String getLastProductIdQuery = "select count(*) from product";
         return this.jdbcTemplate.queryForObject(getLastProductIdQuery, int.class);
     }
+
+    // 삭제되지 않고 keyword를 포함하는 물건 d값 배열로 저장
+    public List<Integer> getExistProductsIdByKeyword(int userId, String keyword) {
+        String getExistProductsIdQuery = "select productId from product where isDeleted = false and userId != ? and (title REGEXP(?) or contents REGEXP(?))";
+        Object[] getExistProductsIdParams = new Object[]{userId, keyword, keyword};
+        return this.jdbcTemplate.queryForList(getExistProductsIdQuery, int.class, getExistProductsIdParams);
+    }
 }

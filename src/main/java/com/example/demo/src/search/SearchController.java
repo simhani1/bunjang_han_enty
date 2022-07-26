@@ -43,8 +43,8 @@ public class SearchController {
 
     // 검색어로 판매글 검색
     @ResponseBody
-    @GetMapping("/{userId}/{lastProductId}")
-    public BaseResponse<List<GetProductByKeywordRes>> GetProductByKeyword (@PathVariable int userId, @PathVariable int lastProductId, @RequestParam String keyword, @RequestParam String type) {
+    @GetMapping("/{userId}")
+    public BaseResponse<List<GetProductByKeywordRes>> GetProductByKeyword (@PathVariable int userId, @RequestParam int page, @RequestParam String keyword, @RequestParam String type) {
         try {
             // 해당 회원이 맞는지 검사
             //////////////////////////////////////  JWT
@@ -55,7 +55,7 @@ public class SearchController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
             //////////////////////////////////////  JWT
-            List<GetProductByKeywordRes> getProductByKeyword = searchProvider.getProductByKeyword(userId, lastProductId, keyword, type);
+            List<GetProductByKeywordRes> getProductByKeyword = searchProvider.getProductByKeyword(userId, page, keyword, type);
             if(getProductByKeyword.size() == 0)
                 return new BaseResponse<>(EMPTY_RESULT);
             return new BaseResponse<>(getProductByKeyword);
