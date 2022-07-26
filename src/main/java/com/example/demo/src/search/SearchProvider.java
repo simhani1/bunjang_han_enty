@@ -77,6 +77,15 @@ public class SearchProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    // 인기 검색어 조회
+    public List<GetKeywordsLogRes> getHotKeywordsLog() throws BaseException {
+        try{
+            return searchDao.getHotKeywordsLog();
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 //    // 로그인
 //    public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
 //        // 존재하지 않는 아이디인지 체크

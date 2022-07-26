@@ -162,26 +162,35 @@ public class SearchDao {
     }
 
     // 검색 내역 조회(최신 검색어 6개)
-        public List<GetKeywordsLogRes> getKeywordsLog(int userId) {
-            String getKeywordsLogQuery = "select\n" +
-                    "    keyword\n" +
-                    "from keywordsLog\n" +
-                    "where userId = ? and isDeleted = false\n" +
-                    "order by logId desc\n" +
-                    "limit 6";
-            int getKeywordsLogParams = userId;
-            return this.jdbcTemplate.query(getKeywordsLogQuery,
-                    (rs, rowNum) -> new GetKeywordsLogRes(
-                            rs.getString("keyword")
-                    ),
-                    getKeywordsLogParams);
-        }
+    public List<GetKeywordsLogRes> getKeywordsLog(int userId) {
+        String getKeywordsLogQuery = "select\n" +
+                "    keyword\n" +
+                "from keywordsLog\n" +
+                "where userId = ? and isDeleted = false\n" +
+                "order by logId desc\n" +
+                "limit 6";
+        int getKeywordsLogParams = userId;
+        return this.jdbcTemplate.query(getKeywordsLogQuery,
+                (rs, rowNum) -> new GetKeywordsLogRes(
+                        rs.getString("keyword")
+                ),
+                getKeywordsLogParams);
+    }
 
     // 최근 검색어 전체 삭제
     public int removeKeywordsLog(int userId) {
         String removeKeywordsLogQuery = "update keywordsLog set isDeleted = true where userId = ?";
         int removeKeywordsLogParams = userId;
         return this.jdbcTemplate.update(removeKeywordsLogQuery, removeKeywordsLogParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
+
+    // 인기 검색어 조회
+    public List<GetKeywordsLogRes> getHotKeywordsLog() {
+        String getHotKeywordsLogQuery = "select keyword from hotKeyword";
+        return this.jdbcTemplate.query(getHotKeywordsLogQuery,
+                (rs, rowNum) -> new GetKeywordsLogRes(
+                        rs.getString("keyword")
+                ));
     }
 //    @Transactional
 //    // 회원가입

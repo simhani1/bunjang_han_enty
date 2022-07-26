@@ -108,6 +108,20 @@ public class SearchController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    // 본인의 검색 내역 조회
+    @ResponseBody
+    @GetMapping("/hot-keywords")
+    public BaseResponse<List<GetKeywordsLogRes>> getHotKeywordsLog () {
+        try {
+            List<GetKeywordsLogRes> getHotKeywordsLogList = searchProvider.getHotKeywordsLog();
+            if(getHotKeywordsLogList.size() == 0)
+                return new BaseResponse<>(EMPTY_RESULT);
+            return new BaseResponse<>(getHotKeywordsLogList);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 //    // 회원 가입
 //    @ResponseBody
 //    @PostMapping("/sign-up")    // POST 방식의 요청을 매핑하기 위한 어노테이션
