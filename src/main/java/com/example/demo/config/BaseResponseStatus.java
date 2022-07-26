@@ -52,6 +52,9 @@ public enum BaseResponseStatus {
     GET_BLOCK_LIST_SUCCESS(true, 1987, "차단 목록을 조회했습니다."),
     DELETE_BLOCK_USER_SUCCESS(false, 1986, "차단을 해제하였습니다."),
 
+    // shop
+    MODIFY_SHOP_INFORM_SUCCESS(true, 1985, "상점 소개를 수정하였습니다."),
+
 
     /**
      * 2000 : Request 오류
@@ -118,6 +121,7 @@ public enum BaseResponseStatus {
 
     // [POST] /block-lists
     INVALID_BLOCK_USER_ID(false, 2525, "차단할 유저 아이디를 확인해주세요."),
+    NOT_STRING_TYPE_INFORM(false, 2526, "상점 소개를 문자열로 입력해주세요."),
 
 
 
@@ -190,6 +194,9 @@ public enum BaseResponseStatus {
     // [POST] /block-lists
     BLOCKED_USER(false, 3987, "이미 차단한 유저입니다."),
     NO_BLOCKED_USER(false, 3986, "차단한 유저가 아닙니다."),
+
+    // [PATCH] /shops
+    MODIFY_SHOPS_INFORM_FAILD(false, 3985, "상품 소개 수정을 실패하였습니다."),
     /**
      * 4000 : Database, Server 오류
      */

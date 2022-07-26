@@ -15,5 +15,11 @@ public class ShopDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    // 상점 소개 수정
+    public int modifyShopsInform(int userId, String inform){
+        String modifyShopsInformQuery = "update shop set introduce=? where userId=?";
+        Object[] modifyShopsInformParams = new Object[]{inform, userId};
 
+        return this.jdbcTemplate.update(modifyShopsInformQuery,modifyShopsInformParams);
+    }
 }
