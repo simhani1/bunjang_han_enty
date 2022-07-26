@@ -71,93 +71,93 @@ public class FollowDao {
                 getFollowerParam);
     }
 
-    // 팔로잉 목록 조사
-//    public List<GetFollowingUserInfoRes> getFollowings(int userId) {
-//        String getFollowersQuery =
-//                "select user.userId, user.profileImgUrl, user.nickname, B.productCount, C.followerNum " +
-//                        "from user " +
-//                        "left join " +
-//                        "(select userId " +
-//                        "from followList " +
-//                        "where folloUserId=? and status=true) as A on user.userId = A.userId " +
-//                        "left join " +
-//                        "(select userId, count(productId) as 'productCount' " +
-//                        "from product " +
-//                        "group by userId) as B on B.userId = A.userId " +
-//                        "left join " +
-//                        "(select userId, count(followUserId) as 'followerNum' " +
-//                        "from followList " +
-//                        "group by userId) as C on C.userId = A.userId " +
-//                        "where user.userId = A.userId";
-//        int getFollowerParam = userId;
-//
-//        //productId 리스트 추출
-//        String getProductIdByFollowUserIdQuery = "select productId, price from product where userId=? order by productId desc";
-//
-//        // getFollowing 리스트
-//        List<GetFollowingUserInfoRes> getFollowingUserInfoRes = this.jdbcTemplate.query(getFollowersQuery,
-//                (rs, rowNum) -> new GetFollowingUserInfoRes(
-//                        rs.getInt("userId"),
-//                        rs.getString("profileImgUrl"),
-//                        rs.getString("nickname"),
-//                        rs.getInt("productCount"),
-//                        rs.getInt("followerNum")),
-//                getFollowerParam);
-//
-//
-//        // productImg 하나씩 조회
-//        String getProductImgPriceQuery =
-//                "select product.productId, product.price, productImg.productImgId, productImg.productImgUrl " +
-//                "from product " +
-//                "left join productImg on product.productId = productImg.productId " +
-//                "left join (" +
-//                "select min(productImgId) as 'minImgId' " +
-//                "from productImg " +
-//                "where productId = ?" +
-//                ") as A on productImg.productImgId = A.minImgId " +
-//                "where productImg.productImgId = A.minImgId";
-//        this.jdbcTemplate.queryForObject(getProductImgPriceQuery,
-//                (rs, rowNum) -> new GetFollowingProductRes(
-//                        rs.getInt("productId"),
-//                        rs.getString("prouductImgUrl"),
-//                        rs.getInt("price")),
-//                5);
-//
-//        //productList 빈 배열
-//        List<GetFollowingProductRes> getFollowingProductRes = new ArrayList<GetFollowingProductRes>();
-//
-//        // following 유저 아이디 개수
-//        int userNum = getFollowingUserInfoRes.size();
-//
-//        // following 유저 아이디 목록
-//        List<Integer> userIdList = new ArrayList<>();
-//        List<Integer> productIdList = new ArrayList<>();
-//
-//        for(int i = 0; i < userNum; i++){
-//            for(int j = 0; j < 3; j++){
-//                getFollowingProductRes.add(this.jdbcTemplate.queryForObject(getProductImgPriceQuery,
-//                        (rs, rowNum) -> new GetFollowingProductRes(
-//                                rs.getInt("productId"),
-//                                rs.getString("prouductImgUrl"),
-//                                rs.getInt("price")),
-//                        this.jdbcTemplate.queryForList(getProductIdByFollowUserIdQuery,int.class, userIdList.get(i)).get(j)));
-//            }
-//
-//        }
-//
-//
-//
-//        return this.jdbcTemplate.query(getFollowersQuery,
-//                (rs, rowNum) -> new GetFollowingRes(
-//                        rs.getInt("userId"),
-//                        rs.getString("profileImgUrl"),
-//                        rs.getString("nickname"),
-//                        rs.getInt("productCount"),
-//                        rs.getInt("followerNum"),
-//                        getFollowingProductRes),
-//                getFollowerParam);
-//
-//    }
+    //팔로잉 목록 조사
+    public List<GetFollowingUserInfoRes> getFollowings(int userId) {
+        String getFollowersQuery =
+                "select user.userId, user.profileImgUrl, user.nickname, B.productCount, C.followerNum " +
+                        "from user " +
+                        "left join " +
+                        "(select userId " +
+                        "from followList " +
+                        "where folloUserId=? and status=true) as A on user.userId = A.userId " +
+                        "left join " +
+                        "(select userId, count(productId) as 'productCount' " +
+                        "from product " +
+                        "group by userId) as B on B.userId = A.userId " +
+                        "left join " +
+                        "(select userId, count(followUserId) as 'followerNum' " +
+                        "from followList " +
+                        "group by userId) as C on C.userId = A.userId " +
+                        "where user.userId = A.userId";
+        int getFollowerParam = userId;
+
+        //productId 리스트 추출
+        String getProductIdByFollowUserIdQuery = "select productId, price from product where userId=? order by productId desc";
+
+        // getFollowing 리스트
+        List<GetFollowingUserInfoRes> getFollowingUserInfoRes = this.jdbcTemplate.query(getFollowersQuery,
+                (rs, rowNum) -> new GetFollowingUserInfoRes(
+                        rs.getInt("userId"),
+                        rs.getString("profileImgUrl"),
+                        rs.getString("nickname"),
+                        rs.getInt("productCount"),
+                        rs.getInt("followerNum")),
+                getFollowerParam);
+
+
+        // productImg 하나씩 조회
+        String getProductImgPriceQuery =
+                "select product.productId, product.price, productImg.productImgId, productImg.productImgUrl " +
+                "from product " +
+                "left join productImg on product.productId = productImg.productId " +
+                "left join (" +
+                "select min(productImgId) as 'minImgId' " +
+                "from productImg " +
+                "where productId = ?" +
+                ") as A on productImg.productImgId = A.minImgId " +
+                "where productImg.productImgId = A.minImgId";
+        this.jdbcTemplate.queryForObject(getProductImgPriceQuery,
+                (rs, rowNum) -> new GetFollowingProductRes(
+                        rs.getInt("productId"),
+                        rs.getString("prouductImgUrl"),
+                        rs.getInt("price")),
+                5);
+
+        //productList 빈 배열
+        List<GetFollowingProductRes> getFollowingProductRes = new ArrayList<GetFollowingProductRes>();
+
+        // following 유저 아이디 개수
+        int userNum = getFollowingUserInfoRes.size();
+
+        // following 유저 아이디 목록
+        List<Integer> userIdList = new ArrayList<>();
+        List<Integer> productIdList = new ArrayList<>();
+
+        for(int i = 0; i < userNum; i++){
+            for(int j = 0; j < 3; j++){
+                getFollowingProductRes.add(this.jdbcTemplate.queryForObject(getProductImgPriceQuery,
+                        (rs, rowNum) -> new GetFollowingProductRes(
+                                rs.getInt("productId"),
+                                rs.getString("prouductImgUrl"),
+                                rs.getInt("price")),
+                        this.jdbcTemplate.queryForList(getProductIdByFollowUserIdQuery,int.class, userIdList.get(i)).get(j)));
+            }
+
+        }
+
+
+
+        return this.jdbcTemplate.query(getFollowersQuery,
+                (rs, rowNum) -> new GetFollowingRes(
+                        rs.getInt("userId"),
+                        rs.getString("profileImgUrl"),
+                        rs.getString("nickname"),
+                        rs.getInt("productCount"),
+                        rs.getInt("followerNum"),
+                        getFollowingProductRes),
+                getFollowerParam);
+
+    }
     // 이미 팔로우 한 유저인지 체크
     public int checkFollowStatus(int userId, int followUserId){
         String checkFollowStatusQuery = "select exists(select followId from followList where userId=? and followUserId=?)";
