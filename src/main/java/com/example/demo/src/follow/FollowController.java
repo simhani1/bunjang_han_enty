@@ -3,6 +3,7 @@ package com.example.demo.src.follow;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.follow.model.GetFollowerRes;
+import com.example.demo.src.follow.model.GetFollowingRes;
 import com.example.demo.src.follow.model.PostFollowReq;
 import com.example.demo.src.follow.model.PostFollowRes;
 import com.example.demo.utils.JwtService;
@@ -71,4 +72,18 @@ public class FollowController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    //팔로잉 조회
+//    @GetMapping("/to-you/{userId}")
+//    public BaseResponse<List<GetFollowingRes>> getFollowings(@PathVariable("userId") int userId){
+//        try{
+//            if(userId != jwtService.getUserId()){
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
+//            List<GetFollowingRes> getFollowingRes = followProvider.getFollowings(userId);
+//            return new BaseResponse<>(GET_FOLLOWING_LIST_SUCCESS,getFollowingRes);
+//        } catch (BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
 }

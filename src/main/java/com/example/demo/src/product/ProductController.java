@@ -141,14 +141,19 @@ public class ProductController {
      * @param page
      * @return List<GetProductRes>
      */
-    @GetMapping("")
-    public BaseResponse<List<GetProductRes>> getProducts(@RequestParam int page){
+    @GetMapping("/{userId}")
+    public BaseResponse<List<GetProductRes>> getProducts(@PathVariable int userId,
+                                                         @RequestParam int page,
+                                                         @RequestParam String type){
 
         try{
             if(page < 0){
                 return new BaseResponse<>(NEGATIVE_PAGE_NUM);
             }
-            List<GetProductRes> getProductRes = productProvider.getProducts(page);
+            if(userId != jwtService.getUserId()){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            List<GetProductRes> getProductRes = productProvider.getProducts(userId,page,type);
             return new BaseResponse<>(GET_PRODUCTS_SUCCESS, getProductRes);
         } catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

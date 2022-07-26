@@ -5,17 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetFollowingRes {
+public class GetFollowingUserInfoRes {
     private int userId;
     private String profileImgUrl;
     private String nickname;
     private int productCount;
     private int followerNum;
-    private List<GetFollowingProductRes> products;
 }

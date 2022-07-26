@@ -46,6 +46,7 @@ public enum BaseResponseStatus {
     // [POST] /follow
     FOLLOW_SUCCESS(true, 1991, "팔로우 성공하였습니다."),
     GET_FOLLOWER_LIST_SUCCESS(true, 1990, "팔로워 목록을 조회했습니다."),
+    GET_FOLLOWING_LIST_SUCCESS(true, 1989, "팔로잉 목록을 조회했습니다."),
 
 
     /**
@@ -169,10 +170,11 @@ public enum BaseResponseStatus {
 
     // /chat, /room
     NO_EXISTED_ROOM(false, 3992, "등록되지 않은 채팅방입니다."),
-    NO_EXISTED_USER_CHATROOM(false, 3993, "유저가 입력한 채팅방에 없습니다."),
+    NO_EXISTED_USER_CHATROOM(false, 3991, "유저가 입력한 채팅방에 없습니다."),
 
     // [POST] follow
     FAILD_USER_FOLLOW(false, 3990, "팔로우 실패하였습니다."),
+    GET_PRODUCTS_FAILED(false, 3989, "전체 상품 조회에 실패하였습니다."),
     /**
      * 4000 : Database, Server 오류
      */

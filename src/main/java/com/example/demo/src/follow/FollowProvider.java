@@ -2,6 +2,7 @@ package com.example.demo.src.follow;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.src.follow.model.GetFollowerRes;
+import com.example.demo.src.follow.model.GetFollowingRes;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,4 +26,13 @@ public class FollowProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+//    public List<GetFollowingRes> getFollowings(int userId) throws BaseException {
+//        try{
+//            List<GetFollowingRes> getFollowingRes = followDao.getFollowings(userId);
+//            return getFollowingRes;
+//        } catch (Exception exception){
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 }
