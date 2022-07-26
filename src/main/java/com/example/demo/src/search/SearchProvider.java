@@ -1,6 +1,7 @@
 package com.example.demo.src.search;
 
 import com.example.demo.config.BaseException;
+import com.example.demo.src.search.model.GetKeywordsLogRes;
 import com.example.demo.src.search.model.GetProductByKeywordRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,12 +37,16 @@ public class SearchProvider {
     // ******************************************************************************
 
     // 검색어로 판매글 검색
+    @Transactional
     public List<GetProductByKeywordRes> getProductByKeyword(int userId, int page, String keyword, String type) throws BaseException {
         int amount = 9;
         try {
             List<GetProductByKeywordRes> getProductByKeywordRes = new ArrayList<>();
             // 삭제되지 않은 productId를 배열에 저장
             List<Integer> getExistProductsIdByKeyword = searchDao.getExistProductsIdByKeyword(userId, keyword);
+            // 검색어가 검색내역에 없다면 검색 내역에 저장
+            if(!searchDao.existKeywordsLog(userId, keyword))
+                searchDao.saveKeywordsLog(userId, keyword);
             // paging
             for(int i = (page - 1)*amount; i < page * amount; i++) {
                 // 해당 페이지에서 요청하는 글의 번호보다 존재하는 글의 번호가 더 작은 경우
@@ -63,6 +69,14 @@ public class SearchProvider {
         }
     }
 
+    // 검색 내역 조회(최신 검색어 6개)
+    public List<GetKeywordsLogRes> getKeywordsLog(int userId) throws BaseException {
+        try{
+            return searchDao.getKeywordsLog(userId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 //    // 로그인
 //    public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
 //        // 존재하지 않는 아이디인지 체크

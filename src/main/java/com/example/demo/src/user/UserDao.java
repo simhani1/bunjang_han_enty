@@ -148,6 +148,7 @@ public class UserDao {
                 getProductImgParam);
         // 나머지 정보 넘기기
         String getUserProductQuery = "select\n" +
+                "    (select nickname from user where user.userId = ?) as 'nickname',\n" +
                 "    product.productId as 'productId',\n" +
                 "    product.pay as 'pay',\n" +
                 "    case when timestampdiff(second , product.updatedAt, current_timestamp) <60\n" +
@@ -166,9 +167,10 @@ public class UserDao {
                 "from product\n" +
                 "where product.userId = ? and product.productId = ? and product.`condition`= ?\n" +
                 "order by product.updatedAt desc";
-        Object[] getUserProductParams = new Object[]{userId, productId, otherId, productId, condition};
+        Object[] getUserProductParams = new Object[]{userId, userId, productId, otherId, productId, condition};
         return this.jdbcTemplate.queryForObject(getUserProductQuery,
                 (rs, rowNum) -> new GetUserProductRes(
+                        rs.getString("nickname"),
                         getProductImg,
                         rs.getInt("productId"),
                         rs.getInt("userId"),

@@ -2,6 +2,7 @@ package com.example.demo.src.search;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
+import com.example.demo.src.search.model.GetKeywordsLogRes;
 import com.example.demo.src.search.model.GetProductByKeywordRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -64,6 +65,28 @@ public class SearchController {
         }
     }
 
+    // 본인의 검색 내역 조회
+    @ResponseBody
+    @GetMapping("/log/{userId}")
+    public BaseResponse<List<GetKeywordsLogRes>> getKeywordsLog (@PathVariable int userId) {
+        try {
+            // 해당 회원이 맞는지 검사
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if (userId != userIdByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            List<GetKeywordsLogRes> getKeywordsLogList = searchProvider.getKeywordsLog(userId);
+            if(getKeywordsLogList.size() == 0)
+                return new BaseResponse<>(EMPTY_RESULT);
+            return new BaseResponse<>(getKeywordsLogList);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 //    // 회원 가입
 //    @ResponseBody
 //    @PostMapping("/sign-up")    // POST 방식의 요청을 매핑하기 위한 어노테이션
