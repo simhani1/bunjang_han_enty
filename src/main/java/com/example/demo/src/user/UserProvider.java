@@ -215,42 +215,23 @@ public class UserProvider {
         }
     }
 
-    // 찜목록 조회
-//    public List<GetHeartProductsRes> getHeartProducts(int userId) throws BaseException {
-//        int amount = 6;
-//        try {
-//            List<GetHeartProductsRes> getHeartProductsRes = new ArrayList<>();
-//            // paging
-//            int cnt = 1;
-//            int productId = lastProductId;  // 마지막으로 삽입된 id값 다음부터 amount만큼 탐색 후 정보 저장
-//            int productId_end = searchDao.getLastProductId();
-//            while(cnt <= amount && productId <= productId_end) {
-//                // 해당 물건이 삭제된 경우 or 판매완료 상품인 경우 pass
-//                if(searchDao.checkProductIsDeleted(productId) || searchDao.checkProductCondition(productId)) {
-//                    productId++;
-//                    continue;
-//                }
-//                // 해당 글의 제목/본문에 키워드가 포함된다면 배열에 정보 저장
-//                if(searchDao.checkProductByKeyword(productId, keyword)) {
-//                    getProductByKeywordRes.add(searchDao.getProductByKeyword(userId, productId));
-//                    productId++;
-//                    cnt++;
-//                }
-//                // 해당 키워드가 포함되지 않은 경우 pass
-//                else
-//                    productId++;
-//            }
-//            if(type.equals("ascend"))
-//                Collections.sort(getProductByKeywordRes, new SearchProvider.GetProductByKeywordComparatorAscend());
-//            else if(type.equals("descend"))
-//                Collections.sort(getProductByKeywordRes, new SearchProvider.GetProductByKeywordComparatorDescend());
-//            else if(type.equals("recent"))
-//                Collections.sort(getProductByKeywordRes, new SearchProvider.GetProductByKeywordComparatorRecent());
-//            return getProductByKeywordRes;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+     // 찜목록 조회
+    public List<GetHeartProductsRes> getHeartProducts(int userId) throws BaseException {
+        try {
+            List<GetHeartProductsRes> getHeartProductsList = new ArrayList<>();
+            // 해당 유저가 찜한 productId를 배열에 저장
+            List<Integer> getHeartProductsId = userDao.getHeartProductsId(userId);
+            // 찜한 물건이 없을 경우 빈 결과배열을 반환
+            if(!getHeartProductsId.isEmpty()) {
+                for (int productId : getHeartProductsId) {
+                    getHeartProductsList.add(userDao.getHeartProducts(userId, productId));
+                }
+            }
+            return getHeartProductsList;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
     //////////////////////////////////////////////// VALIDATION ///////////////////////////////////////////////////
     // 해당 아이디 중복성 체크

@@ -345,24 +345,26 @@ public class UserController {
         }
     }
 
-//    // 찜목록 조회
-//    @ResponseBody
-//    @GetMapping("/heart-list/{userId}")
-//    public BaseResponse<List<GetHeartProductsRes>> getHeartProducts (@PathVariable int userId) {
-//        try {
-//            // 해당 회원이 맞는지 검사
-//            //////////////////////////////////////  JWT
-//            //jwt에서 idx 추출
-//            int userIdByJwt = jwtService.getUserId();
-//            //userId와 접근한 유저가 같은지 확인
-//            if (userId != userIdByJwt) {
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //////////////////////////////////////  JWT
-//            List<GetHeartProductsRes> getHeartProducts = userProvider.getHeartProducts(userId);
-//            return new BaseResponse<>(getHeartProducts);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+    // 찜목록 조회
+    @ResponseBody
+    @GetMapping("/heart-list/{userId}")
+    public BaseResponse<List<GetHeartProductsRes>> getHeartProducts (@PathVariable int userId) {
+        try {
+            // 해당 회원이 맞는지 검사
+            //////////////////////////////////////  JWT
+            //jwt에서 idx 추출
+            int userIdByJwt = jwtService.getUserId();
+            //userId와 접근한 유저가 같은지 확인
+            if (userId != userIdByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //////////////////////////////////////  JWT
+            List<GetHeartProductsRes> getHeartProducts = userProvider.getHeartProducts(userId);
+            if(getHeartProducts.isEmpty())
+                return new BaseResponse<>(EMPTY_RESULT);
+            return new BaseResponse<>(getHeartProducts);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

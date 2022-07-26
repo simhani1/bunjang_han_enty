@@ -3,6 +3,8 @@ package com.example.demo.src.user;
 
 import com.example.demo.src.product.model.GetProductIdRes;
 import com.example.demo.src.productImg.model.GetProductImgRes;
+import com.example.demo.src.search.model.GetProductByKeywordRes;
+import com.example.demo.src.tag.model.GetTagRes;
 import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -247,6 +249,69 @@ public class UserDao {
                 getShopReviewParams); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
     }
 
+    // 찜목록 조회
+    public GetHeartProductsRes getHeartProducts(int userId, int productId){
+        // 해당 상품의 사진 다 넘기기
+        String getProductImgQuery = "select\n" +
+                "    productImgUrl\n" +
+                "from productImg\n" +
+                "inner join product on productImg.productId = product.productId\n" +
+                "where productImg.productId = ?";
+        int getProductImgParam = userId;
+        List<GetProductImgRes> getProductImg = this.jdbcTemplate.query(getProductImgQuery,
+                (rs,rowNum) -> new GetProductImgRes(
+                        rs.getString("productImgUrl")),
+                getProductImgParam);
+        // 나머지 정보 저장
+        String getHeartProductsQuery = "select\n" +
+                "    product.productId as 'productId',\n" +
+                "    product.userId as 'userId',\n" +
+                "    heartList.status as 'heart',\n" +
+                "    product.pay as 'pay',\n" +
+                "    product.title as 'title',\n" +
+                "    product.price as 'price',\n" +
+                "    user.profileImgUrl as 'profileImgUrl',\n" +
+                "    user.nickname as 'nickname',\n" +
+                "    case when timestampdiff(second , product.updatedAt, current_timestamp) <60\n" +
+                "        then concat(timestampdiff(second, product.updatedAt, current_timestamp),' 초 전')\n" +
+                "        when timestampdiff(minute , product.updatedAt, current_timestamp) <60\n" +
+                "            then concat(timestampdiff(minute, product.updatedAt, current_timestamp),' 분 전')\n" +
+                "        when timestampdiff(hour , product.updatedAt, current_timestamp) <24\n" +
+                "            then concat(timestampdiff(hour, product.updatedAt, current_timestamp),' 시간 전')\n" +
+                "        else concat(datediff(current_timestamp, product.updatedAt),' 일 전')\n" +
+                "        end as 'updatedAt'\n" +
+                "from product\n" +
+                "inner join heartList on heartList.productId = product.productId and heartList.userId = ?\n" +
+                "inner join user on user.userId = product.userId\n" +
+                "where product.productId = ?";
+        Object[] getHeartProductsParams = new Object[]{userId, productId};
+        return this.jdbcTemplate.queryForObject(getHeartProductsQuery,
+                (rs, rowNum) -> new GetHeartProductsRes(
+                        getProductImg,
+                        rs.getInt("productId"),
+                        rs.getInt("userId"),
+                        rs.getBoolean("heart"),
+                        rs.getBoolean("pay"),
+                        rs.getString("title"),
+                        rs.getInt("price"),
+                        rs.getString("profileImgUrl"),
+                        rs.getString("nickname"),
+                        rs.getString("updatedAt")),
+                getHeartProductsParams
+                );
+    }
+
+    // 삭제되지 않고 찜한 물건 id값 배열로 저장
+    public List<Integer> getHeartProductsId(int userId) {
+        String getHeartProductsIdQuery = "select heartList.productId\n" +
+                "from heartList\n" +
+                "inner join product on product.productId = heartList.productId\n" +
+                "where product.isDeleted = false and heartList.userId = ? and heartList.status = true\n" +
+                "order by heartList.productId";
+        int getHeartProductsIdParams = userId;
+        return this.jdbcTemplate.queryForList(getHeartProductsIdQuery, int.class, getHeartProductsIdParams);
+    }
+
     // 찜하기(최초 찜하기)
     public int addHeartList(int userId, int productId, boolean status) {
         String addHeartListQuery = "insert into heartList (userId, productId, status) VALUES (?,?,?)";
@@ -310,14 +375,14 @@ public class UserDao {
     public boolean checkProductExist(int productId){
         String getProductIsDeletedQuery = "select exists(select productId from product where productId = ?)";
         int getProductIsDeletedParams = productId;
-        return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 삭제  false: 삭제x
+        return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 존재  false: 존재x
     }
 
     // 판매완료 물건인지 체크
     public boolean checkProductCondition(int productId){
         String getProductIsDeletedQuery = "select exists(select productId from product where productId = ? and `condition` = 'fin')";
         int getProductIsDeletedParams = productId;
-        return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 삭제  false: 삭제x
+        return this.jdbcTemplate.queryForObject(getProductIsDeletedQuery, boolean.class, getProductIsDeletedParams);  // true: 판매완료  false: 판매완료x
     }
 
     // 본인의 상품인지 체크
