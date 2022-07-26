@@ -19,4 +19,5 @@ public class GetUserProductRes {
     private String updatedAt;
     private String title;
     private int price;
+    private boolean heart;
 }

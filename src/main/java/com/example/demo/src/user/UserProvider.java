@@ -3,6 +3,8 @@ package com.example.demo.src.user;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
 import com.example.demo.src.product.model.GetProductIdRes;
+import com.example.demo.src.search.SearchProvider;
+import com.example.demo.src.search.model.GetProductByKeywordRes;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
@@ -70,16 +72,16 @@ public class UserProvider {
         }
     }
 
-    // 본인의 판매중 상품 조회
-    public List<GetUserProductRes> getUserProductRes_sel(int userId) throws BaseException {
+    // 해당 사용자의 판매중 상품 조회(userId == otherId 는 본인의 판매중 상품 조회)
+    public List<GetUserProductRes> getUserProductRes_sel(int userId, int otherId) throws BaseException {
         try {
             List<GetUserProductRes> getUserProductRes = new ArrayList<>();
             // 해당 사용자가 판매중인 상품 id 값을 리스트에 저장
-            List<GetProductIdRes> productsId = userDao.getProductId(userId, "sel");
+            List<GetProductIdRes> productsId = userDao.getProductId(otherId, "sel");
             for(GetProductIdRes obj : productsId){
                 // 삭제되지 않은 경우 false
                 if(!userDao.checkProductIsDeleted(obj.getProductId()))
-                    getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "sel"));
+                    getUserProductRes.add(userDao.getUserProductRes(userId, otherId, obj.getProductId(), "sel"));
             }
             return getUserProductRes;
         } catch (Exception exception) {
@@ -96,7 +98,7 @@ public class UserProvider {
             for(GetProductIdRes obj : productsId){
                 // 삭제되지 않은 경우 false
                 if(!userDao.checkProductIsDeleted(obj.getProductId()))
-                    getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "res"));
+                    getUserProductRes.add(userDao.getUserProductRes(userId, userId, obj.getProductId(), "res"));
             }
             return getUserProductRes;
         } catch (Exception exception) {
@@ -113,7 +115,7 @@ public class UserProvider {
             for(GetProductIdRes obj : productsId){
                 // 삭제되지 않은 경우 false
                 if(!userDao.checkProductIsDeleted(obj.getProductId()))
-                    getUserProductRes.add(userDao.getUserProductRes(userId, obj.getProductId(), "fin"));
+                    getUserProductRes.add(userDao.getUserProductRes(userId, userId, obj.getProductId(), "fin"));
             }
             return getUserProductRes;
         } catch (Exception exception) {
@@ -212,6 +214,43 @@ public class UserProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    // 찜목록 조회
+//    public List<GetHeartProductsRes> getHeartProducts(int userId) throws BaseException {
+//        int amount = 6;
+//        try {
+//            List<GetHeartProductsRes> getHeartProductsRes = new ArrayList<>();
+//            // paging
+//            int cnt = 1;
+//            int productId = lastProductId;  // 마지막으로 삽입된 id값 다음부터 amount만큼 탐색 후 정보 저장
+//            int productId_end = searchDao.getLastProductId();
+//            while(cnt <= amount && productId <= productId_end) {
+//                // 해당 물건이 삭제된 경우 or 판매완료 상품인 경우 pass
+//                if(searchDao.checkProductIsDeleted(productId) || searchDao.checkProductCondition(productId)) {
+//                    productId++;
+//                    continue;
+//                }
+//                // 해당 글의 제목/본문에 키워드가 포함된다면 배열에 정보 저장
+//                if(searchDao.checkProductByKeyword(productId, keyword)) {
+//                    getProductByKeywordRes.add(searchDao.getProductByKeyword(userId, productId));
+//                    productId++;
+//                    cnt++;
+//                }
+//                // 해당 키워드가 포함되지 않은 경우 pass
+//                else
+//                    productId++;
+//            }
+//            if(type.equals("ascend"))
+//                Collections.sort(getProductByKeywordRes, new SearchProvider.GetProductByKeywordComparatorAscend());
+//            else if(type.equals("descend"))
+//                Collections.sort(getProductByKeywordRes, new SearchProvider.GetProductByKeywordComparatorDescend());
+//            else if(type.equals("recent"))
+//                Collections.sort(getProductByKeywordRes, new SearchProvider.GetProductByKeywordComparatorRecent());
+//            return getProductByKeywordRes;
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 
     //////////////////////////////////////////////// VALIDATION ///////////////////////////////////////////////////
     // 해당 아이디 중복성 체크
