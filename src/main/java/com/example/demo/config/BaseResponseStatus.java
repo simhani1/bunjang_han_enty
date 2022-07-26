@@ -206,6 +206,7 @@ public enum BaseResponseStatus {
     DELETE_FAIL_ADDRESS(false,4033,"배송지정보 삭제에 실패하였습니다."),
     FAILED_TO_ADD_HEARTLIST(false,4040,"찜하기에 실패하였습니다."),
     FAILED_TO_POST_REVIEW(false,4041,"리뷰 작성에 실패하였습니다."),
+    FAILED_TO_DELETE_KEYWORDS(false,4042,"최근 검색어 삭제에 실패하였습니다."),
     EMPTY_RESULT(false, 4060, "조회 결과가 없습니다.");
 
 

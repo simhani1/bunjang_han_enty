@@ -1,6 +1,7 @@
 package com.example.demo.src.search;
 
 import com.example.demo.src.productImg.model.GetProductImgRes;
+import com.example.demo.src.search.model.GetKeywordsLogRes;
 import com.example.demo.src.search.model.GetProductByKeywordRes;
 import com.example.demo.src.tag.model.GetTagRes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,6 +146,52 @@ public class SearchDao {
                         rs.getTimestamp("time")),
                 productId);
     }
+
+    // 검색할때 입력한 검색어 저장
+    public void saveKeywordsLog (int userId, String keyword) {
+        String svaveKeywordsLogQuery = "insert into keywordsLog (userId, keyword) values (?, ?)";
+        Object[] saveKeywordsLogParams = new Object[]{userId, keyword};
+        this.jdbcTemplate.update(svaveKeywordsLogQuery, saveKeywordsLogParams);
+    }
+
+    // 검색 내역이 있는지 체크
+    public boolean existKeywordsLog (int userId, String keyword) {
+        String existKeywordsLogQuery = "select exists(select logId from keywordsLog where keywordsLog.userId = ? and keywordsLog.keyword = ? and keywordsLog.isDeleted = false)";
+        Object[] existKeywordsLogParams = new Object[]{userId, keyword};
+        return this.jdbcTemplate.queryForObject(existKeywordsLogQuery, boolean.class, existKeywordsLogParams); // 이미 내역이 있으면 true
+    }
+
+    // 검색 내역 조회(최신 검색어 6개)
+    public List<GetKeywordsLogRes> getKeywordsLog(int userId) {
+        String getKeywordsLogQuery = "select\n" +
+                "    keyword\n" +
+                "from keywordsLog\n" +
+                "where userId = ? and isDeleted = false\n" +
+                "order by logId desc\n" +
+                "limit 6";
+        int getKeywordsLogParams = userId;
+        return this.jdbcTemplate.query(getKeywordsLogQuery,
+                (rs, rowNum) -> new GetKeywordsLogRes(
+                        rs.getString("keyword")
+                ),
+                getKeywordsLogParams);
+    }
+
+    // 최근 검색어 전체 삭제
+    public int removeKeywordsLog(int userId) {
+        String removeKeywordsLogQuery = "update keywordsLog set isDeleted = true where userId = ?";
+        int removeKeywordsLogParams = userId;
+        return this.jdbcTemplate.update(removeKeywordsLogQuery, removeKeywordsLogParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
+
+    // 인기 검색어 조회
+    public List<GetKeywordsLogRes> getHotKeywordsLog() {
+        String getHotKeywordsLogQuery = "select keyword from hotKeyword";
+        return this.jdbcTemplate.query(getHotKeywordsLogQuery,
+                (rs, rowNum) -> new GetKeywordsLogRes(
+                        rs.getString("keyword")
+                ));
+    }
 //    @Transactional
 //    // 회원가입
 //    public int createUser(PostUserReq postUserReq) {
@@ -207,13 +254,6 @@ public class SearchDao {
 //        String modifyPhoneNumQuery = "update user set phoneNum = ? where userId = ? ";
 //        Object [] modifyPhoneNumParams = new Object[]{phoneNum, userId};
 //        return this.jdbcTemplate.update(modifyPhoneNumQuery, modifyPhoneNumParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
-//    }
-//
-//    // 성별 수정
-//    public int modifyGender(int userId, boolean gender) {
-//        String modifyGenderQuery = "update user set gender = ? where userId = ? ";
-//        Object [] modifyGenderParams = new Object[]{gender, userId};
-//        return this.jdbcTemplate.update(modifyGenderQuery, modifyGenderParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
 //    }
 //
 //    // 생일 수정

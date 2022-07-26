@@ -128,7 +128,7 @@ public class UserService {
         if(userDao.checkProductIsDeleted(postShopReviewReq.getProductId()))
             throw new BaseException(DELETED_PRODUCT);
         // 해당 물건이 존재하는 물건인지 체크
-        if(userDao.checkProductExist(postShopReviewReq.getProductId()))
+        if(!userDao.checkProductExist(postShopReviewReq.getProductId()))
             throw new BaseException(INVALID_PRODUCTID);
         // 본인의 상품인지 체크
         if(userDao.checkProductOwner(userId, postShopReviewReq.getProductId()) == 1)
