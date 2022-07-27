@@ -68,6 +68,7 @@ public enum BaseResponseStatus {
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
     EMPTY_EMAIL(false, 2004, "이메일을 입력하세요."),
+    INVALID_EMAIL(false, 2005, "이메일 형식을 확인해주세요."),
 
     // users
     EMPTY_ID(false, 2010, "아이디를 확인해주세요."),
@@ -235,6 +236,7 @@ public enum BaseResponseStatus {
 
     // 수정 실패
     FAILED_UP_PRODUCT(false, 4500, "상품UP 실패하였습니다."),
+    FAILD_KAKAO_SIGN_UP(false, 4501, "카카오 로그인 실패하였습니다."),
 
 
     // 5000 : 필요시 만들어서 쓰세요

@@ -1,6 +1,7 @@
 package com.example.demo.src.messageCertification;
 
 
+import com.example.demo.src.user.model.PostUserReq;
 import com.example.demo.utils.JwtService;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -21,7 +22,6 @@ public class MessageService {
     private final MessageDao messageDao;
     private final MessageProvider messageProvider;
     private final JwtService jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
-
 
     @Autowired //readme 참고
     public MessageService(MessageDao messageDao, MessageProvider messageProvider, JwtService jwtService) {

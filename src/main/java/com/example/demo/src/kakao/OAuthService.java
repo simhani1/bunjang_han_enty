@@ -9,11 +9,14 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static com.example.demo.config.BaseResponseStatus.*;
+
 
 @Service
 public class OAuthService {
 
     public String getKakaoAccessToken (String code) {
+//        KakaoService
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -69,7 +72,7 @@ public class OAuthService {
         return access_Token;
     }
 
-    public void createKakaoUser(String token) throws BaseException {
+    public String createKakaoUser(String token) throws BaseException {
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
@@ -114,8 +117,10 @@ public class OAuthService {
 
             br.close();
 
+            return email;
+
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new BaseException(FAILD_KAKAO_SIGN_UP);
         }
     }
 }

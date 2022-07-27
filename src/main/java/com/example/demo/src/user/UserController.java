@@ -68,12 +68,15 @@ public class UserController {
         if (postUserReq.getPhoneNum().equals("")) {
             return new BaseResponse<>(USERS_EMPTY_PHONENUMBER);
         }
+        if (postUserReq.getEmail().equals("")) {
+            return new BaseResponse<>(EMPTY_EMAIL);
+        }
         // 폰번호 자릿수 체크
         if (isRegexTelephoneNum(postUserReq.getPhoneNum())) {
             return new BaseResponse<>(INVALID_PHONENUMBER);
         }
         if(!isRegexEmail(postUserReq.getEmail())) {
-            return new BaseResponse<>(EMPTY_EMAIL);
+            return new BaseResponse<>(INVALID_EMAIL);
         }
         try {
             PostUserRes postUserRes = userService.createUser(postUserReq);
