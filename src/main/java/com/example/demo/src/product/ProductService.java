@@ -73,6 +73,10 @@ public class ProductService {
         if (productId < 0 || productId > productProvider.getLastProductId()){
             throw new BaseException(NO_EXISTED_PRODUCT);
         }
+        // 본인의 상품이 맞는지
+        if (productProvider.checkExistsUserOwnProduct(userId, productId) !=1){
+            throw new BaseException(NOT_YOUR_PRODUCT);
+        }
         try{
             int result = productDao.modifyProduct(userId, productId, patchProductReq);
             if(result == 0){
@@ -97,12 +101,27 @@ public class ProductService {
         if (productId < 0 || productId > productProvider.getLastProductId()){
             throw new BaseException(NO_EXISTED_PRODUCT);
         }
+        // 삭제된 상품인지
         if (productDao.getProductIsDeleted(productId)){
             throw new BaseException(DELETED_PRODUCT);
         }
+        // 본인의 상품이 맞는지
+        if (productProvider.checkExistsUserOwnProduct(userId, productId) !=1){
+            throw new BaseException(NOT_YOUR_PRODUCT);
+        }
         try{
+            int result = 0;
 
-            int result = productDao.modifyProductCondition(userId, productId, condition);
+            if(condition.equals("sell")){
+                result = productDao.modifyProductCondition(userId, productId, "sel");
+            }
+            else if(condition.equals("reservation")){
+                result = productDao.modifyProductCondition(userId, productId, "res");
+            }
+            else if(condition.equals("sold-out")){
+                result = productDao.modifyProductCondition(userId, productId, "fin");
+            }
+
             if(result == 0){
                 throw new BaseException(MODIFY_PRODUCT_CONDITION_FAILED);
             }
@@ -127,6 +146,10 @@ public class ProductService {
         // 이미 삭제된 상품인지 확인
         if (productDao.getProductIsDeleted(productId)){
             throw new BaseException(DELETED_PRODUCT);
+        }
+        // 본인의 상품이 맞는지
+        if (productProvider.checkExistsUserOwnProduct(userId, productId) !=1){
+            throw new BaseException(NOT_YOUR_PRODUCT);
         }
         try{
             int result = productDao.modifyProductIsDeleted(userId, productId);

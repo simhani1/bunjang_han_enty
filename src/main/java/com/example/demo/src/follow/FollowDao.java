@@ -87,6 +87,17 @@ public class FollowDao {
                 "where user.userId = A.userId";
         int getFollowingsParam = userId;
 
+        // 상품 추출하는 쿼리
+        String getProductImgPriceQuery =
+                "select product.productId, product.price, productImg.productImgId, productImg.productImgUrl " +
+                        "from product " +
+                        "left join productImg on product.productId = productImg.productId " +
+                        "left join (" +
+                        "select min(productImgId) as 'minImgId' " +
+                        "from productImg " +
+                        "where productId = ?" +
+                        ") as A on productImg.productImgId = A.minImgId " +
+                        "where productImg.productImgId = A.minImgId";
         //productId 리스트 추출
         String getProductIdByFollowUserIdQuery =
                 "select productId " +
@@ -99,19 +110,8 @@ public class FollowDao {
         String checkExistsProductByUserIdQuery = "select exists(select productId from product where userId=?)";
         // 그 유저의 상품 개수
         String getProductCountQuery = "select count(productId) from product where userId=? and isDeleted=false and product.condition='sel' limit 3";
-        // productImg 하나씩 조회
-        String getProductImgPriceQuery =
-                "select product.productId, product.price, productImg.productImgId, productImg.productImgUrl " +
-                        "from product " +
-                        "left join productImg on product.productId = productImg.productId " +
-                        "left join (" +
-                        "select min(productImgId) as 'minImgId' " +
-                        "from productImg " +
-                        "where productId = ?" +
-                        ") as A on productImg.productImgId = A.minImgId " +
-                        "where productImg.productImgId = A.minImgId";
 
-        // getFollowing 리스트
+        // getFollowingUserInfo 리스트
         List<GetFollowingUserInfoRes> getFollowingUserInfoRes =
                 this.jdbcTemplate.query(getFollowingsQuery,
                         (rs, rowNum) -> new GetFollowingUserInfoRes(
@@ -121,6 +121,8 @@ public class FollowDao {
                                 rs.getInt("productCount"),
                                 rs.getInt("followerNum")),
                         getFollowingsParam);
+        int userNum = getFollowingUserInfoRes.size();
+        int productCount = 0;
 
         // 사진 리스트
         List<GetFollowingProductRes> getFollowingProductRes = null;
@@ -130,9 +132,8 @@ public class FollowDao {
         List<Integer> userIdList = new ArrayList<>();
         // 유저 당 상품 번호 리스트
         List<Integer> productIdList;
-        int userNum = getFollowingUserInfoRes.size();
 
-        int productCount = 0;
+
         for(int i = 0; i < userNum; i++) {
             productIdList = new ArrayList<>();
             getFollowingProductRes = new ArrayList<>();

@@ -16,6 +16,4 @@ public class KakaoUser {
     private String profileImgUrl;
     private String location;
     private String phoneNum;
-
-
 }
