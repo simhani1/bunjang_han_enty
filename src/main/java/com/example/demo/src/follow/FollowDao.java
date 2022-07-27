@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,9 +97,8 @@ public class FollowDao {
 
         // product가 하나라도 있는지
         String checkExistsProductByUserIdQuery = "select exists(select productId from product where userId=?)";
-
         // 그 유저의 상품 개수
-        String getProductCountQuery = "select count(productId) from product where userId=? and isDeleted=false and product.condition='sel'";
+        String getProductCountQuery = "select count(productId) from product where userId=? and isDeleted=false and product.condition='sel' limit 3";
         // productImg 하나씩 조회
         String getProductImgPriceQuery =
                 "select product.productId, product.price, productImg.productImgId, productImg.productImgUrl " +
@@ -111,8 +111,6 @@ public class FollowDao {
                         ") as A on productImg.productImgId = A.minImgId " +
                         "where productImg.productImgId = A.minImgId";
 
-        System.out.println(this.jdbcTemplate.queryForObject(checkExistsProductByUserIdQuery,int.class,1));
-        System.out.println("success1");
         // getFollowing 리스트
         List<GetFollowingUserInfoRes> getFollowingUserInfoRes =
                 this.jdbcTemplate.query(getFollowingsQuery,
@@ -124,92 +122,79 @@ public class FollowDao {
                                 rs.getInt("followerNum")),
                         getFollowingsParam);
 
-
+        // 사진 리스트
+        List<GetFollowingProductRes> getFollowingProductRes = null;
+        // 팔로잉 목록
         List<GetFollowingRes> getFollowingRes = new ArrayList<>();
-        List<GetFollowingProductRes> getFollowingProductRes = new ArrayList<>();
+        // 유저 id리스트
         List<Integer> userIdList = new ArrayList<>();
-        List<Integer> productIdList = new ArrayList<>();
-//        System.out.println("success2");
-        // userId 개수
+        // 유저 당 상품 번호 리스트
+        List<Integer> productIdList;
         int userNum = getFollowingUserInfoRes.size();
 
         int productCount = 0;
-//        System.out.println("success3 :" + userNum);
-        for(int i = 0; i < userNum; i++){
+        for(int i = 0; i < userNum; i++) {
+            productIdList = new ArrayList<>();
+            getFollowingProductRes = new ArrayList<>();
+
             userIdList.add(getFollowingUserInfoRes.get(i).getUserId());
-            System.out.println(" userId["+i+"]:"+userIdList.get(i));
 
-            if(1==this.jdbcTemplate.queryForObject(checkExistsProductByUserIdQuery,int.class,userIdList.get(i))){
-                productCount = this.jdbcTemplate.queryForObject(getProductCountQuery,int.class,userIdList.get(i));
-                for(int j = 0; j < productCount; j++) {
-                    productIdList.add(this.jdbcTemplate.query(getProductIdByFollowUserIdQuery,
-                            (rs, rowNum) -> new GetProductIdRes(
-                                    rs.getInt("productId"))
-                            ,userIdList.get(i)).get(j).getProductId());
-                    System.out.println(" productId[" + userIdList.get(i) + "]:" + productIdList.get(j));
-                }
-                for(int k = 0; k < 3; k++){
-                    System.out.println("ehlsek");
-                    getFollowingProductRes.add(this.jdbcTemplate.queryForObject(getProductImgPriceQuery,
-                            (rs, rowNum) -> new GetFollowingProductRes(
-                                    rs.getInt("productId"),
-                                    rs.getString("productImgUrl"),
-                                    rs.getInt("price")),
-                            productIdList.get(k)));
-                    System.out.println(getFollowingProductRes.get(k).getPrice());
+            // 그 유저의 상품이 하나라도 있으면
+            if (1 == this.jdbcTemplate.queryForObject(checkExistsProductByUserIdQuery, int.class, userIdList.get(i))) {
+                productCount = this.jdbcTemplate.queryForObject(getProductCountQuery, int.class, userIdList.get(i));
 
-//                    getFollowingRes.add(this.jdbcTemplate.queryForObject(getFollowingsQuery,
-//                            (rs, rowNum) -> new GetFollowingRes(
-//                                    rs.getInt("userId"),
-//                                    rs.getString("profileImgUrl"),
-//                                    rs.getString("nickname"),
-//                                    rs.getInt("productCount"),
-//                                    rs.getInt("followerNum"),
-//                                    getFollowingProductRes),
-//                            getFollowingsParam));
+                // 상품이 3개 보다 많으면
+                if (productCount > 3) {
+                    // 3개의 productId값만 가져오기
+                    for (int j = 0; j < 3; j++) {
+                        productIdList.add(this.jdbcTemplate.query(getProductIdByFollowUserIdQuery,
+                                (rs, rowNum) -> new GetProductIdRes(
+                                        rs.getInt("productId"))
+                                , userIdList.get(i)).get(j).getProductId());
+                    }
+                    // 3개의 productImg만 가져오기
+                    for (int k = 0; k < 3; k++) {
+                        getFollowingProductRes.add(this.jdbcTemplate.queryForObject(getProductImgPriceQuery,
+                                (rs, rowNum) -> new GetFollowingProductRes(
+                                        rs.getInt("productId"),
+                                        rs.getString("productImgUrl"),
+                                        rs.getInt("price")),
+                                productIdList.get(k)));
+                    }
+                    // 상품이 3개보다 적으면
+                } else if (productCount < 3) {
+                    getFollowingProductRes = new ArrayList<>();
+
+                    // 상품 개수 (productCount) 만큼만 -> 안해주면 오류남
+                    for (int j = 0; j < productCount; j++) {
+                        productIdList.add(this.jdbcTemplate.query(getProductIdByFollowUserIdQuery,
+                                (rs, rowNum) -> new GetProductIdRes(
+                                        rs.getInt("productId"))
+                                , userIdList.get(i)).get(j).getProductId());
+                    }
+                    for (int k = 0; k < productCount; k++) {
+                        getFollowingProductRes.add(this.jdbcTemplate.queryForObject(getProductImgPriceQuery,
+                                (rs, rowNum) -> new GetFollowingProductRes(
+                                        rs.getInt("productId"),
+                                        rs.getString("productImgUrl"),
+                                        rs.getInt("price")),
+                                productIdList.get(k)));
+                    }
                 }
-//                System.out.println(getFollowingProductRes.get(i).getPrice());
 
             }
-
-
+            List<GetFollowingProductRes> finalGetFollowingProductRes = getFollowingProductRes;
+            // 유저 한명 끝나면 팔로잉 리스트에 추가
+            getFollowingRes.add(this.jdbcTemplate.query(getFollowingsQuery,
+                    (rs, rowNum) -> new GetFollowingRes(
+                            rs.getInt("userId"),
+                            rs.getString("profileImgUrl"),
+                            rs.getString("nickname"),
+                            rs.getInt("productCount"),
+                            rs.getInt("followerNum"),
+                            finalGetFollowingProductRes),
+                    getFollowingsParam).get(i));
         }
-//        System.out.println("success4");
-
-//        for(int i = 0; i < userNum; i++){
-//            productIdList.add(userIdList.get(i)
-//        }
-
-//        this.jdbcTemplate.queryForObject(getProductImgPriceQuery,
-//                (rs, rowNum) -> new GetFollowingProductRes(
-//                        rs.getInt("productId"),
-//                        rs.getString("prouductImgUrl"),
-//                        rs.getInt("price")),
-//                5);
-
-        //productList 빈 배열
-//        List<GetFollowingProductRes> getFollowingProductRes = new ArrayList<GetFollowingProductRes>();
-
-        // following 유저 아이디 개수
-//        int userNum = getFollowingUserInfoRes.size();
-
-        // following 유저 아이디 목록
-//        List<Integer> userIdList = new ArrayList<>();
-//        List<Integer> productIdList = new ArrayList<>();
-
-//        for(int i = 0; i < userNum; i++){
-//            for(int j = 0; j < 3; j++){
-//                getFollowingProductRes.add(this.jdbcTemplate.queryForObject(getProductImgPriceQuery,
-//                        (rs, rowNum) -> new GetFollowingProductRes(
-//                                rs.getInt("productId"),
-//                                rs.getString("prouductImgUrl"),
-//                                rs.getInt("price")),
-//                        this.jdbcTemplate.queryForList(getProductIdByFollowUserIdQuery,int.class, userIdList.get(i)).get(j)));
-//            }
-//
-//        }
-
-
 
         return getFollowingRes;
 
