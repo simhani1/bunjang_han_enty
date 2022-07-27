@@ -241,6 +241,8 @@ public enum BaseResponseStatus {
 
     // 수정 실패
     FAILED_UP_PRODUCT(false, 4500, "상품UP 실패하였습니다."),
+    FAILD_KAKAO_SIGN_UP(false, 4051, "카카오 로그인에 실패하였습니다."),
+
 
 
     // 5000 : 필요시 만들어서 쓰세요
