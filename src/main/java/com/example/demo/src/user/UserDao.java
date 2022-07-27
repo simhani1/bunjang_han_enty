@@ -3,8 +3,6 @@ package com.example.demo.src.user;
 
 import com.example.demo.src.product.model.GetProductIdRes;
 import com.example.demo.src.productImg.model.GetProductImgRes;
-import com.example.demo.src.search.model.GetProductByKeywordRes;
-import com.example.demo.src.tag.model.GetTagRes;
 import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,10 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Repository //  [Persistence Layer에서 DAO를 명시하기 위해 사용]
 
@@ -215,29 +210,29 @@ public class UserDao {
     }
 
     // 상점후기 조회
-    public GetShopReviewRes getShopReview(int productId) {
+    public GetShopReviewRes getShopReview(int userId, int productId) {
         String getShopReviewQuery = "select\n" +
                 "    user.profileImgUrl as 'profileImgUrl',\n" +
                 "    user.nickname as 'nickname',\n" +
                 "    review.star as 'star',\n" +
                 "    review.reviewContents as 'reviewContents',\n" +
-                "    product.productId as 'productId',\n" +
+                "    review.productId as 'productId',\n" +
                 "    product.title as 'title',\n" +
                 "    case when timestampdiff(second , review.updatedAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(second, review.updatedAt, current_timestamp),' 초 전')\n" +
-                "           when timestampdiff(minute , review.updatedAt, current_timestamp) <60\n" +
-                "               then concat(timestampdiff(minute, review.updatedAt, current_timestamp),' 분 전')\n" +
-                "           when timestampdiff(hour , review.updatedAt, current_timestamp) <24\n" +
-                "               then concat(timestampdiff(hour, review.updatedAt, current_timestamp),' 시간 전')\n" +
-                "           else concat(datediff(current_timestamp, review.updatedAt),' 일 전')\n" +
-                "           end as 'updatedAt',\n" +
+                "        then concat(timestampdiff(second, review.updatedAt, current_timestamp),' 초 전')\n" +
+                "        when timestampdiff(minute , review.updatedAt, current_timestamp) <60\n" +
+                "            then concat(timestampdiff(minute, review.updatedAt, current_timestamp),' 분 전')\n" +
+                "        when timestampdiff(hour , review.updatedAt, current_timestamp) <24\n" +
+                "            then concat(timestampdiff(hour, review.updatedAt, current_timestamp),' 시간 전')\n" +
+                "        else concat(datediff(current_timestamp, review.updatedAt),' 일 전')\n" +
+                "        end as 'updatedAt',\n" +
+                "    review.userId as 'userId',\n" +
                 "    review.updatedAt as 'time'\n" +
-                "from user\n" +
-                "inner join product on product.buyerId = user.userId\n" +
-                "left join review on review.productId = ?\n" +
-                "where product.productId = ?\n" +
-                "order by review.updatedAt desc"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
-        Object[] getShopReviewParams = new Object[]{productId, productId};
+                "from review\n" +
+                "inner join product on product.productId = review.productId and product.condition = 'fin' and product.userId = ?\n" +
+                "inner join user on review.userId = user.userId\n" +
+                "where review.productId = ?"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
+        Object[] getShopReviewParams = new Object[]{userId, productId};
         return this.jdbcTemplate.queryForObject(getShopReviewQuery,
                 (rs, rowNum) -> new GetShopReviewRes(
                         rs.getString("profileImgUrl"),
@@ -410,6 +405,15 @@ public class UserDao {
         String postShopReviewQuery = "insert into review (userId, productId, star, reviewContents) VALUES (?,?,?,?)";
         Object[] postShopReviewParams= new Object[]{userId, postShopReviewReq.getProductId(), postShopReviewReq.getStar(), postShopReviewReq.getReviewContents()};
         return this.jdbcTemplate.update(postShopReviewQuery, postShopReviewParams);
+    }
+
+    // 작성된 리뷰가 있는지 체크
+    public boolean checkReviewExist(int productId){
+        String checkHeartListExistsQuery = "select exists(select reviewId from review where productId = ?)";
+        int checkHeartListExistsParams = productId;
+        return this.jdbcTemplate.queryForObject(checkHeartListExistsQuery,
+                boolean.class,
+                checkHeartListExistsParams);  // 이미 찜해둔 경우 1반환
     }
 
 }

@@ -319,6 +319,8 @@ public class UserController {
 //            }
             //////////////////////////////////////  JWT
             List<GetShopReviewRes> getShopReview = userProvider.getShopReview(userId);
+            if(getShopReview.isEmpty())
+                return new BaseResponse<>(EMPTY_RESULT);
             return new BaseResponse<>(getShopReview);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

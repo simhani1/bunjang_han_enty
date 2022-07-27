@@ -3,8 +3,6 @@ package com.example.demo.src.user;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
 import com.example.demo.src.product.model.GetProductIdRes;
-import com.example.demo.src.search.SearchProvider;
-import com.example.demo.src.search.model.GetProductByKeywordRes;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
@@ -14,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -166,10 +167,10 @@ public class UserProvider {
                 // 삭제된 글일경우 true
                 if(userDao.checkProductIsDeleted(obj.getProductId()))
                     continue;
-                // 리뷰를 작성하지 않았다면 리뷰 작성시간이 null값이므로 필터링
-                if(userDao.getShopReview(obj.getProductId()).getTime() == null)
+                // 리뷰가 없다면 pass
+                if(!userDao.checkReviewExist(obj.getProductId()))
                     continue;
-                getShopReview.add(userDao.getShopReview(obj.getProductId()));
+                getShopReview.add(userDao.getShopReview(userId, obj.getProductId()));
             }
             Collections.sort(getShopReview, new GetShopReviewComparator());
             return getShopReview;
