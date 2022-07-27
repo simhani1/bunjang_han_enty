@@ -199,7 +199,7 @@ public class ProductController {
             if(userId != jwtService.getUserId()){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-            if(!(condition.equals("sel") || condition.equals("fin") || condition.equals("res"))){
+            if(!(condition.equals("sell") || condition.equals("sold-out") || condition.equals("reservation"))){
                 return new BaseResponse<>(INVALID_CONDITION);
             }
 

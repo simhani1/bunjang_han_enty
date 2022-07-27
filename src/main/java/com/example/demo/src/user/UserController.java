@@ -73,6 +73,9 @@ public class UserController {
         if (isRegexTelephoneNum(postUserReq.getPhoneNum())) {
             return new BaseResponse<>(INVALID_PHONENUMBER);
         }
+        if (!isRegexEmail(postUserReq.getEmail())){
+            return new BaseResponse<>(INVALID_PHONENUMBER);
+        }
         try {
             PostUserRes postUserRes = userService.createUser(postUserReq);
             return new BaseResponse<>(SIGN_UP_SUCCESS, postUserRes);

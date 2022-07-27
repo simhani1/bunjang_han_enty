@@ -43,13 +43,13 @@ public class UserDao {
         Object[] createUserParams;
         // 프로필 사진 지정하지 않은 경우
         if(postUserReq.getProfileImgUrl().equals("")){
-            createUserQuery = "insert into user (id, pwd, nickname, location, phoneNum) VALUES (?,?,?,?,?)";
-            createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getLocation(), postUserReq.getPhoneNum()};
+            createUserQuery = "insert into user (id, pwd, nickname, location, phoneNum, email) VALUES (?,?,?,?,?,?)";
+            createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getLocation(), postUserReq.getPhoneNum(), postUserReq.getEmail()};
         }
         // 프로필 사진 지정한 경우
         else{
-            createUserQuery = "insert into user (id, pwd, nickname, profileImgUrl, location, phoneNum) VALUES (?,?,?,?,?,?)";
-            createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getProfileImgUrl(), postUserReq.getLocation(), postUserReq.getPhoneNum()};
+            createUserQuery = "insert into user (id, pwd, nickname, profileImgUrl, location, phoneNum, email) VALUES (?,?,?,?,?,?,?)";
+            createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getProfileImgUrl(), postUserReq.getLocation(), postUserReq.getPhoneNum(),postUserReq.getEmail()};
         }
         this.jdbcTemplate.update(createUserQuery, createUserParams);
         String lastInsertIdQuery = "select count(*) from user";

@@ -5,9 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -15,8 +23,12 @@ import java.util.List;
 public class TestController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private final TestService testService;
+
     @Autowired
-    public TestController() {}
+    public TestController(TestService testService) {
+        this.testService = testService;
+    }
 
     /**
      * 로그 테스트 API
@@ -52,4 +64,6 @@ public class TestController {
     public BaseResponse<BooleanTest> getBoolean(@RequestBody BooleanTest booleanTest){
         return new BaseResponse<>(booleanTest);
     }
+
+
 }

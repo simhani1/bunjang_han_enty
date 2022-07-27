@@ -18,5 +18,4 @@ public class GetFollowingRes {
     private int productCount;
     private int followerNum;
     private List<GetFollowingProductRes> products;
-//    private List<GetFollowingResTemp> followings;
 }
