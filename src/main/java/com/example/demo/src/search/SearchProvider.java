@@ -48,7 +48,7 @@ public class SearchProvider {
             if(!searchDao.existKeywordsLog(userId, keyword))
                 searchDao.saveKeywordsLog(userId, keyword);
             // paging
-            for(int i = (page - 1)*amount; i < page * amount; i++) {
+            for(int i = page*amount; i < (page + 1) * amount; i++) {
                 // 해당 페이지에서 요청하는 글의 번호보다 존재하는 글의 번호가 더 작은 경우
                 if(i >= getExistProductsIdByKeyword.size())
                     break;
