@@ -25,6 +25,7 @@ public enum BaseResponseStatus {
     // [GET] /banner
     GET_BANNER_SUCCESS(true, 1048, "배너 조회에 성공하였습니다."),
     REQ_HEARTLIST_SUCCESS(true, 1049, "해당 찜 요청에 성공하였습니다."),
+    SUCCESS_TO_CERTIFICATE(true, 1050, "본인인증에 성공하였습니다."),
 
 
     // [GET] /category
@@ -69,6 +70,7 @@ public enum BaseResponseStatus {
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
     EMPTY_EMAIL(false, 2004, "이메일을 입력하세요."),
     INVALID_EMAIL(false, 2005, "이메일 형식을 확인해주세요."),
+    INVALID_CERTCODE(false, 2006, "인증번호는 6자리입니다."),
 
     // users
     EMPTY_ID(false, 2010, "아이디를 확인해주세요."),
@@ -85,6 +87,7 @@ public enum BaseResponseStatus {
     INVALID_NAME(false, 2025, "이름을 확인해주세요."),
     INVALID_PRODUCTID(false, 2030, "올바른 물건 id값을 입력하세요."),
     WRONG_REVIEW_LENGTH(false, 2031, "20자 이상 작성하세요."),
+    FAILED_TO_SEND_MESSAGE(false, 2032, "인증번호 전송에 실패하였습니다."),
     // [POST] products
     EMPTY_PRODUCT_IMG(false, 2500, "사진을 한 개 이상 등록해주세요."),
     EXCESS_PRODUCT_IMG(false,2501, "사진을 12개까지만 등록해주세요."),
@@ -231,12 +234,13 @@ public enum BaseResponseStatus {
     FAILED_TO_ADD_HEARTLIST(false,4040,"찜하기에 실패하였습니다."),
     FAILED_TO_POST_REVIEW(false,4041,"리뷰 작성에 실패하였습니다."),
     FAILED_TO_DELETE_KEYWORDS(false,4042,"최근 검색어 삭제에 실패하였습니다."),
+    FAILED_TO_CERTIFICATE(false,4043,"본인인증에 실패하였습니다."),
+    REMOVE_FAIL_INFO(false,4044,"인증정보 삭제에 실패하였습니다."),
     EMPTY_RESULT(false, 4060, "조회 결과가 없습니다."),
 
 
     // 수정 실패
     FAILED_UP_PRODUCT(false, 4500, "상품UP 실패하였습니다."),
-    FAILD_KAKAO_SIGN_UP(false, 4501, "카카오 로그인 실패하였습니다."),
 
 
     // 5000 : 필요시 만들어서 쓰세요

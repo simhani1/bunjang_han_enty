@@ -22,6 +22,14 @@ public class ValidationRegex {
             return true;
     }
 
+    // 문자 인증번호 형식 체크(6자리)
+    public static boolean isRegexCertCode(String target) {
+        if(target.length() == 6)
+            return false;
+        else
+            return true;
+    }
+
     // 계좌번호 형식 체크(자릿수 비교로 간단하게)
     public static boolean isRegexAccountNum(String target) {
         if (target.length() == 11)
@@ -29,6 +37,7 @@ public class ValidationRegex {
         else
             return true;
     }
+
     /** 입력 date가 yyyy-MM-dd 형태로 들어옴 */
     public static boolean validationDate(String checkDate){
         try{

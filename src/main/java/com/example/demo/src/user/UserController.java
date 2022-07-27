@@ -213,7 +213,7 @@ public class UserController {
             //////////////////////////////////////  JWT
             List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_sel(userId, otherId);
             if(getUserProductRes.isEmpty())
-                return new BaseResponse<>(EMPTY_RESULT);
+                return new BaseResponse<>(EMPTY_RESULT, getUserProductRes);
             return new BaseResponse<>(getUserProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -236,7 +236,7 @@ public class UserController {
             //////////////////////////////////////  JWT
             List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_res(userId);
             if(getUserProductRes.isEmpty())
-                return new BaseResponse<>(EMPTY_RESULT);
+                return new BaseResponse<>(EMPTY_RESULT, getUserProductRes);
             return new BaseResponse<>(getUserProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -259,7 +259,7 @@ public class UserController {
             //////////////////////////////////////  JWT
             List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_fin(userId);
             if(getUserProductRes.isEmpty())
-                return new BaseResponse<>(EMPTY_RESULT);
+                return new BaseResponse<>(EMPTY_RESULT, getUserProductRes);
             return new BaseResponse<>(getUserProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

@@ -1,5 +1,9 @@
 package com.example.demo.src.messageCertification;
 
+import com.example.demo.config.BaseException;
+import com.example.demo.config.BaseResponse;
+import com.example.demo.src.messageCertification.model.GetCertCodeRes;
+import com.example.demo.src.messageCertification.model.GetCertRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
+
+import static com.example.demo.config.BaseResponseStatus.*;
+import static com.example.demo.utils.ValidationRegex.isRegexCertCode;
+import static com.example.demo.utils.ValidationRegex.isRegexTelephoneNum;
 
 @RestController
 @RequestMapping("/app/messages")
@@ -33,18 +41,56 @@ public class MessageController {
     }
 
     // ******************************************************************************
+
+    // 문자 전송하기
     @ResponseBody
-    @GetMapping("/sms")
-    public String sendSMS(@RequestParam String phoneNumber) {
-        Random rand  = new Random();
-        String numStr = "";
-        for(int i=0; i<6; i++) {
-            String ran = Integer.toString(rand.nextInt(10));
-            numStr+=ran;
+    @GetMapping("/code")
+    public BaseResponse<GetCertCodeRes> sendSms(@RequestParam String phoneNum) throws BaseException {
+        try {
+            Random rand  = new Random();
+            String code = "";
+            for(int i=0; i<6; i++) {
+                String ran = Integer.toString(rand.nextInt(10));
+                code += ran;
+            }
+            // 전화번호 형식 체크
+            if(isRegexTelephoneNum(phoneNum)){
+               throw new BaseException(INVALID_PHONENUMBER);
+            }
+            messageService.certifiedPhoneNumber(phoneNum,code);  // 핸드폰으로 numstr을 문자로 전송한다
+            GetCertCodeRes getCertNumRes = new GetCertCodeRes(phoneNum, code);
+            return new BaseResponse<>(getCertNumRes);
         }
-        System.out.println("수신자 번호 : " + phoneNumber);
-        System.out.println("인증번호 : " + numStr);
-        messageService.certifiedPhoneNumber(phoneNumber,numStr);
-        return numStr;
+        catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    // 인증번호 입력받아 인증하기
+    @ResponseBody
+    @PostMapping("/code/{phoneNum}")
+    public BaseResponse<GetCertRes> checkCertNum (@PathVariable String phoneNum, @RequestParam String code) throws BaseException {
+        try{
+            // 전화번호 형식 체크
+            if(isRegexTelephoneNum(phoneNum)){
+                throw new BaseException(INVALID_PHONENUMBER);
+            }
+            // 인증번호 형식 체크
+            if(isRegexCertCode(code)){
+                throw new BaseException(INVALID_CERTCODE);
+            }
+            GetCertRes getCertRes = messageProvider.checkCode(phoneNum,code);
+            // 성공한 경우
+            if(getCertRes.isCertificated()){
+                messageService.removeCertInfo(phoneNum, code);
+                return new BaseResponse<>(SUCCESS_TO_CERTIFICATE, getCertRes);
+            }
+            else
+                return new BaseResponse<>(FAILED_TO_CERTIFICATE, getCertRes);
+        }
+        catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
     }
 }

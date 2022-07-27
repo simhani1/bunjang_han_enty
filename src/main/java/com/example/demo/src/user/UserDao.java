@@ -77,24 +77,6 @@ public class UserDao {
         );
     }
 
-    // 사용자 정보 수정(폰번호/성별/생일)
-//    public int modifyInfo(PatchUserReq patchUserReq) {
-//        String modifyInfoQuery = "";
-//        Object [] modifyInfoParams = new Object[]{};
-//        if(patchUserReq.getKey().equals("phoneNum")){
-//            modifyInfoQuery = "update user set phoneNum = ? where userId = ? ";
-//            modifyInfoParams = new Object[]{patchUserReq.getPhoneNum(), patchUserReq.getUserId()};
-//        }
-//        else if(patchUserReq.getKey().equals("gender")){
-//            modifyInfoQuery = "update user set gender = ? where userId = ? ";
-//            modifyInfoParams = new Object[]{patchUserReq.isGender(), patchUserReq.getUserId()};
-//        }
-//        else if(patchUserReq.getKey().equals("birth")){
-//            modifyInfoQuery = "update user set birth = ? where userId = ? ";
-//            modifyInfoParams = new Object[]{patchUserReq.getBirth(), patchUserReq.getUserId()};
-//        }
-//        return this.jdbcTemplate.update(modifyInfoQuery, modifyInfoParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
-//    }
     // 폰번호 수정
     public int modifyPhoneNum(int userId, String phoneNum) {
         String modifyPhoneNumQuery = "update user set phoneNum = ? where userId = ? ";
@@ -221,17 +203,18 @@ public class UserDao {
         String getShopReviewQuery = "select\n" +
                 "    user.profileImgUrl as 'profileImgUrl',\n" +
                 "    user.nickname as 'nickname',\n" +
+                "    user.userID as 'userId',\n" +
                 "    review.star as 'star',\n" +
                 "    review.reviewContents as 'reviewContents',\n" +
                 "    review.productId as 'productId',\n" +
                 "    product.title as 'title',\n" +
                 "    case when timestampdiff(second , review.updatedAt, current_timestamp) <60\n" +
-                "        then concat(timestampdiff(second, review.updatedAt, current_timestamp),' 초 전')\n" +
+                "        then concat(timestampdiff(second, review.updatedAt, current_timestamp),'초 전')\n" +
                 "        when timestampdiff(minute , review.updatedAt, current_timestamp) <60\n" +
-                "            then concat(timestampdiff(minute, review.updatedAt, current_timestamp),' 분 전')\n" +
+                "            then concat(timestampdiff(minute, review.updatedAt, current_timestamp),'분 전')\n" +
                 "        when timestampdiff(hour , review.updatedAt, current_timestamp) <24\n" +
-                "            then concat(timestampdiff(hour, review.updatedAt, current_timestamp),' 시간 전')\n" +
-                "        else concat(datediff(current_timestamp, review.updatedAt),' 일 전')\n" +
+                "            then concat(timestampdiff(hour, review.updatedAt, current_timestamp),'시간 전')\n" +
+                "        else concat(datediff(current_timestamp, review.updatedAt),'일 전')\n" +
                 "        end as 'updatedAt',\n" +
                 "    review.userId as 'userId',\n" +
                 "    review.updatedAt as 'time'\n" +
@@ -244,6 +227,7 @@ public class UserDao {
                 (rs, rowNum) -> new GetShopReviewRes(
                         rs.getString("profileImgUrl"),
                         rs.getString("nickname"),
+                        rs.getInt("userId"),
                         rs.getDouble("star"),
                         rs.getString("reviewContents"),
                         rs.getInt("productId"),
