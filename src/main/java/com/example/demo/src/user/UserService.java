@@ -3,21 +3,15 @@ package com.example.demo.src.user;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
-import com.example.demo.src.product.model.GetProductIdRes;
-import com.example.demo.src.user.model.*;
+import com.example.demo.src.user.model.PostShopReviewReq;
+import com.example.demo.src.user.model.PostUserReq;
+import com.example.demo.src.user.model.PostUserRes;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.jdbc.core.JdbcTemplate;
-import javax.sql.DataSource;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -55,6 +49,10 @@ public class UserService {
         if (userProvider.checkPhoneNum(postUserReq.getPhoneNum()) == 1) {
             throw new BaseException(EXISTS_PHONENUM);
         }
+        // 이메일 중복확인
+        if(userProvider.checkEmail(postUserReq.getEmail()) == 1) {
+            throw new BaseException(DUPLICATED_EMAIL);
+        }
         String encryptPwd;
         try {
             // 암호화: postUserReq에서 제공받은 비밀번호를 보안을 위해 암호화시켜 DB에 저장합니다.
@@ -67,6 +65,8 @@ public class UserService {
         try {
             int userId = userDao.createUser(postUserReq);
             String jwt = jwtService.createJwt(userId);
+            if(userDao.saveJwt(userId, jwt) == 0)
+                throw new BaseException(NO_EXISTED_USER);  // 나중에 수정
             return new PostUserRes(userId,jwt);
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
             throw new BaseException(DATABASE_ERROR);

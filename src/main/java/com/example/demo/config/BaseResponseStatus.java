@@ -67,6 +67,7 @@ public enum BaseResponseStatus {
     EMPTY_JWT(false, 2001, "JWT를 입력해주세요."),
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
+    EMPTY_EMAIL(false, 2004, "이메일을 입력하세요."),
 
     // users
     EMPTY_ID(false, 2010, "아이디를 확인해주세요."),
@@ -145,6 +146,7 @@ public enum BaseResponseStatus {
     EXISTS_ID(false,3010,"이미 사용중인 아이디입니다."),
     EXISTS_NICKNAME(false,3011,"이미 사용중인 닉네임입니다."),
     EXISTS_PHONENUM(false,3012,"이미 사용중인 전화번호 입니다."),
+    DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
 
     // 로그인(3020 ~ 3030)
     NO_EXISTED_ID(false, 3020, "존재하지 않는 아이디입니다."),

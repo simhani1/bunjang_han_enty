@@ -1,14 +1,13 @@
 package com.example.demo.src.user;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -72,6 +71,9 @@ public class UserController {
         // 폰번호 자릿수 체크
         if (isRegexTelephoneNum(postUserReq.getPhoneNum())) {
             return new BaseResponse<>(INVALID_PHONENUMBER);
+        }
+        if(!isRegexEmail(postUserReq.getEmail())) {
+            return new BaseResponse<>(EMPTY_EMAIL);
         }
         try {
             PostUserRes postUserRes = userService.createUser(postUserReq);

@@ -38,13 +38,13 @@ public class UserDao {
         Object[] createUserParams;
         // 프로필 사진 지정하지 않은 경우
         if(postUserReq.getProfileImgUrl().equals("")){
-            createUserQuery = "insert into user (id, pwd, nickname, location, phoneNum) VALUES (?,?,?,?,?)";
-            createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getLocation(), postUserReq.getPhoneNum()};
+            createUserQuery = "insert into user (id, pwd, nickname, location, phoneNum, email) VALUES (?,?,?,?,?,?)";
+            createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getLocation(), postUserReq.getPhoneNum(), postUserReq.getEmail()};
         }
         // 프로필 사진 지정한 경우
         else{
-            createUserQuery = "insert into user (id, pwd, nickname, profileImgUrl, location, phoneNum) VALUES (?,?,?,?,?,?)";
-            createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getProfileImgUrl(), postUserReq.getLocation(), postUserReq.getPhoneNum()};
+            createUserQuery = "insert into user (id, pwd, nickname, profileImgUrl, location, phoneNum, email) VALUES (?,?,?,?,?,?,?)";
+            createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getProfileImgUrl(), postUserReq.getLocation(), postUserReq.getPhoneNum(), postUserReq.getEmail()};
         }
         this.jdbcTemplate.update(createUserQuery, createUserParams);
         String lastInsertIdQuery = "select count(*) from user";
@@ -54,6 +54,13 @@ public class UserDao {
         String createShopParams = lastInsertIdQuery;
         this.jdbcTemplate.update(createShopQuery, jdbcTemplate.queryForObject(createShopParams, int.class));
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userId를 반환한다.
+    }
+
+    // jwt token 저장
+    public int saveJwt(int userId, String jwt){
+        String saveJwtQuery = "update user set jwtToken = ? where userId = ?";
+        Object[] saveJwtParams = new Object[]{jwt, userId};
+        return this.jdbcTemplate.update(saveJwtQuery, saveJwtParams);
     }
 
     // 로그인 - 비밀번호 체크
@@ -351,6 +358,16 @@ public class UserDao {
                 int.class,
                 checkPhoneNumParams);  // 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
     }
+
+    // 해당 이메일 중복성 체크
+    public int checkEmail(String email) {
+        String checkEmailQuery = "select exists(select email from user where email = ?)";
+        String checkEmailParams = email;
+        return this.jdbcTemplate.queryForObject(checkEmailQuery,
+                int.class,
+                checkEmailParams);  // 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
+    }
+
 
     // 탈퇴한 유저인지 체크
     public String checkStatus(String id) {

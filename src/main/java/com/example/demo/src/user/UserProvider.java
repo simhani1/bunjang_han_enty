@@ -261,6 +261,15 @@ public class UserProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    // 해당 이메일 중복성 체크
+    public int checkEmail(String email) throws BaseException {
+        try {
+            return userDao.checkEmail(email);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
 
 // 상점후기 시간순 정렬
