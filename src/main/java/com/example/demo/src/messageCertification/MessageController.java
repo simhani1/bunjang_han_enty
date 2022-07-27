@@ -55,7 +55,7 @@ public class MessageController {
             }
             // 전화번호 형식 체크
             if(isRegexTelephoneNum(phoneNum)){
-               throw new BaseException(INVALID_PHONENUMBER);
+                throw new BaseException(INVALID_PHONENUMBER);
             }
             messageService.certifiedPhoneNumber(phoneNum,code);  // 핸드폰으로 numstr을 문자로 전송한다
             GetCertCodeRes getCertNumRes = new GetCertCodeRes(phoneNum, code);
@@ -91,6 +91,5 @@ public class MessageController {
         catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
-
     }
 }

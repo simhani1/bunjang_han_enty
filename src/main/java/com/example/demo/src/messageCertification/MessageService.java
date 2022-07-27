@@ -1,7 +1,7 @@
 package com.example.demo.src.messageCertification;
 
 
-import com.example.demo.src.user.model.PostUserReq;
+import com.example.demo.config.BaseException;
 import com.example.demo.utils.JwtService;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+
+import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.example.demo.config.BaseResponseStatus.REMOVE_FAIL_INFO;
 
 @Service
 
@@ -32,6 +35,7 @@ public class MessageService {
     }
     // ******************************************************************************
 
+    // 인증번호 전송
     public void certifiedPhoneNumber(String phoneNumber, String cerNum) {
         String api_key = "NCSUR5IYIRLN0TRX";
         String api_secret = "9U5XQXLLDL7JPVRITYRDRWSXRMNLPFQK";
@@ -52,4 +56,17 @@ public class MessageService {
             System.out.println(e.getCode());
         }
     }
+
+    // 인증정보 삭제
+    public void removeCertInfo(String phoenNum, String code) throws BaseException {
+        try {
+            int result = messageDao.removeCertInfo(phoenNum, code);
+            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
+                throw new BaseException(REMOVE_FAIL_INFO);
+            }
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
