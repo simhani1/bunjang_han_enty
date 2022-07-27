@@ -77,6 +77,7 @@ public class ProductProvider {
         }
 
         try{
+            amount = 6;
             List<GetProductRes> getProductRes = new ArrayList<>();
 
             // 최신순

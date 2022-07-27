@@ -46,5 +46,6 @@ public class GetProductByKeywordRes {
     private int follower;
     private Boolean follow;
     private int commentCount;
+    private Boolean heart;
     private Timestamp time;
 }

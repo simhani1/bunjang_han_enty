@@ -3,6 +3,7 @@ package com.example.demo.src.follow;
 import com.example.demo.config.BaseException;
 import com.example.demo.src.follow.model.PostFollowRes;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -14,6 +15,8 @@ public class FollowService {
         this.followDao = followDao;
     }
 
+    // 팔로우
+    @Transactional
     public PostFollowRes follow(int userId, int followUserId, Boolean status) throws BaseException {
         // 유저가 없는 유저일 때
         if(followDao.checkExistsUser(followUserId) != 1){

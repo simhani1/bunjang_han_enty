@@ -27,12 +27,12 @@ public class FollowProvider {
         }
     }
 
-//    public List<GetFollowingRes> getFollowings(int userId) throws BaseException {
-//        try{
-//            List<GetFollowingRes> getFollowingRes = followDao.getFollowings(userId);
-//            return getFollowingRes;
-//        } catch (Exception exception){
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+    public List<GetFollowingRes> getFollowings(int userId) throws BaseException {
+        try{
+            List<GetFollowingRes> getFollowingRes = followDao.getFollowings(userId);
+            return getFollowingRes;
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

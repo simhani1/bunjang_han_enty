@@ -108,6 +108,13 @@ public class SearchDao {
         String getCommentCountQuery = "select count(productId) from comment where productId="+productId+" and isDeleted=0";
         int commentCount = this.jdbcTemplate.queryForObject(getCommentCountQuery,int.class);
 
+        // Get heart
+        String getHeartStatusQuery = "select status from heartList where userId="+userId+" and productId="+productId;
+        List<Boolean> heart = this.jdbcTemplate.queryForList(getHeartStatusQuery, boolean.class);
+
+        if (heart.size() == 0){
+            heart.add(false);
+        }
 
         return this.jdbcTemplate.queryForObject(getProductByKeywordQuery,
                 (rs, rowNum) -> new GetProductByKeywordRes(
@@ -143,6 +150,7 @@ public class SearchDao {
                         follower,
                         follow.get(0),
                         commentCount,
+                        heart.get(0),
                         rs.getTimestamp("time")),
                 productId);
     }

@@ -11,12 +11,11 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetFollowingRes {
+public class GetFollowingResTemp {
     private int userId;
     private String profileImgUrl;
     private String nickname;
     private int productCount;
     private int followerNum;
     private List<GetFollowingProductRes> products;
-//    private List<GetFollowingResTemp> followings;
 }

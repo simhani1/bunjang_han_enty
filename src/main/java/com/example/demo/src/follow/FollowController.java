@@ -74,16 +74,16 @@ public class FollowController {
     }
 
     //팔로잉 조회
-//    @GetMapping("/to-you/{userId}")
-//    public BaseResponse<List<GetFollowingRes>> getFollowings(@PathVariable("userId") int userId){
-//        try{
-//            if(userId != jwtService.getUserId()){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            List<GetFollowingRes> getFollowingRes = followProvider.getFollowings(userId);
-//            return new BaseResponse<>(GET_FOLLOWING_LIST_SUCCESS,getFollowingRes);
-//        } catch (BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+    @GetMapping("/to-you/{userId}")
+    public BaseResponse<List<GetFollowingRes>> getFollowings(@PathVariable("userId") int userId){
+        try{
+            if(userId != jwtService.getUserId()){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            List<GetFollowingRes> getFollowingRes = followProvider.getFollowings(userId);
+            return new BaseResponse<>(GET_FOLLOWING_LIST_SUCCESS,getFollowingRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
