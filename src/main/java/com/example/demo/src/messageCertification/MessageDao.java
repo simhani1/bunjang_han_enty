@@ -20,4 +20,28 @@ public class MessageDao {
     }
     // ******************************************************************************
 
+    // 인증번호 저장
+    public int saveCode(String phoneNum, String code) {
+        String lastIdQuery = "select count(*) from certCode";
+        int lastInsertId = this.jdbcTemplate.queryForObject(lastIdQuery, int.class) + 1;
+        String saveCodeQuery = "insert into certCode (codeId, phoneNum, code) VALUES (?,?,?)";
+        Object[] saveCodeParams= new Object[]{lastInsertId, phoneNum, code};
+        return this.jdbcTemplate.update(saveCodeQuery,  saveCodeParams);
+    }
+
+    // 인증번호와 전화번호 일대일 체크
+    public boolean checkCode(String phoneNum, String code){
+        String checkCodeQuery = "select exists(select codeId from certCode where phoneNum = ? and code = ?)";
+        Object[] checkCodeParams = new Object[]{phoneNum, code};
+        return this.jdbcTemplate.queryForObject(checkCodeQuery,
+                boolean.class,
+                checkCodeParams);  // 일치하는 경우 true
+    }
+
+    // 인증정보 삭제
+    public int removeCertInfo(String phoneNum, String code) {
+        String removeCertInfoQuery = "delete from certCode where phoneNum = ? and code = ? ";
+        Object[] removeCertInfoParams = new Object[]{phoneNum, code};
+        return this.jdbcTemplate.update(removeCertInfoQuery, removeCertInfoParams); // 대응시켜 매핑시켜 쿼리 요청(생성했으면 1, 실패했으면 0)
+    }
 }

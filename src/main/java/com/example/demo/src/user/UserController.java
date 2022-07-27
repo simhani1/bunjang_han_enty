@@ -68,12 +68,15 @@ public class UserController {
         if (postUserReq.getPhoneNum().equals("")) {
             return new BaseResponse<>(USERS_EMPTY_PHONENUMBER);
         }
+        if (postUserReq.getEmail().equals("")) {
+            return new BaseResponse<>(EMPTY_EMAIL);
+        }
         // 폰번호 자릿수 체크
         if (isRegexTelephoneNum(postUserReq.getPhoneNum())) {
             return new BaseResponse<>(INVALID_PHONENUMBER);
         }
         if(!isRegexEmail(postUserReq.getEmail())) {
-            return new BaseResponse<>(EMPTY_EMAIL);
+            return new BaseResponse<>(INVALID_EMAIL);
         }
         try {
             PostUserRes postUserRes = userService.createUser(postUserReq);
@@ -210,7 +213,7 @@ public class UserController {
             //////////////////////////////////////  JWT
             List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_sel(userId, otherId);
             if(getUserProductRes.isEmpty())
-                return new BaseResponse<>(EMPTY_RESULT);
+                return new BaseResponse<>(EMPTY_RESULT, getUserProductRes);
             return new BaseResponse<>(getUserProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -233,7 +236,7 @@ public class UserController {
             //////////////////////////////////////  JWT
             List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_res(userId);
             if(getUserProductRes.isEmpty())
-                return new BaseResponse<>(EMPTY_RESULT);
+                return new BaseResponse<>(EMPTY_RESULT, getUserProductRes);
             return new BaseResponse<>(getUserProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -256,7 +259,7 @@ public class UserController {
             //////////////////////////////////////  JWT
             List<GetUserProductRes> getUserProductRes = userProvider.getUserProductRes_fin(userId);
             if(getUserProductRes.isEmpty())
-                return new BaseResponse<>(EMPTY_RESULT);
+                return new BaseResponse<>(EMPTY_RESULT, getUserProductRes);
             return new BaseResponse<>(getUserProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.time.LocalTime;
 
 @Getter // 해당 클래스에 대한 접근자 생성
 @Setter // 해당 클래스에 대한 설정자 생성
@@ -14,6 +13,7 @@ import java.time.LocalTime;
 public class GetShopReviewRes {
     private String profileImgUrl;
     private String nickname;
+    private int userId;
     private double star;
     private String reviewContents;
     private int productId;

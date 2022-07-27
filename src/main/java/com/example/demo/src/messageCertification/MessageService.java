@@ -1,6 +1,7 @@
 package com.example.demo.src.messageCertification;
 
 
+import com.example.demo.config.BaseException;
 import com.example.demo.utils.JwtService;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 
@@ -32,24 +35,37 @@ public class MessageService {
     }
     // ******************************************************************************
 
-    public void certifiedPhoneNumber(String phoneNumber, String cerNum) {
+    // 인증번호를 문자로 전송
+    public void certifiedPhoneNumber(String phoneNum, String code) throws BaseException {
         String api_key = "NCSUR5IYIRLN0TRX";
         String api_secret = "9U5XQXLLDL7JPVRITYRDRWSXRMNLPFQK";
         Message coolsms = new Message(api_key, api_secret);
         // 4 params(to, from, type, text) are mandatory. must be filled
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("to", phoneNumber);    // 수신전화번호
+        params.put("to", phoneNum);    // 수신전화번호
         params.put("from", "01090788948");    // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
         params.put("type", "SMS");
-        params.put("text", "번개장터 인증번호는" + "["+cerNum+"]" + "입니다. 본인이 요청하지 않은 경우 ");
+        params.put("text", "번개장터 인증번호는" + "["+code+"]" + "입니다.");
         params.put("app_version", "test app 4.1"); // application name and version
-
         try {
             JSONObject obj = (JSONObject) coolsms.send(params);
             System.out.println(obj.toString());
+            if(messageDao.saveCode(phoneNum, code) == 0)
+                throw new BaseException(DATABASE_ERROR);
         } catch (CoolsmsException e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getCode());
+            throw new BaseException(FAILED_TO_SEND_MESSAGE);
+        }
+    }
+
+    // 인증정보 삭제
+    public void removeCertInfo(String phoenNum, String code) throws BaseException {
+        try {
+            int result = messageDao.removeCertInfo(phoenNum, code);
+            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
+                throw new BaseException(REMOVE_FAIL_INFO);
+            }
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 }
