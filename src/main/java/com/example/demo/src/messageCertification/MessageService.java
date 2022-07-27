@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
-import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
-import static com.example.demo.config.BaseResponseStatus.REMOVE_FAIL_INFO;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 
@@ -36,7 +35,7 @@ public class MessageService {
     // ******************************************************************************
 
     // 인증번호 전송
-    public void certifiedPhoneNumber(String phoneNumber, String cerNum) {
+    public void certifiedPhoneNumber(String phoneNumber, String cerNum) throws BaseException {
         String api_key = "NCSUR5IYIRLN0TRX";
         String api_secret = "9U5XQXLLDL7JPVRITYRDRWSXRMNLPFQK";
         Message coolsms = new Message(api_key, api_secret);
@@ -50,10 +49,8 @@ public class MessageService {
 
         try {
             JSONObject obj = (JSONObject) coolsms.send(params);
-            System.out.println(obj.toString());
-        } catch (CoolsmsException e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getCode());
+        } catch (CoolsmsException exception) {
+            throw new BaseException(FAILED_TO_SEND_MESSAGE);
         }
     }
 

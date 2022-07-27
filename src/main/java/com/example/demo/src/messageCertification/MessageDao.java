@@ -24,7 +24,7 @@ public class MessageDao {
     public int saveCode(String phoneNum, String code) {
         String lastIdQuery = "select count(*) from certCode";
         int lastInsertId = this.jdbcTemplate.queryForObject(lastIdQuery, int.class) + 1;
-        String saveCodeQuery = "insert into certCode (codeId, phoneNum, code) VALUES (?,?,?)";
+        String saveCodeQuery = "insert into certCode (codeId, phoneNum, code) VALUES (?,?,?)";  // 인증번호는 한번 사용되고 삭제되기 때문에 id값을 계산해줘야 한다.
         Object[] saveCodeParams= new Object[]{lastInsertId, phoneNum, code};
         return this.jdbcTemplate.update(saveCodeQuery,  saveCodeParams);
     }

@@ -85,8 +85,10 @@ public class MessageController {
                 messageService.removeCertInfo(phoneNum, code);
                 return new BaseResponse<>(SUCCESS_TO_CERTIFICATE, getCertRes);
             }
-            else
+            else{
+                messageService.removeCertInfo(phoneNum, code);
                 return new BaseResponse<>(FAILED_TO_CERTIFICATE, getCertRes);
+            }
         }
         catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
