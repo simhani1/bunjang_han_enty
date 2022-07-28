@@ -5,6 +5,7 @@ import com.example.demo.src.block.model.Block;
 import com.example.demo.src.block.model.DeleteBlockRes;
 import com.example.demo.src.block.model.PostBlockRes;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -19,6 +20,7 @@ public class BlockService {
     }
 
     // 유저 차단
+    @Transactional
     public PostBlockRes addBlockList(int userId, int blockUserId) throws BaseException {
         // 이미 차단한 유저인지
         if(blockProvider.checkExistsBlockUser(userId, blockUserId) == 1){
