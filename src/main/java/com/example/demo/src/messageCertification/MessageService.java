@@ -54,6 +54,18 @@ public class MessageService {
         }
     }
 
+    // 인증정보 저장
+    public void saveCode(String phoenNum, String code) throws BaseException {
+        try {
+            int result = messageDao.saveCode(phoenNum, code);
+            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
+                throw new BaseException(SAVE_FAIL_INFO);
+            }
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
     // 인증정보 삭제
     public void removeCertInfo(String phoenNum, String code) throws BaseException {
         try {

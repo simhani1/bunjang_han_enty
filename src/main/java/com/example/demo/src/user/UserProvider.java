@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,7 +74,8 @@ public class UserProvider {
         }
     }
 
-    // 해당 사용자의 판매중 상품 조회(userId == otherId 는 본인의 판매중 상품 조회)
+    // 해당 사용자의 판매중 상품 조회(userId == otherId 는 본인의 판매중 상품 조회)중
+    @Transactional
     public List<GetUserProductRes> getUserProductRes_sel(int userId, int otherId) throws BaseException {
         try {
             List<GetUserProductRes> getUserProductRes = new ArrayList<>();
@@ -91,6 +93,7 @@ public class UserProvider {
     }
 
     // 본인의 예약중 상품 조회
+    @Transactional
     public List<GetUserProductRes> getUserProductRes_res(int userId) throws BaseException {
         try {
             List<GetUserProductRes> getUserProductRes = new ArrayList<>();
@@ -108,6 +111,7 @@ public class UserProvider {
     }
 
     // 본인의 판매완료 상품 조회
+    @Transactional
     public List<GetUserProductRes> getUserProductRes_fin(int userId) throws BaseException {
         try {
             List<GetUserProductRes> getUserProductRes = new ArrayList<>();
@@ -216,7 +220,8 @@ public class UserProvider {
         }
     }
 
-     // 찜목록 조회
+     // 찜목록 조회록
+    @Transactional
     public List<GetHeartProductsRes> getHeartProducts(int userId) throws BaseException {
         try {
             List<GetHeartProductsRes> getHeartProductsList = new ArrayList<>();

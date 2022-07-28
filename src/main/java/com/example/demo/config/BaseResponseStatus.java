@@ -183,6 +183,7 @@ public enum BaseResponseStatus {
     YOUR_PRODUCT(false,3050,"본인의 물건은 찜하기가 불가능합니다."),
     SOLD_OUT_PRODUCT(false, 3051, "판매완료 상품입니다."),
     CANNOT_REVIEW_YOUR_PRODUCT(false,3050,"본인의 물건에는 리뷰작성이 불가능합니다."),
+    SAVE_FAIL_INFO(false, 3051, "인증번호 저장에 실패하였습니다."),
 
     NO_EXISTED_CATEGORY_LIST(false, 3590, "등록된 카테고리가 없습니다."),
 
