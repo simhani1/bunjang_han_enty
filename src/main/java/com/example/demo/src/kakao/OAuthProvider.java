@@ -30,9 +30,9 @@ public class OAuthProvider {
 //        }
 //    }
 
-    public int checkUserIdJwtForLogin(PostAutoLoginReq postAutoLoginReq){
-        return oAuthDao.checkUserIdJwtForLogin(postAutoLoginReq);
-    }
+//    public int checkUserIdJwtForLogin(PostAutoLoginReq postAutoLoginReq){
+//        return oAuthDao.checkUserIdJwtForLogin(postAutoLoginReq);
+//    }
     // 폰번호가 이미있는지 체크
     public int checkExistsPhoneNum(String phoneNum){
         return (oAuthDao.checkExistsPhoneNum(phoneNum));

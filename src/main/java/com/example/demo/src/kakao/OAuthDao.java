@@ -37,10 +37,10 @@ public class OAuthDao {
                 getUserByphoneNumParam);
     }
 
-    public int checkUserIdJwtForLogin(PostAutoLoginReq postAutoLoginReq){
-        String checkUserJwtForLoginQuery = "select exists(select userId from user where userId=? and jwtToken=?)";
-        Object[] checkUserJwtForLoginParam = new Object[]{postAutoLoginReq.getUserId(), postAutoLoginReq.getJwt()};
-
-        return this.jdbcTemplate.queryForObject(checkUserJwtForLoginQuery, int.class, checkUserJwtForLoginParam);
-    }
+//    public int checkUserIdJwtForLogin(PostAutoLoginReq postAutoLoginReq){
+//        String checkUserJwtForLoginQuery = "select exists(select userId from user where userId=? and jwtToken=?)";
+//        Object[] checkUserJwtForLoginParam = new Object[]{postAutoLoginReq.getUserId(), postAutoLoginReq.getJwt()};
+//
+//        return this.jdbcTemplate.queryForObject(checkUserJwtForLoginQuery, int.class, checkUserJwtForLoginParam);
+//    }
 }

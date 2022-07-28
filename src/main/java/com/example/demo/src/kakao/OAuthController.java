@@ -98,6 +98,7 @@ public class OAuthController {
     @PostMapping("/kakao/auto/log-in/{userId}")
     public BaseResponse<PostAutoLoginRes> kakaoAutoLogin(@PathVariable int userId){
         try{
+            // 넘어온 jwt값의 userId와 기존의 userId가 같은지 확인
             if(userId != jwtService.getUserId()){
                 return new BaseResponse<>(KAKAO_AUTO_LOGIN_FAILED);
             }

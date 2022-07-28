@@ -162,8 +162,6 @@ public class OAuthService {
 
                 int userId = getUserIdRes.getUserId();
                 String jwt = jwtService.createJwt(userId);
-                // jwt 최신화
-                userDao.saveJwt(userId, jwt);
                 return new PostCheckPhoneRes(true, userId, phoneNum, jwt);
             }
             // 폰번호가 없다면 회원가입
@@ -173,7 +171,4 @@ public class OAuthService {
         }
     }
 
-//    public PostLoginRes loginByPhoneNum(String phoneNum){
-//
-//    }
 }
