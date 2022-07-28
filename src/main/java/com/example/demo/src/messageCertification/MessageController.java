@@ -9,6 +9,7 @@ import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
@@ -79,6 +80,7 @@ public class MessageController {
         }
     }
 
+    @Transactional
     // 인증번호 입력받아 인증하기
     @ResponseBody
     @PostMapping("/code/{phoneNum}")
