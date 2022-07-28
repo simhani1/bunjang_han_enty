@@ -185,8 +185,8 @@ public class UserDao {
                 "         count(*)\n" +
                 "     from review\n" +
                 "        inner join product on product.productId = review.productId and product.userId = ? where product.isDeleted = false) as 'reviewCnt',\n" +
-                "    (select count(*) from followList where followList.followUserId = ? and followList.status = true) as 'followerCnt',\n" +
-                "    (select count(*) from followList where followList.userId = ? and followList.status = true) as 'followingCnt'\n" +
+                "    (select count(*) from followList where followList.userId = ? and followList.status = true) as 'followerCnt',\n" +
+                "    (select count(*) from followList where followList.followUserId = ? and followList.status = true) as 'followingCnt'\n" +
                 "from heartList\n" +
                 "inner join product on product.productId = heartList.productId and product.isDeleted = false\n" +
                 "where heartList.userId = ? and heartList.status = true"; // 해당 userIdx를 만족하는 유저를 조회하는 쿼리문
