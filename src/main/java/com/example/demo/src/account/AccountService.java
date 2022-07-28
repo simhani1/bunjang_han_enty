@@ -1,17 +1,10 @@
 package com.example.demo.src.account;
 
 import com.example.demo.config.BaseException;
-import com.example.demo.config.BaseResponse;
-import com.example.demo.config.secret.Secret;
 import com.example.demo.src.account.model.DeleteAccountRes;
 import com.example.demo.src.account.model.PatchAccountReq;
 import com.example.demo.src.account.model.PostAccountReq;
 import com.example.demo.src.account.model.PostAccountRes;
-import com.example.demo.src.user.UserDao;
-import com.example.demo.src.user.UserProvider;
-import com.example.demo.src.user.model.PostUserReq;
-import com.example.demo.src.user.model.PostUserRes;
-import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,6 +103,10 @@ public class AccountService {
         if(accountProvider.checkBankId(patchAccountReq.getBankId()) == 0) {
             throw new BaseException(INVALID_BANKID);
         }
+        // 기존에 등록한 계좌인지 판단
+        if(accountProvider.checkAccountNum(patchAccountReq.getAccountNum()) == 1) {
+            throw new BaseException(EXISTS_ACCOUNT);
+        }
         try {
             int result = accountDao.modifyAccount(userId, accountId, patchAccountReq); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
             if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
@@ -119,28 +116,4 @@ public class AccountService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-//
-//    // 성별 수정
-//    public void modifyBirth(int userId, String birth) throws BaseException {
-//        try {
-//            int result = userDao.modifyBirth(userId, birth); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
-//            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
-//                throw new BaseException(MODIFY_FAIL_INFO);
-//            }
-//        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//    // 회원탈퇴
-//    public void withdrawl(int userId, boolean status) throws BaseException {
-//        try {
-//            int result = userDao.withdrawl(userId, status); // 해당 과정이 무사히 수행되면 True(1), 그렇지 않으면 False(0)입니다.
-//            if (result == 0) { // result값이 0이면 과정이 실패한 것이므로 에러 메서지를 보냅니다.
-//                throw new BaseException(WITHDRAWL_FAIL);
-//            }
-//        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
 }
