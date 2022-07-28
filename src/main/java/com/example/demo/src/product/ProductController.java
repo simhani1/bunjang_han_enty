@@ -315,34 +315,4 @@ public class ProductController {
         }
     }
 
-
-//    @GetMapping("/filter/")
-//    public BaseResponse<List<GetProductRes>> getProductByFirstCategoryId(@RequestParam int page,
-//                                                                         @RequestParam String firstCategoryId,
-//                                                                         @RequestParam String lastCategoryId,
-//                                                                         @RequestParam Boolean isUsed,
-//                                                                         @RequestParam String startPrice,
-//                                                                         @RequestParam String endPrice){
-//        try{
-//            if(firstCategoryId == null && lastCategoryId == null && isUsed == null && startPrice == null && endPrice == null){
-//                List<GetProductRes> getProductRes = productProvider.getProducts(page);
-//                return new BaseResponse<>(GET_PRODUCTS_SUCCESS, getProductRes);
-//            }
-//
-//        } catch (BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
-
-//    @GetMapping("/test/{userId}/{productId}")
-//    public BaseResponse<GetProductRes> getProductByIdTest(@PathVariable("userId") int userId,
-//                                                      @PathVariable("productId") int productId){
-//
-//        try{
-//            GetProductRes getProductRes = productProvider.getProductByIdTest(userId,productId);
-//            return new BaseResponse<>(GET_PRODUCT_SUCCESS, getProductRes);
-//        } catch (BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
 }

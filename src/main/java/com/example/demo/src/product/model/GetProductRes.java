@@ -47,7 +47,7 @@ public class GetProductRes {
     private List<GetTagRes> tags;
     private String profileImgUrl;
     private String nickname;
-    private double star;
+    private Double star;
     private int follower;
     private Boolean follow;
     private int commentCount;

@@ -289,28 +289,28 @@ public class ProductProvider {
         return productDao.checkExistsSellProduct(productId);
     }
 
-    public void changeStarData(GetProductRes getProductRes){
-        if(0 <= getProductRes.getStar() && getProductRes.getStar()<0.5)
-            getProductRes.setStar(0);
-        else if(0.5 <= getProductRes.getStar() && getProductRes.getStar() < 1)
-            getProductRes.setStar(0.5);
-        else if(1 <= getProductRes.getStar() && getProductRes.getStar() < 1.5)
-            getProductRes.setStar(1);
-        else if(1.5 <= getProductRes.getStar() && getProductRes.getStar() < 2)
-            getProductRes.setStar(1.5);
-        else if(2 <= getProductRes.getStar() && getProductRes.getStar() < 2.5)
-            getProductRes.setStar(2);
-        else if(2.5 <= getProductRes.getStar() && getProductRes.getStar() < 3)
-            getProductRes.setStar(2.5);
-        else if(3 <= getProductRes.getStar() && getProductRes.getStar() < 3.5)
-            getProductRes.setStar(3);
-        else if(3.5 <= getProductRes.getStar() && getProductRes.getStar() < 4)
-            getProductRes.setStar(3.5);
-        else if(4 <= getProductRes.getStar() && getProductRes.getStar() < 4.5)
-            getProductRes.setStar(4);
-        else if(4.5 <= getProductRes.getStar() && getProductRes.getStar() < 5)
-            getProductRes.setStar(4.5);
-        else if(4.5 <= getProductRes.getStar())
-            getProductRes.setStar(5);
-    }
+//    public void changeStarData(GetProductRes getProductRes){
+//        if(0 <= getProductRes.getStar() && getProductRes.getStar()<0.5)
+//            getProductRes.setStar(0);
+//        else if(0.5 <= getProductRes.getStar() && getProductRes.getStar() < 1)
+//            getProductRes.setStar(0.5);
+//        else if(1 <= getProductRes.getStar() && getProductRes.getStar() < 1.5)
+//            getProductRes.setStar(1);
+//        else if(1.5 <= getProductRes.getStar() && getProductRes.getStar() < 2)
+//            getProductRes.setStar(1.5);
+//        else if(2 <= getProductRes.getStar() && getProductRes.getStar() < 2.5)
+//            getProductRes.setStar(2);
+//        else if(2.5 <= getProductRes.getStar() && getProductRes.getStar() < 3)
+//            getProductRes.setStar(2.5);
+//        else if(3 <= getProductRes.getStar() && getProductRes.getStar() < 3.5)
+//            getProductRes.setStar(3);
+//        else if(3.5 <= getProductRes.getStar() && getProductRes.getStar() < 4)
+//            getProductRes.setStar(3.5);
+//        else if(4 <= getProductRes.getStar() && getProductRes.getStar() < 4.5)
+//            getProductRes.setStar(4);
+//        else if(4.5 <= getProductRes.getStar() && getProductRes.getStar() < 5)
+//            getProductRes.setStar(4.5);
+//        else if(4.5 <= getProductRes.getStar())
+//            getProductRes.setStar(5);
+//    }
 }
