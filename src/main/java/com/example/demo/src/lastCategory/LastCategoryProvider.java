@@ -4,6 +4,7 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.config.BaseResponseStatus;
 import com.example.demo.src.lastCategory.model.GetLastCategoryRes;
+import com.example.demo.src.lastCategory.model.LastCategory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,15 @@ public class LastCategoryProvider {
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
 
+        }
+    }
+
+    public List<LastCategory> getLastCategory() throws BaseException{
+        try{
+            List<LastCategory> lastCategory = lastCategoryDao.getLastCategory();
+            return lastCategory;
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 

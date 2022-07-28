@@ -57,6 +57,7 @@ public class ProductProvider {
         }
         try{
             GetProductRes getProductRes = productDao.getProductById(userId,productId);
+//            changeStarData(getProductRes);
             return getProductRes;
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
@@ -85,6 +86,7 @@ public class ProductProvider {
                 for(int i = amount*page; i < amount*(page+1); i++){
                     if(i >= getExistProductCount()-1){
                         getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListReCent().get(i)));
+//                        changeStarData(getProductRes.get(i).getStar());
                         return getProductRes;
                     }
                     getProductRes.add(productDao.getProductById(userId,productDao.getExistsProductIdListReCent().get(i)));
@@ -395,6 +397,31 @@ public class ProductProvider {
     // 삭제되지 않고 판매중인지
     public int checkExistsSellProduct(int productId){
         return productDao.checkExistsSellProduct(productId);
+    }
+
+    public void changeStarData(GetProductRes getProductRes){
+        if(0 <= getProductRes.getStar() && getProductRes.getStar()<0.5)
+            getProductRes.setStar(0);
+        else if(0.5 <= getProductRes.getStar() && getProductRes.getStar() < 1)
+            getProductRes.setStar(0.5);
+        else if(1 <= getProductRes.getStar() && getProductRes.getStar() < 1.5)
+            getProductRes.setStar(1);
+        else if(1.5 <= getProductRes.getStar() && getProductRes.getStar() < 2)
+            getProductRes.setStar(1.5);
+        else if(2 <= getProductRes.getStar() && getProductRes.getStar() < 2.5)
+            getProductRes.setStar(2);
+        else if(2.5 <= getProductRes.getStar() && getProductRes.getStar() < 3)
+            getProductRes.setStar(2.5);
+        else if(3 <= getProductRes.getStar() && getProductRes.getStar() < 3.5)
+            getProductRes.setStar(3);
+        else if(3.5 <= getProductRes.getStar() && getProductRes.getStar() < 4)
+            getProductRes.setStar(3.5);
+        else if(4 <= getProductRes.getStar() && getProductRes.getStar() < 4.5)
+            getProductRes.setStar(4);
+        else if(4.5 <= getProductRes.getStar() && getProductRes.getStar() < 5)
+            getProductRes.setStar(4.5);
+        else if(4.5 <= getProductRes.getStar())
+            getProductRes.setStar(5);
     }
 //    public GetProductRes getProductByIdTest(int userId,int productId) throws BaseException {
 //        if (userId < 0){
