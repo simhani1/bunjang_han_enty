@@ -147,12 +147,9 @@ public class ProductDao {
                 "from product " +
                 "where userId="+productUserId+") as A on review.productId = A.productId " +
                 "where review.productId = A.productId";
-        List<Double> star = this.jdbcTemplate.queryForList(getStarQuery, Double.class);
+        Double star = this.jdbcTemplate.queryForObject(getStarQuery, Double.class);
 
-        if (star.size() == 0){
-            star.set(0,0.0);
-        }
-//        Double downStar = Math.floor(star * 10) / 10.0;
+        Double downStar = Math.floor(star * 10) / 10.0;
 
         // Get follow
         String getFollowerNumQuery = "select count(userId) from followList where userId="+productUserId+" and status = true";
@@ -208,7 +205,7 @@ public class ProductDao {
                         getTag,
                         rs.getString("profileImgUrl"),
                         rs.getString("nickname"),
-                        star.get(0),
+                        star,
                         follower,
                         follow.get(0),
                         commentCount,
