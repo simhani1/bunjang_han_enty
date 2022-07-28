@@ -85,8 +85,15 @@ public class SearchDao {
         int chatCnt = this.jdbcTemplate.queryForObject(getChatCountQuery, int.class);
 
         // Get star
-        String getStarQuery = "select avg(star) from review where productId="+productId;
+        String getStarQuery =
+                "select avg(star) " +
+                        "from review " +
+                        "left join (select productId from product where userId = (select userId from product where productId="+productId+")) " +
+                        "as A on review.productId = A.productId " +
+                        "where A.productId = review.productId";
         Double star = this.jdbcTemplate.queryForObject(getStarQuery, Double.class);
+
+        Double downStar = Math.floor(star * 10) / 10.0;
 
         // Get follow
         String getUserIdQuery = "select userId from product where productId="+productId;
