@@ -71,6 +71,7 @@ public class MessageController {
             getCertNumRes.setPhoneNum(phoneNum);
             getCertNumRes.setCertNum(code);
             getCertNumRes.setCertificated(true);
+            messageService.saveCode(phoneNum, code);
             return new BaseResponse<>(getCertNumRes);
         }
         catch (BaseException exception) {

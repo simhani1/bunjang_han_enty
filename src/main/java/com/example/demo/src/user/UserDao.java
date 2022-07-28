@@ -250,7 +250,7 @@ public class UserDao {
                 "from productImg\n" +
                 "inner join product on productImg.productId = product.productId\n" +
                 "where productImg.productId = ?";
-        int getProductImgParam = userId;
+        int getProductImgParam = productId;
         List<GetProductImgRes> getProductImg = this.jdbcTemplate.query(getProductImgQuery,
                 (rs,rowNum) -> new GetProductImgRes(
                         rs.getString("productImgUrl")),
