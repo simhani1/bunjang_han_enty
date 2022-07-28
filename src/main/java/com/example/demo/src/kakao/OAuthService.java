@@ -1,6 +1,12 @@
 package com.example.demo.src.kakao;
 
 import com.example.demo.config.BaseException;
+import com.example.demo.src.kakao.model.GetUserIdRes;
+import com.example.demo.src.kakao.model.PostCheckPhoneReq;
+import com.example.demo.src.kakao.model.PostCheckPhoneRes;
+import com.example.demo.src.user.UserDao;
+import com.example.demo.src.user.model.PostLoginRes;
+import com.example.demo.utils.JwtService;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.springframework.stereotype.Service;
@@ -14,6 +20,19 @@ import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class OAuthService {
+
+    private final OAuthDao oAuthDao;
+    private final OAuthProvider oAuthProvider;
+    private final JwtService jwtService;
+    private final UserDao userDao;
+
+
+    public OAuthService(OAuthDao oAuthDao, OAuthProvider oAuthProvider, JwtService jwtService, UserDao userDao){
+        this.oAuthDao = oAuthDao;
+        this.oAuthProvider = oAuthProvider;
+        this.jwtService = jwtService;
+        this.userDao = userDao;
+    }
 
     public String getKakaoAccessToken (String code) {
 //        KakaoService
@@ -120,7 +139,31 @@ public class OAuthService {
             return email;
 
         } catch (IOException e) {
-            throw new BaseException(FAILD_KAKAO_SIGN_UP);
+            throw new BaseException(FAILED_KAKAO_CERTIFICATION);
         }
     }
+
+    // 번호 db에 있는지 확인
+    public PostCheckPhoneRes comparePhoneNum(String phoneNum) throws BaseException {
+        try{
+            // 폰번호가 이미 존재한다면 로그인
+            if(oAuthProvider.checkExistsPhoneNum(phoneNum) == 1){
+                GetUserIdRes getUserIdRes = oAuthDao.getUserByPhoneNum(phoneNum);
+
+                int userId = getUserIdRes.getUserId();
+                String jwt = jwtService.createJwt(userId);
+                // jwt 최신화
+                userDao.saveJwt(userId, jwt);
+                return new PostCheckPhoneRes(true, userId, phoneNum, jwt);
+            }
+            // 폰번호가 없다면 회원가입
+            return new PostCheckPhoneRes(false,0,phoneNum,"");
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+//    public PostLoginRes loginByPhoneNum(String phoneNum){
+//
+//    }
 }

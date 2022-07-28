@@ -59,6 +59,10 @@ public enum BaseResponseStatus {
     // up product
     UP_PRODUCT_SUCCESS(true, 1984, "상품을 UP 했습니다."),
 
+    KAKAO_CERTIFICATION_SUCCESS(true, 1983, "카카오 인증이 성공하였습니다."),
+    KAKAO_LOGIN_SUCCESS(true, 1982, "카카오 로그인 성공하였습니다."),
+    KAKAO_AUTO_LOGIN_SUCCESS(true, 1981, "자동로그인 되었습니다."),
+
 
     /**
      * 2000 : Request 오류
@@ -217,6 +221,11 @@ public enum BaseResponseStatus {
     // up product
     NOT_YOUR_PRODUCT(false, 3984, "상품의 등록자가 아닙니다."),
     NOT_EXISTS_OR_SOLD_OUT_RES(false, 3982, "없는 상품이거나 판매중이 아닙니다."),
+
+    // kakao failed
+    NEED_TO_SING_UP(false, 3981, "회원가입 해주시기 바랍니다."),
+    KAKAO_AUTO_LOGIN_FAILED(false, 3980, "자동로그인 실패하였습니다. 다시 로그인 해주시기 바랍니다."),
+
     /**
      * 4000 : Database, Server 오류
      */
@@ -241,7 +250,9 @@ public enum BaseResponseStatus {
 
     // 수정 실패
     FAILED_UP_PRODUCT(false, 4500, "상품UP 실패하였습니다."),
-    FAILD_KAKAO_SIGN_UP(false, 4051, "카카오 로그인에 실패하였습니다."),
+
+    // kakao
+    FAILED_KAKAO_CERTIFICATION(false, 4501, "카카오 인증에 실패하였습니다."),
 
 
 
