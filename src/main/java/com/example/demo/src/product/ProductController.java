@@ -153,6 +153,12 @@ public class ProductController {
             if(userId != jwtService.getUserId()){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
+            if(type.equals("")){
+                return new BaseResponse<>(EMPTY_PRODUCT_SORT_TYPE);
+            }
+            if(!(type.equals("recent") || type.equals("ascend") || type.equals("descend"))){
+                return new BaseResponse<>(INVALID_PRODUCT_SORT_TYPE);
+            }
             List<GetProductRes> getProductRes = productProvider.getProducts(userId,page,type);
             return new BaseResponse<>(GET_PRODUCTS_SUCCESS, getProductRes);
         } catch (BaseException exception){
