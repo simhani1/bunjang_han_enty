@@ -38,13 +38,25 @@ public class UserDao {
         Object[] createUserParams;
         // 프로필 사진 지정하지 않은 경우
         if(postUserReq.getProfileImgUrl().equals("")){
-            createUserQuery = "insert into user (id, pwd, nickname, location, phoneNum, email) VALUES (?,?,?,?,?,?)";
-            createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getLocation(), postUserReq.getPhoneNum(), postUserReq.getEmail()};
+            if(postUserReq.getPwd().equals("") || postUserReq.getPwd().isEmpty()){
+                createUserQuery = "insert into user (nickname, location, phoneNum) VALUES (?,?,?)";
+                createUserParams = new Object[]{postUserReq.getNickname(), postUserReq.getLocation(), postUserReq.getPhoneNum()};
+            }
+            else{
+                createUserQuery = "insert into user (id, pwd, nickname, location, phoneNum) VALUES (?,?,?,?,?)";
+                createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getLocation(), postUserReq.getPhoneNum()};
+            }
         }
         // 프로필 사진 지정한 경우
         else{
-            createUserQuery = "insert into user (id, pwd, nickname, profileImgUrl, location, phoneNum, email) VALUES (?,?,?,?,?,?,?)";
-            createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getProfileImgUrl(), postUserReq.getLocation(), postUserReq.getPhoneNum(), postUserReq.getEmail()};
+            if(postUserReq.getPwd().equals("") || postUserReq.getPwd().isEmpty()){
+                createUserQuery = "insert into user (nickname, profileImgUrl, location, phoneNum) VALUES (?,?,?,?)";
+                createUserParams = new Object[]{postUserReq.getNickname(), postUserReq.getProfileImgUrl(), postUserReq.getLocation(), postUserReq.getPhoneNum()};
+            }
+            else{
+                createUserQuery = "insert into user (id, pwd, nickname, profileImgUrl, location, phoneNum) VALUES (?,?,?,?,?,?)";
+                createUserParams = new Object[]{postUserReq.getId(), postUserReq.getPwd(), postUserReq.getNickname(), postUserReq.getProfileImgUrl(), postUserReq.getLocation(), postUserReq.getPhoneNum()};
+            }
         }
         this.jdbcTemplate.update(createUserQuery, createUserParams);
         String lastInsertIdQuery = "select count(*) from user";
@@ -54,13 +66,6 @@ public class UserDao {
         String createShopParams = lastInsertIdQuery;
         this.jdbcTemplate.update(createShopQuery, jdbcTemplate.queryForObject(createShopParams, int.class));
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userId를 반환한다.
-    }
-
-    // jwt token 저장
-    public int saveJwt(int userId, String jwt){
-        String saveJwtQuery = "update user set jwtToken = ? where userId = ?";
-        Object[] saveJwtParams = new Object[]{jwt, userId};
-        return this.jdbcTemplate.update(saveJwtQuery, saveJwtParams);
     }
 
     // 로그인 - 비밀번호 체크

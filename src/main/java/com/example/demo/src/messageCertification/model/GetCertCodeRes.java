@@ -11,4 +11,8 @@ import lombok.Setter;
 public class GetCertCodeRes {
     private String phoneNum;
     private String certNum;
+    private boolean certificated;
+    public GetCertCodeRes(boolean certificated) {
+        this.certificated = certificated;
+    }
 }

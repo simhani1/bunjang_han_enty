@@ -10,5 +10,5 @@ import lombok.Setter;
 
 public class GetCertRes {
     private String phoneNum;
-    private boolean Certificated;
+    private boolean certificated;
 }

@@ -37,10 +37,6 @@ public class UserService {
 
     // 회원 가입
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
-        // 아이디 중복확인
-        if (userProvider.checkId(postUserReq.getId()) == 1) {
-            throw new BaseException(EXISTS_ID);
-        }
         // 닉네임 중복확인
         if (userProvider.checkNickname(postUserReq.getNickname()) == 1) {
             throw new BaseException(EXISTS_NICKNAME);
@@ -49,24 +45,18 @@ public class UserService {
         if (userProvider.checkPhoneNum(postUserReq.getPhoneNum()) == 1) {
             throw new BaseException(EXISTS_PHONENUM);
         }
-        // 이메일 중복확인
-        if(userProvider.checkEmail(postUserReq.getEmail()) == 1) {
-            throw new BaseException(DUPLICATED_EMAIL);
-        }
         String encryptPwd;
-        try {
-            // 암호화: postUserReq에서 제공받은 비밀번호를 보안을 위해 암호화시켜 DB에 저장합니다.
-            // ex) password123 -> dfhsjfkjdsnj4@!$!@chdsnjfwkenjfnsjfnjsd.fdsfaifsadjfjaf
-            encryptPwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postUserReq.getPwd()); // 암호화코드
-            postUserReq.setPassword(encryptPwd);
-        } catch (Exception ignored) { // 암호화가 실패하였을 경우 에러 발생
-            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+        if(!postUserReq.getPwd().equals("") || !postUserReq.getPwd().isEmpty()) {
+            try {
+                encryptPwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postUserReq.getPwd()); // 암호화코드
+                postUserReq.setPassword(encryptPwd);
+            } catch (Exception ignored) { // 암호화가 실패하였을 경우 에러 발생
+                throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+            }
         }
         try {
             int userId = userDao.createUser(postUserReq);
             String jwt = jwtService.createJwt(userId);
-            if(userDao.saveJwt(userId, jwt) == 0)
-                throw new BaseException(NO_EXISTED_USER);  // 나중에 수정
             return new PostUserRes(userId,jwt);
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
             throw new BaseException(DATABASE_ERROR);

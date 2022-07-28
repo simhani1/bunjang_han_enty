@@ -51,14 +51,6 @@ public class UserController {
     @ResponseBody
     @PostMapping("/sign-up")    // POST 방식의 요청을 매핑하기 위한 어노테이션
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
-        //  @RequestBody란, 클라이언트가 전송하는 HTTP Request Body(우리는 JSON으로 통신하니, 이 경우 body는 JSON)를 자바 객체로 매핑시켜주는 어노테이션
-        // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
-        if(postUserReq.getId().equals("")) {
-            return new BaseResponse<>(EMPTY_ID);
-        }
-        if(postUserReq.getPwd().equals((""))){
-            return new BaseResponse<>(EMPTY_PWD);
-        }
         if(postUserReq.getNickname().equals("")){
             return new BaseResponse<>(EMPTY_NICKNAME);
         }
@@ -68,15 +60,9 @@ public class UserController {
         if (postUserReq.getPhoneNum().equals("")) {
             return new BaseResponse<>(USERS_EMPTY_PHONENUMBER);
         }
-        if (postUserReq.getEmail().equals("")) {
-            return new BaseResponse<>(EMPTY_EMAIL);
-        }
         // 폰번호 자릿수 체크
         if (isRegexTelephoneNum(postUserReq.getPhoneNum())) {
             return new BaseResponse<>(INVALID_PHONENUMBER);
-        }
-        if(!isRegexEmail(postUserReq.getEmail())) {
-            return new BaseResponse<>(INVALID_EMAIL);
         }
         try {
             PostUserRes postUserRes = userService.createUser(postUserReq);

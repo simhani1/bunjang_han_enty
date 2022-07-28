@@ -4,6 +4,7 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.messageCertification.model.GetCertCodeRes;
 import com.example.demo.src.messageCertification.model.GetCertRes;
+import com.example.demo.src.user.UserProvider;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +34,15 @@ public class MessageController {
     @Autowired
     private final JwtService jwtService;
 
+    @Autowired
+    private final UserProvider userProvider;
 
-    public MessageController(MessageProvider messageProvider, MessageService messageService, JwtService jwtService) {
+
+    public MessageController(MessageProvider messageProvider, MessageService messageService, JwtService jwtService, UserProvider userProvider) {
         this.messageProvider = messageProvider;
         this.messageService = messageService;
         this.jwtService = jwtService;
+        this.userProvider = userProvider;
     }
 
     // ******************************************************************************
@@ -53,12 +58,19 @@ public class MessageController {
                 String ran = Integer.toString(rand.nextInt(10));
                 code += ran;
             }
+            GetCertCodeRes getCertNumRes = new GetCertCodeRes(false);
             // 전화번호 형식 체크
             if(isRegexTelephoneNum(phoneNum)){
-                throw new BaseException(INVALID_PHONENUMBER);
+                return new BaseResponse<>(INVALID_PHONENUMBER, getCertNumRes);
+            }
+            // 이미 가입한 정보에 존재하는 경우
+            if(userProvider.checkPhoneNum(phoneNum) == 1) {
+                return new BaseResponse<>(EXISTS_PHONENUM, getCertNumRes);
             }
             messageService.certifiedPhoneNumber(phoneNum,code);  // 핸드폰으로 numstr을 문자로 전송한다
-            GetCertCodeRes getCertNumRes = new GetCertCodeRes(phoneNum, code);
+            getCertNumRes.setPhoneNum(phoneNum);
+            getCertNumRes.setCertNum(code);
+            getCertNumRes.setCertificated(true);
             return new BaseResponse<>(getCertNumRes);
         }
         catch (BaseException exception) {
