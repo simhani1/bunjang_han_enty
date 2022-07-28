@@ -145,6 +145,9 @@ public enum BaseResponseStatus {
     // [POST] access_Token
     EMPTY_ACCESS_TOKEN(false, 2532, "ACCESS_TOKEN을 입력해주세요."),
 
+    EMPTY_PRODUCT_SORT_TYPE(false, 2531, "상품정렬 방식을 선택해주세요."),
+    INVALID_PRODUCT_SORT_TYPE(false, 2530, "상품정렬 입력값을 확인해주세요."),
+
 
 
     /**

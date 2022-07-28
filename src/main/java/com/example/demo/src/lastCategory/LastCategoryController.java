@@ -43,4 +43,9 @@ public class LastCategoryController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+//    @GetMapping("/popular")
+//    public BaseResponse<List<GetLastCategoryRes>> getPopularLastCategory(){
+//
+//    }
 }
