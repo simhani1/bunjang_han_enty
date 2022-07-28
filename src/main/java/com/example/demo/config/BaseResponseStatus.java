@@ -142,6 +142,9 @@ public enum BaseResponseStatus {
     INVALID_START_TIME(false, 2530, "시작시간 입력값을 확인해주세요."),
     INVALID_END_TIME(false, 2531, "끝 시간 입력값을 확인해주세요."),
 
+    // [POST] access_Token
+    EMPTY_ACCESS_TOKEN(false, 2532, "ACCESS_TOKEN을 입력해주세요."),
+
 
 
     /**

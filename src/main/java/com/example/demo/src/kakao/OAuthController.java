@@ -38,6 +38,11 @@ public class OAuthController {
     @PostMapping("/kakao/certification")
     public BaseResponse<String> createKakaoUser(@RequestParam String access_Token){
         try{
+            // access_token이 빈칸일때
+            if(access_Token.equals("")){
+                return new BaseResponse<>(EMPTY_ACCESS_TOKEN);
+            }
+            // 받아온 값이 없을 때
             if(oAuthService.createKakaoUser(access_Token).equals("")){
                 return new BaseResponse<>(FAILED_KAKAO_CERTIFICATION);
             }
@@ -49,11 +54,15 @@ public class OAuthController {
 
     // 카카오인증 후 폰번호로 회원가입/로그인
     @PostMapping("/kakao/check-phone")
-    public BaseResponse<PostCheckPhoneRes> comparePhonNum(@RequestBody PostCheckPhoneReq postCheckPhoneReq){
+    public BaseResponse<PostCheckPhoneRes> comparePhoneNum(@RequestBody PostCheckPhoneReq postCheckPhoneReq){
         try{
             // 폰번호 자릿수 체크
             if (isRegexTelephoneNum(postCheckPhoneReq.getPhoneNum())) {
                 return new BaseResponse<>(INVALID_PHONENUMBER);
+            }
+            // 폰번호 입력했는지 체크
+            if (postCheckPhoneReq.getPhoneNum().equals("")) {
+                return new BaseResponse<>(USERS_EMPTY_PHONENUMBER);
             }
             String phoneNum = postCheckPhoneReq.getPhoneNum();
             // db에 입력한 폰번호가 있는지 확인

@@ -1,6 +1,7 @@
 package com.example.demo.src.kakao;
 
 import com.example.demo.config.BaseException;
+import com.example.demo.config.BaseResponse;
 import com.example.demo.src.kakao.model.GetUserIdRes;
 import com.example.demo.src.kakao.model.PostCheckPhoneReq;
 import com.example.demo.src.kakao.model.PostCheckPhoneRes;
@@ -16,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static com.example.demo.config.BaseResponseStatus.*;
+import static com.example.demo.utils.ValidationRegex.isRegexTelephoneNum;
 
 
 @Service
@@ -145,6 +147,14 @@ public class OAuthService {
 
     // 번호 db에 있는지 확인
     public PostCheckPhoneRes comparePhoneNum(String phoneNum) throws BaseException {
+        // 폰번호 자릿수 체크
+        if (isRegexTelephoneNum(phoneNum)){
+            throw new BaseException(INVALID_PHONENUMBER);
+        }
+        // 폰번호 입력했는지 체크
+        if (phoneNum.equals("")) {
+            throw new BaseException(USERS_EMPTY_PHONENUMBER);
+        }
         try{
             // 폰번호가 이미 존재한다면 로그인
             if(oAuthProvider.checkExistsPhoneNum(phoneNum) == 1){
