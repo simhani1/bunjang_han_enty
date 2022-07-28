@@ -136,22 +136,26 @@ public class ProductDao {
         String getChatCountQuery = "select count(productId) from chattingRoom where productId="+productId+" and isDeleted=0";
         int chatCnt = this.jdbcTemplate.queryForObject(getChatCountQuery, int.class);
 
-        // Get star
-        String getStarQuery =
-                "select avg(star) " +
-                "from review " +
-                "left join (select productId from product where userId = (select userId from product where productId="+productId+")) " +
-                "as A on review.productId = A.productId " +
-                "where A.productId = review.productId";
-        Double star = this.jdbcTemplate.queryForObject(getStarQuery, Double.class);
-
-        Double downStar = Math.floor(star * 10) / 10.0;
-
-        // Get follow
         String getUserIdQuery = "select userId from product where productId="+productId;
         int productUserId = this.jdbcTemplate.queryForObject(getUserIdQuery, int.class);
+        // Get star
+        String getStarQuery =
+                "select avg(review.star) " +
+                "from review " +
+                "left join " +
+                "(select productId " +
+                "from product " +
+                "where userId="+productUserId+") as A on review.productId = A.productId " +
+                "where review.productId = A.productId";
+        List<Double> star = this.jdbcTemplate.queryForList(getStarQuery, Double.class);
 
-        String getFollowerNumQuery = "select count(userId) from followList where userId="+productUserId+" and status = 1";
+        if (star.size() == 0){
+            star.set(0,0.0);
+        }
+//        Double downStar = Math.floor(star * 10) / 10.0;
+
+        // Get follow
+        String getFollowerNumQuery = "select count(userId) from followList where userId="+productUserId+" and status = true";
         int follower = this.jdbcTemplate.queryForObject(getFollowerNumQuery, int.class);
 
         // Get follow status
@@ -204,7 +208,7 @@ public class ProductDao {
                         getTag,
                         rs.getString("profileImgUrl"),
                         rs.getString("nickname"),
-                        downStar,
+                        star.get(0),
                         follower,
                         follow.get(0),
                         commentCount,
@@ -361,6 +365,10 @@ public class ProductDao {
         return this.jdbcTemplate.update(modifyProductIsDeletedQuery, modifyProductIsDeletedParams);
     }
 
+    public int flexProduct(int userId, int productId){
+        String flexProductQuery = "update product set product.condition='fin', buyer="+userId+" where productId="+productId+" and product.condition != 'fin'";
+        return this.jdbcTemplate.update(flexProductQuery);
+    }
     // 상품 UP하기
     public int upProductById(int productId){
         String upProductByIdQuery = "update product set updatedAt=current_timestamp where productId=?";

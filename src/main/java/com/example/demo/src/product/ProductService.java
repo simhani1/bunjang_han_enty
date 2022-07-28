@@ -179,4 +179,14 @@ public class ProductService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public void flexProduct(int userId, int productId) throws BaseException {
+        try{
+            if(productDao.flexProduct(userId, productId) != 1){
+                throw new BaseException(FAILED_FLEX_PRODUCT);
+            }
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

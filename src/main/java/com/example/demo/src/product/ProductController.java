@@ -304,6 +304,17 @@ public class ProductController {
         }
     }
 
+    @PostMapping("/flex/{userId}/{productId}")
+    public BaseResponse<String> flexProduct(@PathVariable int userId,
+                                            @PathVariable int productId){
+        try{
+            productService.flexProduct(userId, productId);
+            return new BaseResponse<>(FLEX_SUCCESS);
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 
 //    @GetMapping("/filter/")
 //    public BaseResponse<List<GetProductRes>> getProductByFirstCategoryId(@RequestParam int page,

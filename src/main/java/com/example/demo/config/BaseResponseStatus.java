@@ -62,6 +62,7 @@ public enum BaseResponseStatus {
     KAKAO_CERTIFICATION_SUCCESS(true, 1983, "카카오 인증이 성공하였습니다."),
     KAKAO_LOGIN_SUCCESS(true, 1982, "카카오 로그인 성공하였습니다."),
     KAKAO_AUTO_LOGIN_SUCCESS(true, 1981, "자동로그인 되었습니다."),
+    FLEX_SUCCESS(true, 1980, "결제되었습니다."),
 
 
     /**
@@ -231,6 +232,7 @@ public enum BaseResponseStatus {
     // kakao failed
     NEED_TO_SING_UP(false, 3981, "회원가입 해주시기 바랍니다."),
     KAKAO_AUTO_LOGIN_FAILED(false, 3980, "자동로그인 실패하였습니다. 다시 로그인 해주시기 바랍니다."),
+    FAILED_FLEX_PRODUCT(false, 3979, "결제 실패하였습니다."),
 
     /**
      * 4000 : Database, Server 오류

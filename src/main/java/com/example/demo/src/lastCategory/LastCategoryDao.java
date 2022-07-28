@@ -2,6 +2,7 @@ package com.example.demo.src.lastCategory;
 
 import com.example.demo.src.firstCategory.model.GetFirstCategoryRes;
 import com.example.demo.src.lastCategory.model.GetLastCategoryRes;
+import com.example.demo.src.lastCategory.model.LastCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -45,6 +46,17 @@ public class LastCategoryDao {
                 getCategoryParams);
     }
 
+    public List<LastCategory> getLastCategory(){
+        String getLastCategoryQuery = "select * from lastCategory";
+        return this.jdbcTemplate.query(getLastCategoryQuery,
+                (rs, rowNum) -> new LastCategory(
+                        rs.getInt("lastCategoryId"),
+                        rs.getInt("firstCategoryId"),
+
+                        rs.getString("lastCategory"),
+                        rs.getString("lastCategoryImgUrl")
+                ));
+    }
     public int getLastCategoryIdCount(){
         String getLastCategoryIdCountQuery = "select count(*) from lastCategory";
         return this.jdbcTemplate.queryForObject(getLastCategoryIdCountQuery, int.class);
