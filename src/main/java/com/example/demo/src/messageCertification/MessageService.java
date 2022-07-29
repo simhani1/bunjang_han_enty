@@ -44,7 +44,7 @@ public class MessageService {
         params.put("to", phoneNumber);    // 수신전화번호
         params.put("from", "01090788948");    // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
         params.put("type", "SMS");
-        params.put("text", "번개장터 인증번호는" + "["+cerNum+"]" + "입니다. 본인이 요청하지 않은 경우 ");
+        params.put("text", "번개장터 인증번호는" + "["+cerNum+"]" + "입니다. 본인이 요청하지 않은 경우 이 번호로 문의주세요.");
         params.put("app_version", "test app 4.1"); // application name and version
 
         try {
