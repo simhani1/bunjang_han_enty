@@ -10,4 +10,6 @@
 /.gradle
 /logs/*
 /src/main/java/com/example/demo/config/secret/*
-
+# OS Generated Files
+**/.DS_Store
+**/._*
