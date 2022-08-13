@@ -8,6 +8,6 @@
 /dataSources.local.xml
 /src/main/resources/application.yml
 /.gradle
-./logs
-./src/main/java/com/example/demo/config/secret/*
+/logs/*
+/src/main/java/com/example/demo/config/secret/*
 
