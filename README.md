@@ -1,4 +1,7 @@
-# Spring Boot Template
+## 개발 일지
+[개발일지](https://juniper-drawer-723.notion.site/Han-e948899e64c34386bea42c226b64d574)
+
+## Spring Boot Template
 본 템플릿은 소프트스퀘어드 서버 교육용 Spring Boot 템플릿 입니다. (2021 ver.)
 
 ## ✨License
